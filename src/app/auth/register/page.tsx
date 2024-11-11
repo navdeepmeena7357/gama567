@@ -138,8 +138,8 @@ function RegisterPage() {
       <LoadingModal isOpen={loading} />
 
       <div className="flex item-center">
-        <div className="bg-orange-600 w-2 h-14"></div>
-        <h1 className="uppercase text-lg font-bold ml-2 text-orange-600">
+        <div className="bg-green-600 w-2 h-14"></div>
+        <h1 className="uppercase text-lg font-bold ml-2 text-green-600">
           Create a new <br />
           account
         </h1>
@@ -158,13 +158,13 @@ function RegisterPage() {
         <div className="grid gap-6 md:grid-cols-2 mt-6"></div>
 
         <div className="mb-4 relative">
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-orange-500 rounded-full p-2">
+          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-green-500 rounded-full p-2">
             <MdAccountCircle className="text-white" />
           </div>
           <input
             type="text"
             id="name"
-            className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-orange-500 block w-full pl-12 p-3.5"
+            className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-green-500 block w-full pl-12 p-3.5"
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -173,14 +173,14 @@ function RegisterPage() {
         </div>
 
         <div className="mb-4 mt-2 relative">
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-orange-500 rounded-full p-2">
+          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-green-500 rounded-full p-2">
             <FaPhone className="text-white" />
           </div>
           <input
             type="tel"
             value={mobileNumber}
             maxLength={10}
-            className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-orange-500 block w-full pl-12 p-3.5"
+            className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-green-500 block w-full pl-12 p-3.5"
             placeholder="Enter Mobile Number"
             onChange={(e) => setMobileNumber(e.target.value)}
             required
@@ -188,13 +188,13 @@ function RegisterPage() {
         </div>
 
         <div className="mb-4 relative">
-          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-orange-500 rounded-full p-2">
+          <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-green-500 rounded-full p-2">
             <FaLock className="text-white" />
           </div>
           <input
             type="password"
             value={password}
-            className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-orange-500 block w-full pl-12 p-3.5"
+            className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-green-500 block w-full pl-12 p-3.5"
             placeholder="•••••••••"
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -206,7 +206,7 @@ function RegisterPage() {
         <div className="mr-12 ml-12">
           <button
             type="submit"
-            className={`text-white font-semibold bg-orange-600 hover:bg-orange-500 items-center focus:ring-0 focus:outline-none rounded-full text-sm w-full px-5 py-3 uppercase text-center ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`text-white font-semibold bg-green-600 hover:bg-green-500 items-center focus:ring-0 focus:outline-none rounded-full text-sm w-full px-5 py-3 uppercase text-center ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
             disabled={loading}
           >
             {loading ? 'Submitting...' : 'Submit'}
@@ -220,7 +220,7 @@ function RegisterPage() {
 
       <button onClick={handleNavigate} className="w-full ">
         <div className="w-full flex justify-center items-center text-center mt-2">
-          <div className="bg-green-500 w-64 p-2 rounded-full text-center items-center text-white mt-2">
+          <div className="bg-black w-64 p-2 rounded-full text-center items-center text-white mt-2">
             Already Registered? Login
           </div>
         </div>

@@ -106,8 +106,8 @@ function LoginPage() {
       <Toaster position="bottom-center" reverseOrder={false} />
 
       <div className="flex item-center">
-        <div className="bg-orange-600 w-1 h-14"></div>
-        <h1 className="uppercase text-xl font-bold ml-2 text-orange-600">
+        <div className="bg-green-600 w-1 h-14"></div>
+        <h1 className="uppercase text-xl font-bold ml-2 text-green-600">
           login to existing <br />
           account
         </h1>
@@ -124,27 +124,27 @@ function LoginPage() {
       </div>
 
       <div className="mb-4 mt-2 relative">
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-orange-500 rounded-full p-2">
+        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-green-500 rounded-full p-2">
           <FaPhone className="text-white" />
         </div>
         <input
           type="number"
           value={mobileNumber}
           maxLength={10}
-          className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-orange-500 block w-full pl-12 p-3.5"
+          className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-green-500 block w-full pl-12 p-3.5"
           placeholder="Enter Mobile Number"
           onChange={(e) => setMobileNumber(e.target.value)}
           required
         />
       </div>
       <div className="mb-4 relative">
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-orange-500 rounded-full p-2">
+        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-green-500 rounded-full p-2">
           <FaLock className="text-white" />
         </div>
         <input
           type="password"
           value={password}
-          className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-orange-500 block w-full pl-12 p-3.5"
+          className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-green-500 block w-full pl-12 p-3.5"
           placeholder="•••••••••"
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -154,14 +154,14 @@ function LoginPage() {
       <button
         onClick={handleLogin}
         disabled={isLoading}
-        className="text-white bg-orange-600 hover:bg-orange-500 items-center focus:ring-0 focus:outline-none font-medium rounded-lg text-sm w-full px-5 py-3 uppercase text-center"
+        className="text-white font-semibold bg-green-600 hover:bg-green-500 items-center focus:ring-0 focus:outline-none font-medium rounded-lg text-sm w-full px-5 py-3 uppercase text-center"
       >
         Submit
       </button>
 
       <button onClick={handleNavigate} className="w-full">
         <div className="w-full flex justify-center items-center text-center mt-2">
-          <div className="bg-green-500 w-1/2 text-center p-1 items-center rounded-sm text-white  mt-2">
+          <div className="bg-black w-1/2 text-center items-center rounded-md text-white p-2  mt-2">
             Create new Account
           </div>
         </div>
