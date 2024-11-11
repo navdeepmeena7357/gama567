@@ -246,7 +246,7 @@ const PanaFamily = () => {
           <div className="flex justify-end items-center pt-4 text-end">
             <button
               onClick={handleAddBid}
-              className="bg-orange-500 min-w-[184px] p-2 text-sm text-white rounded flex items-center justify-center gap-2"
+              className="bg-green-500 min-w-[184px] p-2 text-sm text-white rounded flex items-center justify-center gap-2"
             >
               <FaPlus />
               Add Bid
@@ -254,7 +254,7 @@ const PanaFamily = () => {
           </div>
 
           <div className="shadow-md rounded-md mt-2 overflow-y-auto mb-20">
-            <table className="min-w-full bg-orange-500  table-auto text-center">
+            <table className="min-w-full bg-green-500  table-auto text-center">
               <thead>
                 <tr className="border-b text-white text-sm">
                   <th className="p-2 font-normal">Pana</th>
@@ -290,7 +290,7 @@ const PanaFamily = () => {
               </div>
               <button
                 onClick={handleSubmitBids}
-                className="p-2 bg-orange-500 text-white flex items-center gap-2 text-sm rounded"
+                className="p-2 bg-green-500 text-white flex items-center gap-2 text-sm rounded"
               >
                 <FaArrowUpLong />
                 Submit Bids

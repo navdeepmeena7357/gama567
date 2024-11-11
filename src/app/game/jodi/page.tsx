@@ -227,7 +227,7 @@ const JodiPage = () => {
             <div className="flex justify-end items-center pt-4 text-end">
               <button
                 onClick={handleAddBid}
-                className="bg-orange-500 min-w-[154px] p-2 text-sm text-white rounded flex items-center justify-center gap-2"
+                className="bg-green-500 min-w-[154px] p-2 text-sm text-white rounded flex items-center justify-center gap-2"
               >
                 <FaPlus />
                 Add Bid
@@ -235,7 +235,7 @@ const JodiPage = () => {
             </div>
 
             <div className="shadow-md rounded-md mt-2 overflow-y-auto mb-14">
-              <table className="min-w-full bg-orange-500  table-auto text-center">
+              <table className="min-w-full bg-green-500  table-auto text-center">
                 <thead>
                   <tr className="border-b text-white text-sm">
                     <th className="p-2 font-normal">Jodi</th>
@@ -271,7 +271,7 @@ const JodiPage = () => {
                 </div>
                 <button
                   onClick={handleSubmitBids}
-                  className="p-3 font-medium bg-orange-500 text-white flex items-center gap-2 text-[14px] rounded"
+                  className="p-3 font-medium bg-green-500 text-white flex items-center gap-2 text-[14px] rounded"
                 >
                   <FaArrowUpLong />
                   Submit Bids

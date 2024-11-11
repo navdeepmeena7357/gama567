@@ -179,7 +179,7 @@ const SinglePanelBulkPage = () => {
             return (
               <div
                 key={digit}
-                className="relative bg-orange-500 pt-2 pb-2 pl-6 pr-6 rounded-md text-white font-semibold text-center items-center"
+                className="relative bg-green-500 pt-2 pb-2 pl-6 pr-6 rounded-md text-white font-semibold text-center items-center"
                 onClick={() => handleNumberClick(digit.toString())}
               >
                 {digit}
@@ -189,7 +189,7 @@ const SinglePanelBulkPage = () => {
         </div>
 
         <div className="shadow-md rounded-md mt-2 overflow-y-auto mb-14">
-          <table className="min-w-full bg-orange-500  table-auto text-center">
+          <table className="min-w-full bg-green-500  table-auto text-center">
             <thead>
               <tr className="border-b  text-white text-sm">
                 <th className="p-2 font-normal">Pana</th>
@@ -223,7 +223,7 @@ const SinglePanelBulkPage = () => {
             </div>
             <button
               onClick={handleSubmitBids}
-              className="p-3 font-medium bg-orange-500 text-white flex items-center gap-2 text-[14px] rounded"
+              className="p-3 font-medium bg-green-500 text-white flex items-center gap-2 text-[14px] rounded"
             >
               <FaArrowUpLong />
               Submit Bids

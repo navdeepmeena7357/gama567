@@ -108,8 +108,8 @@ const AddFundPage = () => {
             <ContactOptions />
           </div>
           <hr className="h-1 mt-2 bg-black" />
-          <div className="flex mt-2 items-center border-2 border-gray-300 rounded-full p-2 focus-within:border-orange-500">
-            <BiRupee className="h-10 w-10 text-white p-1 mr-2 bg-orange-500 rounded-full" />
+          <div className="flex mt-2 items-center border-2 border-gray-300 rounded-full p-2 focus-within:border-green-500">
+            <BiRupee className="h-10 w-10 text-white p-1 mr-2 bg-green-500 rounded-full" />
             <input
               type="number"
               placeholder={`Enter Amount (Min: ${paymentDetails?.min_amount ?? '...'})`}
@@ -122,7 +122,7 @@ const AddFundPage = () => {
             <button
               onClick={handleCreateOrder}
               disabled={loading}
-              className="bg-orange-500 text-white font-medium py-2 px-4 rounded shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
+              className="bg-green-500 text-white font-medium py-2 px-4 rounded shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
             >
               {loading ? 'Please Wait...' : 'Add Cash'}
             </button>

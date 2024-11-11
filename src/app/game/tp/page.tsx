@@ -187,13 +187,13 @@ const TriplePanaPage = () => {
               return (
                 <div
                   key={digit}
-                  className="relative bg-orange-500 pt-6 pb-6 pl-8 pr-8 rounded-md text-white font-semibold text-center items-center"
+                  className="relative bg-green-500 pt-6 pb-6 pl-8 pr-8 rounded-md text-white font-semibold text-center items-center"
                   onClick={() => handleNumberClick(digit)}
                 >
                   {digit}
 
                   {existingBid && (
-                    <span className="absolute right-0 bottom-0  bg-white rounded w-full border border-orange-500 text-black font-bold text-sm flex justify-center items-center">
+                    <span className="absolute right-0 bottom-0  bg-white rounded w-full border border-green-500 text-black font-bold text-sm flex justify-center items-center">
                       {existingBid.bet_amount}
                     </span>
                   )}
@@ -210,7 +210,7 @@ const TriplePanaPage = () => {
             </div>
             <button
               onClick={handleSubmitBids}
-              className="p-3 font-medium bg-orange-500 text-white flex items-center gap-2 text-[14px] rounded"
+              className="p-3 font-medium bg-green-500 text-white flex items-center gap-2 text-[14px] rounded"
             >
               <FaArrowUpLong />
               Submit Bids

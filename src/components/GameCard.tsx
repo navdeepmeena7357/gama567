@@ -101,16 +101,18 @@ const GameCard: React.FC<MarketProps> = ({ market }) => {
         }
       >
         <div>
-          <h2 className="text-[17px] font-semibold">{market.market_name}</h2>
+          <h2 className="text-[17px] font-semibold text-gray-700">
+            {market.market_name}
+          </h2>
           <div className="flex font-bold items-center">
-            <p className="text-orange-500">{market.open_pana}</p>
-            <p className="text-orange-500 text-[18px]">
+            <p className="text-red-500">{market.open_pana}</p>
+            <p className="text-red-500 text-[18px]">
               - {getLastDigitOfSum(market.open_pana)}
             </p>
-            <p className="text-orange-500 text-[18px]">
+            <p className="text-red-500 text-[18px]">
               {getLastDigitOfSum(market.close_pana)} -
             </p>
-            <p className="text-orange-500">{market.close_pana}</p>
+            <p className="text-red-500">{market.close_pana}</p>
           </div>
 
           <div className="flex gap-2 text-xs">

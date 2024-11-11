@@ -24,9 +24,9 @@ const UserCard: React.FC<UserCardProps> = ({ user, balance }) => {
           </div>
         </div>
         <div className="text-start flex gap-2 m-2">
-          <MdAccountBalanceWallet className="text-orange-500 h-12 w-12" />
+          <MdAccountBalanceWallet className="text-green-500 h-12 w-12" />
           <div>
-            <h1 className="text-orange-500 font-semibold text-xl flex items-center">
+            <h1 className="text-green-500 font-semibold text-xl flex items-center">
               <BiRupee className="h-6 w-6" /> {balance ?? '...'}
             </h1>
             <h1 className="text-sm text-gray-500">Current Balance</h1>

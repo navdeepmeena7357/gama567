@@ -45,19 +45,19 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex ml-4 items-center gap-1 mt-2">
-          <FaUserCircle className="w-12 h-12 text-orange-600" />
+        <div className="flex border-b w-full items-center gap-1 mt-2">
+          <FaUserCircle className="w-12 h-12 m-2 text-green-600" />
           <div>
             <h1 className="pl-4 pr-4 mt-2 text-lg text-black font-bold">
               {user?.name}
             </h1>
-            <h1 className="pl-4 pr-4 text-md text-orange-600 font-bold">
+            <h1 className="pl-4 pr-4  mb-2 text-green-600 font-bold">
               {user?.username}
             </h1>
           </div>
         </div>
 
-        <div className="w-full bg-white h-full text-black">
+        <div className="w-full mt-4 bg-white h-full text-black">
           <ul className="space-y-4 text-gray-600">
             {user?.isVerified ? (
               <li className="border-b pl-6 pr-6 border-gray-300 pb-2 flex items-center space-x-3">
@@ -145,15 +145,15 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
               </a>
             </li>
 
-            <div className="text-center bg-red-50 p-2 items-center justify-items-center">
+            <div className="text-center bg-green-50 p-2 items-center justify-items-center">
               <li
                 onClick={handleLogout}
                 className=" border-gray-300 flex items-center space-x-3 cursor-pointer"
               >
-                <FaSignOutAlt className="text-orange-500 h-6 w-6" />
+                <FaSignOutAlt className="text-green-500 h-6 w-6" />
                 <a
                   href="#"
-                  className="text-[16px] font-semibold hover:text-orange-600"
+                  className="text-[16px] font-semibold hover:text-green-600"
                 >
                   Logout
                 </a>

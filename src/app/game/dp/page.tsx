@@ -244,14 +244,14 @@ const DoublePanel = () => {
           <div className="flex justify-end items-center mt-2 text-end">
             <button
               onClick={handleAddBid}
-              className="bg-orange-500 min-w-[150px] p-2 font-medium text-base text-white rounded flex items-center justify-center gap-2"
+              className="bg-green-500 min-w-[150px] p-2 font-medium text-base text-white rounded flex items-center justify-center gap-2"
             >
               + Add Bid
             </button>
           </div>
 
           <div className="shadow-md rounded-md mt-2 overflow-y-auto mb-14">
-            <table className="min-w-full bg-orange-500  table-auto text-center">
+            <table className="min-w-full bg-green-500  table-auto text-center">
               <thead>
                 <tr className="border-b text-white text-sm">
                   <th className="p-2 font-normal">Pana</th>
@@ -287,7 +287,7 @@ const DoublePanel = () => {
               </div>
               <button
                 onClick={handleSubmitBids}
-                className="p-3 font-medium bg-orange-500 text-white flex items-center gap-2 text-[14px] rounded"
+                className="p-3 font-medium bg-green-500 text-white flex items-center gap-2 text-[14px] rounded"
               >
                 <FaArrowUpLong />
                 Submit Bids

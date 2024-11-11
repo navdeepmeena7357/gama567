@@ -266,7 +266,7 @@ const BankDetailsPage = () => {
         <div className="flex mt-2 flex-col items-center">
           <button
             onClick={() => handleSaveBankDetails()}
-            className="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
+            className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
           >
             Save Details
           </button>
@@ -301,7 +301,7 @@ const BankDetailsPage = () => {
         <div className="flex mt-2 flex-col items-center">
           <button
             onClick={() => handleSavePaymentApps()}
-            className="bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
+            className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
           >
             Save Details
           </button>

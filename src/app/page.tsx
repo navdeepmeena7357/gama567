@@ -5,7 +5,6 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { BASE_URL } from './services/api';
 import { Toaster } from 'react-hot-toast';
 import GameCard from '@/components/GameCard';
-import Image from 'next/image';
 import Drawer from '@/components/Drawer';
 import { HiOutlineMenuAlt1 } from 'react-icons/hi';
 import WalletOptions from '@/components/WalletOptions';
@@ -54,22 +53,18 @@ const Navbar = () => {
         <div className="flex">
           <HiOutlineMenuAlt1
             onClick={toggleDrawer}
-            className="h-9 w-9 text-orange-500 shadow-sm shadow-zinc-300 rounded"
+            className="h-9 w-9 text-green-500 shadow-sm shadow-zinc-300 rounded"
           />
 
-          <Image
-            className="ml-2"
-            src="/images/png/Logo.png"
-            width={154}
-            height={154}
-            alt="Kalyan 777 Logo"
-          ></Image>
+          <div className="text-gray-700 font-bold text-[26px] ml-2">
+            KALYAN <span className="text-green-600">99</span>
+          </div>
 
           <Drawer isOpen={isOpen} onClose={toggleDrawer} />
         </div>
 
         {user?.isVerified ? (
-          <div className="text-black flex items-center space-x-1">
+          <div className="text-gray-800 flex items-center space-x-1">
             <MdWallet className="w-7 h-7" />
             <h1>{wallet.balance}</h1>
           </div>
@@ -77,7 +72,7 @@ const Navbar = () => {
           <div></div>
         )}
       </div>
-      <div className="text-black mt-1">
+      <div className="text-black mt-2">
         {user?.isVerified ? (
           <Marquee
             text={appData.contactDetails?.banner_message.toString() ?? ' '}
@@ -145,7 +140,7 @@ const BottomNavBar = () => {
           <div></div>
         )}
 
-        <div className="flex gap-2 rounded-full bg-orange-500 flex-col items-center justify-items-center">
+        <div className="flex gap-2 rounded-full bg-green-500 flex-col items-center justify-items-center">
           <IoMdHome className="h-6 w-6 m-3 text-white" />
         </div>
 

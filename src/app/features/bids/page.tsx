@@ -263,7 +263,7 @@ const BidsPage = () => {
 
           <button
             onClick={handleSearchBids}
-            className="w-44 justify-center shadow-sm shadow-gray-300 text-center items-center p-2  ml-4 mr-4 bg-orange-500 rounded-md text-white font-medium"
+            className="w-44 justify-center mt-2 shadow-sm shadow-gray-300 text-center items-center p-2  ml-4 mr-4 bg-green-500 rounded-md text-white font-medium"
           >
             Search Bids
           </button>
