@@ -80,7 +80,7 @@ const Navbar = () => {
         ) : (
           <div></div>
         )}
-
+        
         {user?.isVerified ? (
           <div>
             <WalletOptions />
@@ -88,7 +88,15 @@ const Navbar = () => {
         ) : (
           <div></div>
         )}
+
+          {user?.isVerified ? (
+          <div>
         <ContactOptions />
+          </div>
+        ) : (
+          <div></div>
+        )}
+        
       </div>
     </nav>
   );
