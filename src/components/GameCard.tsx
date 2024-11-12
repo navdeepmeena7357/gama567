@@ -95,10 +95,12 @@ const GameCard: React.FC<MarketProps> = ({ market }) => {
         key={market.id}
         className="bg-white shadow-md shadow-gray-500 rounded-md flex p-3 m-1 justify-between"
         onClick={
-          (isMarketOpen && isMarketClose) || isMarketClose
-            ? () => handleMarketClick()
-            : () => showMarketClosed()
-        }
+  user?.isVerified
+    ? (isMarketOpen && isMarketClose) || isMarketClose
+      ? () => handleMarketClick()
+      : () => showMarketClosed()
+    : undefined
+}
       >
         <div>
           <h2 className="text-[17px] font-semibold text-gray-700">
