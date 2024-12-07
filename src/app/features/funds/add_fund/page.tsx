@@ -60,12 +60,12 @@ const AddFundPage = () => {
 
     try {
       const response = await createOrder({
-        key: 'dba30cca-0adb-42f4-b968-e22f07029964',
+        key: 'ff0ca18d-7ae5-48cb-b774-ecf566d877c0',
         client_txn_id: generateTxnId(),
         amount: amount,
-        p_info: 'Add Fund',
+        p_info: 'Add Fund Kalyan 99',
         customer_name: user?.name || 'CustName',
-        customer_email: user?.username + '@kalyan777.com' || 'CustEmail',
+        customer_email: user?.username + '@kalyan99.com' || 'CustEmail',
         customer_mobile: user?.username || 'CustMobile',
         redirect_url: `${window.location.origin}/features/funds/order_complete`,
         udf1: user?.id.toString(),
