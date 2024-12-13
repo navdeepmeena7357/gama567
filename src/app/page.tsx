@@ -61,7 +61,7 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
       refreshMarketData();
       setIsLoading(false);
     })();
-  }, [fetchAndSetUser, refreshMarketData]);
+  }, []);
 
   const handleRefresh = async () => {
     setIsLoading(true);
