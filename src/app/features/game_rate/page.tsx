@@ -72,7 +72,7 @@ const GameRate = () => {
             </div>
             <p className="text-sm opacity-90">
               Check current winning rates for all game types. Rates shown are
-              per ₹10 bet.
+              per 10.
             </p>
           </div>
 
@@ -126,7 +126,7 @@ const GameRate = () => {
                           {rate.market_name}
                         </h3>
                         <p className="text-sm text-gray-600 mt-1">
-                          Base bet: ₹10
+                          Base : 10
                         </p>
                       </div>
                       <div className="text-right">
