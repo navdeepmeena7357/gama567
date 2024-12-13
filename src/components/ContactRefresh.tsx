@@ -41,7 +41,7 @@ const ContactRefresh: React.FC<ContactOptionsProps> = ({ onRefresh }) => {
         `}
       >
         <MessageCircle className="w-5 h-5" />
-        <span className="font-medium text-sm">Whatsapp Support</span>
+        <span className="font-medium text-sm">Whatsapp</span>
       </button>
 
       <button
