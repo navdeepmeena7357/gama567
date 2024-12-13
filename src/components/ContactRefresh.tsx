@@ -12,13 +12,12 @@ const ContactRefresh: React.FC<ContactOptionsProps> = ({ onRefresh }) => {
   const handleWhatsAppClick = () => {
     const rawPhoneNumber = contactDetails.contactDetails?.whatsapp_numebr;
     const phoneNumber = rawPhoneNumber ? rawPhoneNumber.replace(/\D/g, '') : '';
-
     if (!phoneNumber) {
       alert('Phone number is not available.');
       return;
     }
-
-    window.location.href = `whatsapp://send?phone=${phoneNumber}`;
+    const whatsappUrl = `whatsapp://send?phone=${phoneNumber}`;
+    window.location.href = whatsappUrl;
   };
 
   const buttonBaseClasses = `
