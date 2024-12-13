@@ -61,7 +61,7 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
       refreshMarketData();
       setIsLoading(false);
     })();
-  }, []);
+  }, [fetchAndSetUser, refreshMarketData]);
 
   const handleRefresh = async () => {
     setIsLoading(true);
@@ -135,6 +135,20 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
   );
 };
 
+interface NavItem {
+  icon: React.ElementType;
+  label: string;
+  route?: string;
+  action?: () => void;
+}
+
+interface NavButtonProps {
+  icon: React.ElementType;
+  label?: string;
+  onClick: () => void;
+  isHome?: boolean;
+}
+
 const BottomNavBar = () => {
   const router = useRouter();
   const { contactDetails } = useAppData();
@@ -149,7 +163,7 @@ const BottomNavBar = () => {
     window.location.href = `whatsapp://send?phone=${phoneNumber}`;
   };
 
-  const navItems = user?.isVerified
+  const navItems: NavItem[] = user?.isVerified
     ? [
         {
           icon: Receipt,
@@ -174,12 +188,18 @@ const BottomNavBar = () => {
       ]
     : [];
 
-  const NavButton = ({ icon: Icon, label, onClick, isHome = false }) => {
+  const NavButton: React.FC<NavButtonProps> = ({
+    icon: Icon,
+    label,
+    onClick,
+    isHome = false,
+  }) => {
     if (isHome) {
       return (
         <button
           onClick={onClick}
-          className="relative -mt-8 p-4 rounded-full bg-gradient-to-r from-red-500 to-red-600 shadow-lg transform transition-transform active:scale-95 active:shadow-md"
+          className="relative -mt-8 p-4 rounded-full bg-gradient-to-r from-red-500 to-red-600 
+            shadow-lg transform transition-transform active:scale-95 active:shadow-md"
         >
           <Icon className="h-6 w-6 text-white" strokeWidth={2.5} />
           <div className="absolute inset-0 rounded-full bg-white opacity-0 hover:opacity-10 transition-opacity" />
@@ -223,7 +243,6 @@ const BottomNavBar = () => {
           icon={HomeIcon}
           onClick={() => router.push('/')}
           isHome={true}
-          label={undefined}
         />
 
         {navItems.slice(2).map((item, index) => (
