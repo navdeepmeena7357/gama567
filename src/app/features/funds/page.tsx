@@ -18,7 +18,7 @@ const FundsPage = () => {
   return (
     <>
       <TitleBar title="Manage Funds" />
-      <div className="mt-[60px] m-2 flex flex-col gap-2">
+      <div className="mt-[70px] m-2 flex flex-col gap-2">
         <InfoCard
           title="Add Fund"
           marqueeText="Add money to your wallet"

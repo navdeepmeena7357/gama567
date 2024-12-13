@@ -1,3 +1,5 @@
+import { getTokenFromLocalStorage, getUserIdFromToken } from '@/utils/basic';
+
 interface User {
   id: number;
   name: string;
@@ -23,10 +25,23 @@ interface LogoutResponse {
   message: string;
 }
 
-// API URL (make sure to configure your .env for this)
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://kalyan99.com/api';
+interface UserProfile {
+  user: User;
+  points: number;
+}
 
-// Login function using fetch with mobile number and password
+interface User {
+  id: number;
+  name: string;
+  username: string;
+  is_verified: number;
+  is_deposit_allowed: number;
+  is_withdraw_allowed: number;
+  status: number;
+}
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://dpboss786.com/api';
+
 export const login = async (
   username: string,
   password: string
@@ -81,5 +96,33 @@ export const logout = async (token: string): Promise<LogoutResponse> => {
   } catch (error) {
     console.error('error:', (error as Error).message);
     throw new Error('Logout failed');
+  }
+};
+
+export const profile = async (): Promise<UserProfile> => {
+  try {
+    const response = await fetch(`${BASE_URL}/user_profile_data`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+      },
+      body: JSON.stringify({ id: getUserIdFromToken() }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const data: UserProfile = await response.json();
+
+    if (!data.user) {
+      throw new Error('Error Occurred');
+    }
+
+    return data;
+  } catch (error) {
+    console.error('error:', (error as Error).message);
+    throw new Error('Call failed');
   }
 };

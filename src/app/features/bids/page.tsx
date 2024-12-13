@@ -7,8 +7,16 @@ import { MarketData } from '@/app/page';
 import { BASE_URL, BidResponse, BidsData } from '@/app/services/api';
 import LoadingModal from '@/components/LoadingModal';
 import NoResults from '@/components/NoResults';
-import Card from '@/components/Card';
 import { getTokenFromLocalStorage, getUserIdFromToken } from '@/utils/basic';
+import {
+  Search,
+  Calendar,
+  Clock,
+  Tag,
+  Building,
+  Award,
+  Timer,
+} from 'lucide-react';
 
 const BidsPage = () => {
   const sessionOptions = [
@@ -51,16 +59,20 @@ const BidsPage = () => {
     }
 
     const monthName = monthNames[monthIndex];
-
     return `${parseInt(day, 10)}-${monthName}-${year}`;
   };
 
   const getCurrentDateFormatted = () => {
     const today = new Date();
-    const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    const day = String(today.getDate()).padStart(2, '0');
-    return `${day}-${month}-${year}`;
+    const istDate = new Intl.DateTimeFormat('en-IN', {
+      timeZone: 'Asia/Kolkata',
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    }).format(today);
+
+    // Convert from DD/MM/YYYY to DD-MM-YYYY
+    return istDate.replace(/\//g, '-');
   };
 
   const formatToDDMMYYYY = (dateString: string) => {
@@ -69,20 +81,85 @@ const BidsPage = () => {
   };
 
   const formatToYYYYMMDD = (dateString: string) => {
-    const [day, month, year] = dateString.split('-');
-    return `${year}-${month}-${day}`;
+    try {
+      // Check if dateString is valid
+      if (!dateString || typeof dateString !== 'string') {
+        const today = new Date();
+        return today.toISOString().split('T')[0]; // Returns YYYY-MM-DD
+      }
+
+      // Split the date string
+      const parts = dateString.split('-');
+
+      // Check if we have exactly 3 parts
+      if (parts.length !== 3) {
+        throw new Error('Invalid date format');
+      }
+
+      const [day, month, year] = parts;
+
+      // Validate day, month, and year
+      const dayNum = parseInt(day, 10);
+      const monthNum = parseInt(month, 10);
+      const yearNum = parseInt(year, 10);
+
+      if (
+        isNaN(dayNum) ||
+        isNaN(monthNum) ||
+        isNaN(yearNum) ||
+        dayNum < 1 ||
+        dayNum > 31 ||
+        monthNum < 1 ||
+        monthNum > 12 ||
+        yearNum < 1900 ||
+        yearNum > 2100
+      ) {
+        throw new Error('Invalid date values');
+      }
+
+      // Pad day and month with leading zeros if necessary
+      const paddedDay = String(dayNum).padStart(2, '0');
+      const paddedMonth = String(monthNum).padStart(2, '0');
+
+      return `${yearNum}-${paddedMonth}-${paddedDay}`;
+    } catch (error) {
+      console.error('Error formatting date:', error);
+      // Return today's date as fallback
+      const today = new Date();
+      return today.toISOString().split('T')[0];
+    }
   };
+
   const [isLoading, setIsLoading] = useState(false);
   const [marketNameOptions, setMarketNameOptions] = useState<
     { value: number; label: string }[]
   >([]);
-
   const [marketId, setMarketId] = useState<number>(0);
   const [bidType, setBidType] = useState('');
   const [session, setSession] = useState('');
   const [date, setDate] = useState<string>(getCurrentDateFormatted);
   const [bids, setBids] = useState<BidsData[]>([]);
   const [visible, setVisible] = useState<boolean>(false);
+
+  const customSelectStyles = {
+    control: (base: any) => ({
+      ...base,
+      border: '1px solid #e2e8f0',
+      boxShadow: 'none',
+      '&:hover': {
+        border: '1px solid #f97316',
+      },
+      borderRadius: '0.5rem',
+      padding: '2px',
+    }),
+    option: (base: any, state: { isSelected: boolean }) => ({
+      ...base,
+      backgroundColor: state.isSelected ? '#f97316' : base.backgroundColor,
+      '&:hover': {
+        backgroundColor: '#fff7ed',
+      },
+    }),
+  };
 
   const handleSearchBids = useCallback(async () => {
     setIsLoading(true);
@@ -118,6 +195,7 @@ const BidsPage = () => {
       setIsLoading(false);
     }
   }, [marketId, bidType, session, date]);
+
   useEffect(() => {
     handleSearchBids();
   }, [handleSearchBids]);
@@ -133,8 +211,6 @@ const BidsPage = () => {
           label: game.market_name,
         }));
         setMarketNameOptions(options);
-
-        await handleSearchBids();
       } catch (error) {
         console.error('Error fetching market data:', error);
       } finally {
@@ -143,7 +219,7 @@ const BidsPage = () => {
     };
 
     fetchMarketData();
-  }, [handleSearchBids]);
+  }, []);
 
   const handleMarketIdChange = (selectedOption: any) => {
     setMarketId(selectedOption?.value || null);
@@ -163,116 +239,164 @@ const BidsPage = () => {
   };
 
   // eslint-disable-next-line react/display-name
-  const RenderBids = React.memo(() => {
-    return (
-      <>
-        <div className="mt-4">
-          <ul className="mt-2">
-            {bids.map((bid) => (
-              <li
-                key={bid.id}
-                className={`p-2 border-b border-s-4 flex justify-between items-center rounded ${bid.is_win === null ? 'border-s-yellow-500' : bid.is_win === 1 ? 'border-s-green-400' : 'border-s-red-400'}  border-gray-300 bg-white m-2`}
-              >
-                <div className="space-y-2">
-                  <div className="text-gray-500 text-sm">{bid.bet_date}</div>
-                  <div className="text-gray-600 font-medium text-sm">
-                    {bid.market_name} - {bid.market_session.toUpperCase()}
-                  </div>
+  const BidCard = React.memo(({ bid }: { bid: BidsData }) => {
+    const getStatusColor = () => {
+      if (bid.is_win === null) return 'bg-yellow-50 text-yellow-600';
+      return bid.is_win === 1
+        ? 'bg-green-50 text-green-600'
+        : 'bg-red-50 text-red-600';
+    };
 
-                  <div className="inline-block bg-orange-50 p-2 shadow-sm shadow-gray-200 rounded-md">
-                    <div className="font-medium text-sm">
-                      {bid.bet_type.toUpperCase().replace('_', ' ')} -{' '}
-                      {bid.bet_digit}
-                    </div>
-                    <div>
-                      <h2 className="font-medium text-sm">
-                        Amount : {bid.bet_amount}
-                      </h2>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-center">
-                  <h1 className="text-sm text-gray-500">Status</h1>
-                  <h1
-                    className={`font-medium ${bid.is_win === null ? 'text-yellow-500' : bid.is_win === 1 ? 'text-green-400' : 'text-red-400'}  border-gray-300 bg-white m-2`}
-                  >
-                    <h1>
-                      {bid.is_win === null
-                        ? 'Pending'
-                        : bid.is_win === 1
-                          ? 'Win'
-                          : 'Lost'}
-                    </h1>
-                  </h1>
-                </div>
-              </li>
-            ))}
-          </ul>
+    const getStatusText = () => {
+      if (bid.is_win === null) return 'Pending';
+      return bid.is_win === 1 ? 'Win' : 'Lost';
+    };
+
+    return (
+      <div className="bg-white rounded-lg shadow-sm p-4 space-y-4">
+        {/* Header */}
+        <div className="flex justify-between items-start">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 text-gray-600">
+              <Calendar className="w-4 h-4" />
+              <span className="text-sm">{bid.bet_date}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Building className="w-4 h-4 text-gray-600" />
+              <h3 className="font-medium">{bid.market_name}</h3>
+            </div>
+          </div>
+          <div
+            className={`px-3 py-1 rounded-full ${getStatusColor()} text-sm font-medium`}
+          >
+            {getStatusText()}
+          </div>
         </div>
-      </>
+
+        {/* Details */}
+        <div className="bg-orange-50 rounded-lg p-3 space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <Tag className="w-4 h-4 text-orange-600" />
+              <span className="text-sm font-medium">
+                {bid.bet_type.toUpperCase().replace('_', ' ')}
+              </span>
+            </div>
+            <span className="text-sm font-medium">{bid.bet_digit}</span>
+          </div>
+
+          <div className="flex items-center justify-between border-t border-orange-100 pt-2">
+            <div className="flex items-center gap-2">
+              <Award className="w-4 h-4 text-orange-600" />
+              <span className="text-sm">Amount</span>
+            </div>
+            <span className="font-medium">₹{bid.bet_amount}</span>
+          </div>
+        </div>
+
+        {/* Session */}
+        <div className="flex items-center justify-between text-sm text-gray-600">
+          <div className="flex items-center gap-2">
+            <Clock className="w-4 h-4" />
+            <span>Session</span>
+          </div>
+          <span className="font-medium">
+            {bid.market_session.toUpperCase()}
+          </span>
+        </div>
+      </div>
     );
   });
 
-  return (
-    <>
-      <LoadingModal isOpen={isLoading} />
+  const FilterSection = () => (
+    <div className="bg-white rounded-lg shadow-sm p-4 space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+            <Building className="w-4 h-4" />
+            Market
+          </label>
+          <Select
+            onChange={handleMarketIdChange}
+            options={marketNameOptions}
+            styles={customSelectStyles}
+            placeholder="Select market..."
+          />
+        </div>
 
-      <div className="mt-[60px] justify-items-center text-center">
-        <TitleBar title="My Bids" />
-
-        <Card>
-          <div className="flex justify-between text-start gap-2 m-2">
-            <div className="w-full">
-              <h1>Market</h1>
-              <Select
-                onChange={handleMarketIdChange}
-                className="focus:ring-transparent mt-1 focus:outline-none focus:border-orange-500"
-                options={marketNameOptions}
-              />
-            </div>
-
-            <div className="w-full">
-              <h1>Bid Type</h1>
-              <Select
-                onChange={handleBidTypeChange}
-                className="focus:ring-transparent mt-1 focus:outline-none focus:border-orange-500"
-                options={bidTypeOptions}
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-between gap-2 m-2 text-start">
-            <div className="w-full">
-              <h1>Date</h1>
-              <input
-                type="date"
-                value={formatToYYYYMMDD(date)}
-                onChange={handleDateChange}
-                className="focus:ring-transparent mt-1 max-w-[154px] p-2 bg-white rounded-sm shadow shadow-gray-400 focus:outline-none focus:border-orange-500"
-              />
-            </div>
-            <div className="w-full">
-              <h1>Session</h1>
-              <Select
-                onChange={handleSessionChange}
-                className="focus:ring-transparent mt-1 focus:outline-none focus:border-orange-500"
-                options={sessionOptions}
-              />
-            </div>
-          </div>
-
-          <button
-            onClick={handleSearchBids}
-            className="w-44 justify-center mt-2 shadow-sm shadow-gray-300 text-center items-center p-2  ml-4 mr-4 bg-green-500 rounded-md text-white font-medium"
-          >
-            Search Bids
-          </button>
-        </Card>
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+            <Tag className="w-4 h-4" />
+            Bid Type
+          </label>
+          <Select
+            onChange={handleBidTypeChange}
+            options={bidTypeOptions}
+            styles={customSelectStyles}
+            placeholder="Select type..."
+          />
+        </div>
       </div>
 
-      <RenderBids />
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+            <Calendar className="w-4 h-4" />
+            Date
+          </label>
+          <input
+            type="date"
+            value={formatToYYYYMMDD(date)}
+            onChange={handleDateChange}
+            className="w-full rounded-lg border-gray-200 focus:border-orange-500 focus:ring-0 text-sm p-2.5"
+          />
+        </div>
 
-      {visible && <NoResults />}
+        <div className="space-y-2">
+          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
+            <Timer className="w-4 h-4" />
+            Session
+          </label>
+          <Select
+            onChange={handleSessionChange}
+            options={sessionOptions}
+            styles={customSelectStyles}
+            placeholder="Select session..."
+          />
+        </div>
+      </div>
+
+      <button
+        onClick={handleSearchBids}
+        className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 transition-colors duration-200"
+      >
+        <Search className="w-4 h-4" />
+        Search Bids
+      </button>
+    </div>
+  );
+
+  return (
+    <>
+      <LoadingModal isOpen={isLoading} variant="pulse" />
+
+      <div className="pb-20 mt-14">
+        <TitleBar title="My Bids" />
+
+        <div className="max-w-xl mx-auto p-4 space-y-4">
+          <FilterSection />
+
+          {bids.length > 0 ? (
+            <div className="space-y-3">
+              {bids.map((bid) => (
+                <BidCard key={bid.id} bid={bid} />
+              ))}
+            </div>
+          ) : visible ? (
+            <NoResults />
+          ) : null}
+        </div>
+      </div>
     </>
   );
 };

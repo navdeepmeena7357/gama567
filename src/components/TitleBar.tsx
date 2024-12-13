@@ -1,3 +1,4 @@
+import React from 'react';
 import { IoIosArrowBack } from 'react-icons/io';
 import { useRouter } from 'next/navigation';
 import { useWallet } from '@/context/WalletContext';
@@ -13,28 +14,36 @@ const TitleBar: React.FC<TitleBarProps> = ({ title, onBack }) => {
   const wallet = useWallet();
   const router = useRouter();
   const { user } = useUser();
+
   const defaultBack = () => {
     router.back();
   };
 
   return (
-    <nav className="bg-white w-full z-10 p-1.5 fixed left-0 top-0 font-semibold justify-between shadow-sm flex items-center pl-2">
-      <div className="flex items-center">
-        <IoIosArrowBack
-          className="w-8 h-8 text-green-500"
-          onClick={onBack || defaultBack}
-        />
-        <h1 className="text-lg uppercase p-2">{title}</h1>
-      </div>
+    <nav className="bg-red-500 w-full z-20 fixed left-0 top-0 shadow-md">
+      <div className="flex items-center justify-between p-3 mx-auto">
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onBack || defaultBack}
+            className="p-1 rounded-full hover:bg-red-400 transition-colors"
+          >
+            <IoIosArrowBack className="w-6 h-6 text-white" />
+          </button>
 
-      {user?.isVerified ? (
-        <div className="flex items-center mr-2 gap-1">
-          <FaWallet />
-          <h1>{wallet.balance ?? '...'}</h1>
+          <h1 className="text-lg font-bold text-white uppercase tracking-wide">
+            {title}
+          </h1>
         </div>
-      ) : (
-        <div></div>
-      )}
+
+        {user?.isVerified && (
+          <div className="flex items-center gap-2 bg-red-600 py-1.5 px-3 rounded-full">
+            <FaWallet className="text-white" />
+            <span className="text-white font-medium">
+              {wallet.balance ?? '...'}
+            </span>
+          </div>
+        )}
+      </div>
     </nav>
   );
 };

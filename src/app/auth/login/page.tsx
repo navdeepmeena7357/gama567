@@ -8,34 +8,23 @@ import { Toaster } from 'react-hot-toast';
 import { useAuth } from '@/context/AuthContext';
 import LoadingModal from '@/components/LoadingModal';
 import { useUser } from '@/context/UserContext';
-import { FaPhone } from 'react-icons/fa6';
-import { FaLock } from 'react-icons/fa6';
+import { Phone, Lock, ArrowRight, UserPlus } from 'lucide-react';
 import Image from 'next/image';
 
 function LoginPage() {
   const { setUser } = useUser();
   const router = useRouter();
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { authenticate } = useAuth();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
       router.push('/');
     }
-  });
-
-  const handleNavigate = () => {
-    router.push('/auth/register');
-  };
-
-  const goHome = () => {
-    router.push('/');
-  };
-
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { authenticate } = useAuth();
+  }, [router]);
 
   const validateInputs = (): boolean => {
     if (!mobileNumber) {
@@ -58,27 +47,14 @@ function LoginPage() {
   };
 
   const handleLogin = async () => {
-    if (!validateInputs()) {
-      return;
-    }
+    if (!validateInputs()) return;
 
     setIsLoading(true);
-
     try {
       const { token, user, isError, message } = await login(
         mobileNumber,
         password
       );
-
-      const userData = {
-        id: user.id,
-        name: user.name,
-        username: user.username,
-        isVerified: user.is_verified,
-        isDepositAllowed: user.is_deposit_allowed,
-        isWithdrawAllowed: user.is_withdraw_allowed,
-        status: user.status,
-      };
 
       if (isError) {
         showErrorToast(message);
@@ -90,9 +66,18 @@ function LoginPage() {
         return;
       }
 
-      setUser(userData);
+      setUser({
+        id: user.id,
+        name: user.name,
+        username: user.username,
+        isVerified: user.is_verified,
+        isDepositAllowed: user.is_deposit_allowed,
+        isWithdrawAllowed: user.is_withdraw_allowed,
+        status: user.status,
+      });
+
       authenticate(token);
-      goHome();
+      router.push('/');
     } catch (err) {
       showErrorToast((err as Error).message);
     } finally {
@@ -101,76 +86,98 @@ function LoginPage() {
   };
 
   return (
-    <div className="font-custom px-5 py-4">
-      <LoadingModal isOpen={isLoading} />
+    <div className="min-h-screen bg-gray-50 flex flex-col p-4 sm:p-6">
+      <LoadingModal isOpen={isLoading} variant="pulse" />
       <Toaster position="bottom-center" reverseOrder={false} />
 
-      <div className="flex item-center">
-        <div className="bg-green-600 w-1 h-14"></div>
-        <h1 className="uppercase text-xl font-bold ml-2 text-green-600">
-          login to existing <br />
-          account
+      {/* Header */}
+      <div className="flex items-center space-x-3 mb-8">
+        <div className="w-1 h-14 bg-gradient-to-b from-red-500 to-red-600 rounded-full" />
+        <h1 className="text-xl font-bold text-gray-900 uppercase">
+          <span className="text-red-500">Login</span> to Your Account
         </h1>
       </div>
 
-      <div className="flex items-center justify-center">
-        <Image
-          className="justify-center"
-          src="/images/svg/login.svg"
-          width={240}
-          height={240}
-          alt="Login Image"
-        />
-      </div>
-
-      <div className="mb-4 mt-2 relative">
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-green-500 rounded-full p-2">
-          <FaPhone className="text-white" />
+      {/* Image */}
+      <div className="flex justify-center mb-8">
+        <div className="relative w-48 h-48">
+          <Image
+            src="/images/png/Logo.png"
+            alt="Login"
+            fill
+            className="object-contain"
+            priority
+          />
         </div>
-        <input
-          type="number"
-          value={mobileNumber}
-          maxLength={10}
-          className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-green-500 block w-full pl-12 p-3.5"
-          placeholder="Enter Mobile Number"
-          onChange={(e) => setMobileNumber(e.target.value)}
-          required
-        />
-      </div>
-      <div className="mb-4 relative">
-        <div className="absolute left-3 top-1/2 transform -translate-y-1/2 bg-green-500 rounded-full p-2">
-          <FaLock className="text-white" />
-        </div>
-        <input
-          type="password"
-          value={password}
-          className="border-2 border-gray-300 text-black  rounded-full focus:outline-none focus:ring-0 focus:border-green-500 block w-full pl-12 p-3.5"
-          placeholder="•••••••••"
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
       </div>
 
-      <button
-        onClick={handleLogin}
-        disabled={isLoading}
-        className="text-white font-semibold bg-green-600 hover:bg-green-500 items-center focus:ring-0 focus:outline-none font-medium rounded-lg text-sm w-full px-5 py-3 uppercase text-center"
-      >
-        Submit
-      </button>
-
-      <button onClick={handleNavigate} className="w-full">
-        <div className="w-full flex justify-center items-center text-center mt-2">
-          <div className="bg-black w-1/2 text-center items-center rounded-md text-white p-2  mt-2">
-            Create new Account
+      {/* Form */}
+      <div className="space-y-4 max-w-md mx-auto w-full">
+        <div className="relative">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2">
+            <Phone className="w-5 h-5 text-red-500" />
           </div>
+          <input
+            type="number"
+            value={mobileNumber}
+            maxLength={10}
+            className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 
+              focus:border-red-500 focus:ring-1 focus:ring-red-500
+              placeholder:text-gray-400 text-gray-900"
+            placeholder="Enter Mobile Number"
+            onChange={(e) => setMobileNumber(e.target.value)}
+          />
         </div>
-      </button>
 
-      <h1 className="text-center mt-4 text-sm font-semibold">
-        For any help or Forgot Password !
-      </h1>
-      <ContactOptions />
+        <div className="relative">
+          <div className="absolute left-4 top-1/2 -translate-y-1/2">
+            <Lock className="w-5 h-5 text-red-500" />
+          </div>
+          <input
+            type="password"
+            value={password}
+            className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 
+              focus:border-red-500 focus:ring-1 focus:ring-red-500
+              placeholder:text-gray-400 text-gray-900"
+            placeholder="Enter Password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+
+        <button
+          onClick={handleLogin}
+          disabled={isLoading}
+          className="w-full bg-gradient-to-r from-red-500 to-red-600 
+            hover:from-red-600 hover:to-red-700
+            text-white font-medium py-3.5 rounded-xl
+            flex items-center justify-center gap-2
+            transform transition-all duration-200
+            active:scale-[0.98] shadow-sm"
+        >
+          Login to Account
+          <ArrowRight className="w-4 h-4" />
+        </button>
+
+        <button
+          onClick={() => router.push('/auth/register')}
+          className="w-full bg-gray-900 hover:bg-gray-800 text-white 
+            font-medium py-3.5 rounded-xl
+            flex items-center justify-center gap-2
+            transform transition-all duration-200
+            active:scale-[0.98] shadow-sm"
+        >
+          <UserPlus className="w-4 h-4" />
+          Create New Account
+        </button>
+      </div>
+
+      {/* Support Section */}
+      <div className="mt-8 space-y-4">
+        <p className="text-center text-gray-600 font-medium">
+          Need help or forgot password?
+        </p>
+        <ContactOptions />
+      </div>
     </div>
   );
 }

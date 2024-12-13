@@ -1,15 +1,19 @@
 import React from 'react';
-import { showErrorToast } from '@/utils/toast';
 import { useUser } from '@/context/UserContext';
-import { FaUserCircle } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
-import { FaKey, FaSignOutAlt } from 'react-icons/fa';
-import { MdWallet } from 'react-icons/md';
-import { IoMdClipboard } from 'react-icons/io';
-import { FaClockRotateLeft } from 'react-icons/fa6';
-import { LuIndianRupee } from 'react-icons/lu';
-import { BiChart, BiInfoCircle } from 'react-icons/bi';
 import { useAuth } from '@/context/AuthContext';
+import {
+  User,
+  Wallet,
+  Clock,
+  LogOut,
+  Key,
+  BarChart3,
+  ClipboardList,
+  IndianRupee,
+  Info,
+  X,
+} from 'lucide-react';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -27,139 +31,116 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
       logoutUser();
       router.replace('/auth/login');
     } catch (err) {
-      showErrorToast((err as Error).message);
-    } finally {
+      console.error(err);
     }
   };
 
+  const MenuItem = ({
+    icon: Icon,
+    label,
+    href,
+    onClick,
+  }: {
+    icon: React.ElementType;
+    label: string;
+    href?: string;
+    onClick?: () => void;
+  }) => (
+    <li className="relative group">
+      <a
+        href={href}
+        onClick={onClick}
+        className="flex items-center space-x-4 px-6 py-3 text-gray-700 hover:bg-red-50 transition-all duration-200"
+      >
+        <Icon className="w-5 h-5 text-red-600" />
+        <span className="font-medium text-sm">{label}</span>
+      </a>
+      <div className="absolute left-0 w-1 h-full bg-red-600 scale-y-0 group-hover:scale-y-100 transition-transform duration-200" />
+    </li>
+  );
+
   return (
     <div
-      className={`fixed inset-0 z-20 transition-opacity duration-300 ${
-        isOpen ? 'bg-black bg-opacity-50' : 'pointer-events-none opacity-0'
+      className={`fixed inset-0 z-50 transition-opacity duration-300 backdrop-blur-sm ${
+        isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
       }`}
       onClick={onClose}
     >
       <div
-        className={`bg-white w-64 h-full absolute left-0 shadow-lg transition-transform duration-300 ${
-          isOpen ? 'transform translate-x-0' : 'transform -translate-x-full'
+        className={`bg-white w-[280px] h-full absolute left-0 shadow-2xl transition-transform duration-300 ease-in-out ${
+          isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex border-b w-full items-center gap-1 mt-2">
-          <FaUserCircle className="w-12 h-12 m-2 text-green-600" />
-          <div>
-            <h1 className="pl-4 pr-4 mt-2 text-lg text-black font-bold">
-              {user?.name}
-            </h1>
-            <h1 className="pl-4 pr-4  mb-2 text-green-600 font-bold">
-              {user?.username}
-            </h1>
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 p-2 rounded-full hover:bg-red-50 transition-colors"
+        >
+          <X className="w-5 h-5 text-red-600" />
+        </button>
+
+        {/* User Profile Section */}
+        <div className="pt-6 pb-8 px-6 bg-gradient-to-br from-red-500 to-red-600">
+          <div className="flex items-center space-x-4">
+            <div className="p-3 bg-white/10 rounded-full">
+              <User className="w-8 h-8 text-white" />
+            </div>
+            <div className="text-white">
+              <h2 className="font-bold text-lg">{user?.name}</h2>
+              <p className="text-red-100 text-sm">{user?.username}</p>
+            </div>
           </div>
         </div>
 
-        <div className="w-full mt-4 bg-white h-full text-black">
-          <ul className="space-y-4 text-gray-600">
-            {user?.isVerified ? (
-              <li className="border-b pl-6 pr-6 border-gray-300 pb-2 flex items-center space-x-3">
-                <IoMdClipboard className="text-gray-700 h-6 w-6" />
-                <a
-                  href={'/features/bids'}
-                  className="text-[16px] font-semibold hover:text-orange-600"
-                >
-                  My Bids
-                </a>
-              </li>
-            ) : (
-              <div></div>
+        {/* Menu Items */}
+        <nav className="mt-2">
+          <ul className="space-y-1">
+            {user?.isVerified && (
+              <>
+                <MenuItem
+                  icon={ClipboardList}
+                  label="My Bids"
+                  href="/features/bids"
+                />
+                <MenuItem icon={Wallet} label="Funds" href="/features/funds" />
+                <MenuItem
+                  icon={IndianRupee}
+                  label="Game Rate"
+                  href="/features/game_rate"
+                />
+              </>
             )}
-
-            {user?.isVerified ? (
-              <li className="border-b border-gray-300 pb-2  pl-6 pr-6 flex items-center space-x-3">
-                <MdWallet className="text-gray-700 h-6 w-6" />
-                <a
-                  href={'/features/funds'}
-                  className="text-[16px] font-semibold hover:text-orange-600"
-                >
-                  Funds
-                </a>
-              </li>
-            ) : (
-              <div></div>
+            <MenuItem icon={BarChart3} label="Charts" href="/features/chart" />
+            <MenuItem
+              icon={Clock}
+              label="Time Table"
+              href="/features/time-table"
+            />
+            {user?.isVerified && (
+              <MenuItem
+                icon={Info}
+                label="Notice Board/Rules"
+                href="/features/rules"
+              />
             )}
-
-            {user?.isVerified ? (
-              <li className="border-b border-gray-300 pb-2  pl-6 pr-6 flex items-center space-x-3">
-                <LuIndianRupee className="text-gray-500 h-6 w-6" />
-                <a
-                  href={'/features/game_rate'}
-                  className="text-[16px] font-semibold hover:text-orange-600"
-                >
-                  Game Rate
-                </a>
-              </li>
-            ) : (
-              <div></div>
-            )}
-
-            <li className="border-b border-gray-300 pb-2  pl-6 pr-6 flex items-center space-x-3">
-              <BiChart className="text-gray-500 h-6 w-6" />
-              <a
-                href={'/features/chart'}
-                className="text-[16px] font-semibold hover:text-orange-600"
-              >
-                Charts
-              </a>
-            </li>
-
-            <li className="border-b border-gray-300 pb-2  pl-6 pr-6 flex items-center space-x-3">
-              <FaClockRotateLeft className="text-gray-500 h-5 w-5" />
-              <a
-                href={'/features/time-table'}
-                className="text-[16px] font-semibold hover:text-orange-600"
-              >
-                Time Table
-              </a>
-            </li>
-
-            {user?.isVerified ? (
-              <li className="border-b border-gray-300 pb-2  pl-6 pr-6 flex items-center space-x-3">
-                <BiInfoCircle className="text-gray-500 h-6 w-6" />
-                <a
-                  href={'/features/rules'}
-                  className="text-[16px] font-semibold hover:text-orange-600"
-                >
-                  Notice Board/Rules
-                </a>
-              </li>
-            ) : (
-              <div></div>
-            )}
-
-            <li className="border-b border-gray-300 pb-2  pl-6 pr-6 flex items-center space-x-3">
-              <FaKey className="text-gray-500 h-5 w-5" />
-              <a
-                href={'/features/password'}
-                className="text-[16px] font-semibold hover:text-orange-600"
-              >
-                Change Password
-              </a>
-            </li>
-
-            <div className="text-center bg-green-50 p-2 items-center justify-items-center">
-              <li
-                onClick={handleLogout}
-                className=" border-gray-300 flex items-center space-x-3 cursor-pointer"
-              >
-                <FaSignOutAlt className="text-green-500 h-6 w-6" />
-                <a
-                  href="#"
-                  className="text-[16px] font-semibold hover:text-green-600"
-                >
-                  Logout
-                </a>
-              </li>
-            </div>
+            <MenuItem
+              icon={Key}
+              label="Change Password"
+              href="/features/password"
+            />
           </ul>
+        </nav>
+
+        {/* Logout Section */}
+        <div className="absolute bottom-0 w-full border-t border-gray-100">
+          <button
+            onClick={handleLogout}
+            className="flex items-center space-x-4 px-6 py-4 w-full hover:bg-red-50 transition-colors"
+          >
+            <LogOut className="w-5 h-5 text-red-600" />
+            <span className="font-medium text-sm text-gray-700">Logout</span>
+          </button>
         </div>
       </div>
     </div>

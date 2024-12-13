@@ -1,3 +1,4 @@
+import React from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 import { MdAddCall } from 'react-icons/md';
 import { useAppData } from '@/context/AppDataContext';
@@ -22,24 +23,33 @@ const ContactOptions = () => {
   };
 
   return (
-    <div className="flex items-center justify-between mt-2">
+    <div className="flex items-center justify-between gap-2">
       <button
         onClick={handleWhatsAppClick}
-        className="text-black flex justify-center space-x-2 text-sm items-center p-2 min-w-40 rounded-sm"
+        className="flex-1 bg-white hover:bg-gray-50 border border-gray-200
+        flex items-center justify-center gap-2 py-2 px-2 
+        rounded-lg shadow-sm transition-all duration-200 hover:shadow-md"
       >
-        <FaWhatsapp className="text-green-600 w-5 h-5" />
-        <h1>
+        <div className="bg-green-500 p-1.5 rounded-full">
+          <FaWhatsapp className="w-4 h-4 text-white" />
+        </div>
+        <span className="text-gray-700 text-sm font-medium">
           {contactDetails.contactDetails?.whatsapp_numebr.replace('+91', '')}
-        </h1>
+        </span>
       </button>
+
       <button
         onClick={handleCallClick}
-        className="flex text-sm justify-center space-x-2 items-center text-black p-2 min-w-40 rounded-sm"
+        className="flex-1 bg-white hover:bg-gray-50 border border-gray-200
+        flex items-center justify-center gap-2 py-2 px-2 
+        rounded-lg shadow-sm transition-all duration-200 hover:shadow-md"
       >
-        <MdAddCall className="w-5 h-5" />
-        <h1>
+        <div className="bg-red-500 p-1.5 rounded-full">
+          <MdAddCall className="w-4 h-4 text-white" />
+        </div>
+        <span className="text-gray-700 text-sm font-medium">
           {contactDetails.contactDetails?.phone_number.replace('+91', '')}
-        </h1>
+        </span>
       </button>
     </div>
   );

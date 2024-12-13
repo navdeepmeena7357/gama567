@@ -85,76 +85,91 @@ const GameCard: React.FC<MarketProps> = ({ market }) => {
     handleOpenModal('Market is closed for today. Try Tomorrow');
   };
 
+  const isRunning = market.is_active && isMarketOpen;
+
+  // Dynamic classes based on market status
+  const cardBgClass = isRunning
+    ? 'bg-gradient-to-br from-green-50 to-green-100 hover:from-green-100 hover:to-green-200'
+    : 'bg-gradient-to-br from-red-50 to-red-100 hover:from-red-100 hover:to-red-200';
+
+  const titleClass = isRunning ? 'text-green-800' : 'text-red-800';
+  const numbersClass = isRunning ? 'text-green-600' : 'text-red-600';
+  const timeClass = isRunning ? 'text-green-700' : 'text-red-700';
+
   return (
     <>
       {isModalOpen && (
         <AlertModal message={alertMessage} onClose={handleCloseModal} />
       )}
       <Toaster position="bottom-center" reverseOrder={false} />
+
       <div
         key={market.id}
-        className="bg-white shadow-md shadow-gray-500 rounded-md flex p-3 m-1 justify-between"
+        className={`${cardBgClass} transition-all duration-300 shadow-lg rounded-lg p-3 m-2`}
         onClick={
-  user?.isVerified
-    ? (isMarketOpen && isMarketClose) || isMarketClose
-      ? () => handleMarketClick()
-      : () => showMarketClosed()
-    : undefined
-}
+          user?.isVerified
+            ? (isMarketOpen && isMarketClose) || isMarketClose
+              ? () => handleMarketClick()
+              : () => showMarketClosed()
+            : undefined
+        }
       >
-        <div>
-          <h2 className="text-[17px] font-semibold text-gray-700">
-            {market.market_name}
-          </h2>
-          <div className="flex font-bold items-center">
-            <p className="text-red-500">{market.open_pana}</p>
-            <p className="text-red-500 text-[18px]">
-              - {getLastDigitOfSum(market.open_pana)}
-            </p>
-            <p className="text-red-500 text-[18px]">
-              {getLastDigitOfSum(market.close_pana)} -
-            </p>
-            <p className="text-red-500">{market.close_pana}</p>
-          </div>
+        <div className="flex justify-between items-start gap-2">
+          <div className="flex-1">
+            <h2 className={`text-base font-bold ${titleClass} mb-1`}>
+              {market.market_name}
+            </h2>
 
-          <div className="flex gap-2 text-xs">
-            <div className="flex flex-col">
-              <h1 className="text-gray-600">Open Bids</h1>
-              <p className="text-gray-700">
-                {convertTo12HourFormat(market.market_open_time)}
-              </p>
+            <div className="bg-white rounded-md p-2 mb-2 shadow-sm">
+              <div className="flex items-center justify-center space-x-1 font-bold">
+                <p className={`${numbersClass} text-sm`}>{market.open_pana}</p>
+                <p className={`${numbersClass} text-lg`}>
+                  - {getLastDigitOfSum(market.open_pana)}
+                </p>
+                <p className={`${numbersClass} text-lg`}>
+                  {getLastDigitOfSum(market.close_pana)} -
+                </p>
+                <p className={`${numbersClass} text-sm`}>{market.close_pana}</p>
+              </div>
             </div>
 
-            <div className="flex flex-col">
-              <h1 className="text-gray-600">Close Bids</h1>
-              <p className="text-gray-700">
-                {convertTo12HourFormat(market.market_close_time)}
-              </p>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div className="bg-white rounded-md p-1.5 text-center shadow-sm">
+                <h3 className="text-gray-600 font-medium">Open Bids</h3>
+                <p className={timeClass}>
+                  {convertTo12HourFormat(market.market_open_time)}
+                </p>
+              </div>
+
+              <div className="bg-white rounded-md p-1.5 text-center shadow-sm">
+                <h3 className="text-gray-600 font-medium">Close Bids</h3>
+                <p className={timeClass}>
+                  {convertTo12HourFormat(market.market_close_time)}
+                </p>
+              </div>
             </div>
           </div>
-        </div>
 
-        {user?.isVerified ? (
-          <div className="flex flex-col items-center">
-            <h1 className={`text-[13px] font-medium ${statusClass}`}>
-              {marketStatusMessage}
-            </h1>
+          {user?.isVerified ? (
+            <div className="flex flex-col items-center ml-2">
+              <h1 className={`text-xs font-medium ${statusClass} mb-1`}>
+                {marketStatusMessage}
+              </h1>
 
-            <div
-              className={`flex items-center mt-2 justify-center h-12 w-12 ${buttonClass} rounded-full shadow-md`}
-            >
-              <p>
+              <div
+                className={`flex items-center justify-center h-10 w-10 ${
+                  isRunning ? 'bg-green-500 hover:bg-green-600' : buttonClass
+                } rounded-full shadow-md transition-transform hover:scale-105`}
+              >
                 {market.is_active ? (
-                  <FaPlay className="text-white text-xl" />
+                  <FaPlay className="text-white text-sm" />
                 ) : (
-                  <CgClose className="text-white text-xl" />
+                  <CgClose className="text-white text-sm" />
                 )}
-              </p>
+              </div>
             </div>
-          </div>
-        ) : (
-          <div></div>
-        )}
+          ) : null}
+        </div>
       </div>
     </>
   );
