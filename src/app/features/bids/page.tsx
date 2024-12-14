@@ -37,7 +37,6 @@ const BidsPage = () => {
 
   const formatDateToFullMonth = (dateString: string) => {
     const [day, month, year] = dateString.split('-');
-
     const monthNames = [
       'January',
       'February',
@@ -52,14 +51,8 @@ const BidsPage = () => {
       'November',
       'December',
     ];
-
     const monthIndex = parseInt(month, 10) - 1;
-    if (monthIndex < 0 || monthIndex > 11) {
-      throw new Error('Invalid month number');
-    }
-
-    const monthName = monthNames[monthIndex];
-    return `${parseInt(day, 10)}-${monthName}-${year}`;
+    return `${parseInt(day, 10)}-${monthNames[monthIndex]}-${year}`;
   };
 
   const getCurrentDateFormatted = () => {
@@ -132,44 +125,25 @@ const BidsPage = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [marketNameOptions, setMarketNameOptions] = useState<
-    { value: number; label: string }[]
+    Array<{ value: number; label: string }>
   >([]);
-  const [marketId, setMarketId] = useState<number>(0);
-  const [bidType, setBidType] = useState('');
-  const [session, setSession] = useState('');
-  const [date, setDate] = useState<string>(getCurrentDateFormatted);
+  const [marketId, setMarketId] = useState<number | null>(null);
+  const [bidType, setBidType] = useState<string>('');
+  const [session, setSession] = useState<string>('');
+  const [date, setDate] = useState<string>(getCurrentDateFormatted());
   const [bids, setBids] = useState<BidsData[]>([]);
   const [visible, setVisible] = useState<boolean>(false);
-
-  const customSelectStyles = {
-    control: (base: any) => ({
-      ...base,
-      border: '1px solid #e2e8f0',
-      boxShadow: 'none',
-      '&:hover': {
-        border: '1px solid #f97316',
-      },
-      borderRadius: '0.5rem',
-      padding: '2px',
-    }),
-    option: (base: any, state: { isSelected: boolean }) => ({
-      ...base,
-      backgroundColor: state.isSelected ? '#f97316' : base.backgroundColor,
-      '&:hover': {
-        backgroundColor: '#fff7ed',
-      },
-    }),
-  };
 
   const handleSearchBids = useCallback(async () => {
     setIsLoading(true);
     try {
-      const requestBody: any = { user_id: getUserIdFromToken() };
-
-      if (marketId) requestBody.market_id = marketId;
-      if (bidType) requestBody.bid_type = bidType;
-      if (session) requestBody.bid_session = session;
-      if (date) requestBody.date = formatDateToFullMonth(date);
+      const requestBody = {
+        user_id: getUserIdFromToken(),
+        market_id: marketId,
+        bid_type: bidType,
+        bid_session: session,
+        date: formatDateToFullMonth(date),
+      };
 
       const response = await fetch(`${BASE_URL}/user_bid_history_3`, {
         method: 'POST',
@@ -177,28 +151,20 @@ const BidsPage = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${getTokenFromLocalStorage()}`,
         },
-        body: JSON.stringify({ requestBody }),
+        body: JSON.stringify(requestBody),
       });
 
       const result: BidResponse = await response.json();
-      if (result.status === 1) {
-        setBids(result.bidss);
-        setVisible(result.bidss.length === 0);
-      } else {
-        console.error('Error fetching bids');
-        setVisible(true);
-      }
+      setBids(result.status === 1 ? result.bidss : []);
+      setVisible(!result.bidss?.length);
     } catch (error) {
-      setVisible(true);
       console.error('Error fetching bids:', error);
+      setVisible(true);
+      setBids([]);
     } finally {
       setIsLoading(false);
     }
   }, [marketId, bidType, session, date]);
-
-  useEffect(() => {
-    handleSearchBids();
-  }, [handleSearchBids]);
 
   useEffect(() => {
     const fetchMarketData = async () => {
@@ -206,11 +172,12 @@ const BidsPage = () => {
         setIsLoading(true);
         const response = await fetch(`${BASE_URL}/markets`);
         const data: MarketData[] = await response.json();
-        const options = data.map((game) => ({
-          value: game.market_id,
-          label: game.market_name,
-        }));
-        setMarketNameOptions(options);
+        setMarketNameOptions(
+          data.map((game) => ({
+            value: game.market_id,
+            label: game.market_name,
+          }))
+        );
       } catch (error) {
         console.error('Error fetching market data:', error);
       } finally {
@@ -221,21 +188,24 @@ const BidsPage = () => {
     fetchMarketData();
   }, []);
 
+  useEffect(() => {
+    handleSearchBids();
+  }, [handleSearchBids]);
+
   const handleMarketIdChange = (selectedOption: any) => {
-    setMarketId(selectedOption?.value || null);
+    setMarketId(selectedOption?.value ?? null);
   };
 
   const handleBidTypeChange = (selectedOption: any) => {
-    setBidType(selectedOption?.value || null);
+    setBidType(selectedOption?.value ?? '');
   };
 
   const handleSessionChange = (selectedOption: any) => {
-    setSession(selectedOption?.value || null);
+    setSession(selectedOption?.value ?? '');
   };
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const formattedDate = formatToDDMMYYYY(event.target.value);
-    setDate(formattedDate);
+    setDate(formatToDDMMYYYY(event.target.value));
   };
 
   // eslint-disable-next-line react/display-name

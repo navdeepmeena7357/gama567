@@ -1,53 +1,27 @@
 'use client';
-import Card from '@/components/Card';
 import ContactOptions from '@/components/ContactOptions';
 import TitleBar from '@/components/TitleBar';
 import UserCard from '@/components/UserWalletCard';
 import { useUser } from '@/context/UserContext';
 import { useWallet } from '@/context/WalletContext';
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { BiRupee } from 'react-icons/bi';
-import { createOrder } from '@/app/services/api';
 import { usePayment } from '@/context/PaymentContext';
 import { generateTxnId } from '@/utils/basic';
 import LoadingModal from '@/components/LoadingModal';
-import { FaCheckCircle } from 'react-icons/fa';
-interface Upilinks {
-  bhim_link?: string;
-  phonepe_link?: string;
-  paytm_link?: string;
-  gpay_link?: string;
-}
+import { createDepositRequest } from '@/app/services/api';
 
 const AddFundPage = () => {
   const { user } = useUser();
-  const router = useRouter();
   const { paymentDetails } = usePayment();
   const points = useWallet();
 
-  const [isModalOpen, setModalOpen] = useState(false);
-  const [paymentOptionsModalOpen, setPaymentOptionsModalOpen] = useState(false);
-  const [modalUrl, setModalUrl] = useState('');
-  const [amount, setAmount] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
-  const [upiLinks, setUpiLinks] = useState<Upilinks>();
+  const [success, setSuccess] = useState<string | null>(null);
 
-  const handleOpenModal = (url: string) => {
-    setModalUrl(url);
-    setModalOpen(true);
-    setPaymentOptionsModalOpen(false);
-  };
-
-  const handleCloseModal = () => {
-    setPaymentOptionsModalOpen(false);
-    setModalOpen(false);
-    setAmount('');
-    router.replace('/');
-  };
-
-  const handleCreateOrder = async () => {
+  const handleAddFund = async () => {
     if (!amount || parseFloat(amount) < (paymentDetails?.min_amount || 0)) {
       setError(
         `Please enter amount of at least ${paymentDetails?.min_amount}.`
@@ -59,129 +33,155 @@ const AddFundPage = () => {
     setError(null);
 
     try {
-      const response = await createOrder({
-        key: 'ff0ca18d-7ae5-48cb-b774-ecf566d877c0',
-        client_txn_id: generateTxnId(),
-        amount: amount,
-        p_info: 'Add Fund Kalyan 99',
-        customer_name: user?.name || 'CustName',
-        customer_email: user?.username + '@kalyan99.com' || 'CustEmail',
-        customer_mobile: user?.username || 'CustMobile',
-        redirect_url: `${window.location.origin}/features/funds/order_complete`,
-        udf1: user?.id.toString(),
-        udf2: '0',
-        udf3: '0',
+      const txnId = generateTxnId();
+
+      const depositResponse = await createDepositRequest({
+        user_id: user?.id || 0,
+        username: user?.name || '',
+        amount: parseFloat(amount),
       });
 
-      if (!response.status) {
-        console.log('Something went wrong', response);
-        return;
+      if (depositResponse.success) {
+        const upiLink = generateUPILink({
+          payeeVPA: paymentDetails!.upi_id,
+          payeeName: 'Laxmi 567',
+          transactionNote: `Add Fund - ${txnId}`,
+          amount: amount,
+          transactionId: txnId,
+        });
+
+        window.location.href = upiLink;
+
+        setSuccess('Deposit request created. Please complete the payment.');
+        setAmount('');
       }
-      setUpiLinks(response.data.upi_intent);
-      setModalUrl(response.data.payment_url);
-      setPaymentOptionsModalOpen(true);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        setError(error.message);
-      } else {
-        setError('An unknown error occurred.');
-      }
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : 'Failed to process request'
+      );
     } finally {
       setLoading(false);
     }
   };
 
-  const handleUpiPayment = (upiUrl: string) => {
-    window.open(upiUrl, '_blank');
+  const generateUPILink = ({
+    payeeVPA,
+    payeeName,
+    transactionNote,
+    amount,
+    transactionId,
+  }: {
+    payeeVPA: string;
+    payeeName: string;
+    transactionNote: string;
+    amount: string;
+    transactionId: string;
+  }) => {
+    const upiURL = new URL('upi://pay');
+    upiURL.searchParams.append('pa', payeeVPA);
+    upiURL.searchParams.append('pn', payeeName);
+    upiURL.searchParams.append('tn', transactionNote);
+    upiURL.searchParams.append('am', amount);
+    upiURL.searchParams.append('tr', transactionId);
+    upiURL.searchParams.append('cu', 'INR');
+
+    return upiURL.toString();
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-50">
       <LoadingModal isOpen={loading} />
       <TitleBar title="Add Fund" />
-      <div className="mt-[60px]">
-        <Card>
+
+      <div className="mt-[20px] px-4 max-w-md mx-auto">
+        <div className="bg-white rounded-lg shadow-md p-6">
+          {/* User Card */}
           <UserCard user={user!} balance={points.balance} />
-          <hr className="h-1 mt-2 bg-black" />
-          <div className="flex flex-col items-center mt-2">
-            <h1 className="font-semibold">For Fund Queries Contact Us</h1>
+
+          {/* Divider */}
+          <div className="h-1 bg-gray-200 my-4" />
+
+          {/* Contact Section */}
+          <div className="flex flex-col items-center">
+            <h1 className="font-semibold text-gray-800 mb-2">
+              For Fund Queries Contact Us
+            </h1>
             <ContactOptions />
           </div>
-          <hr className="h-1 mt-2 bg-black" />
-          <div className="flex mt-2 items-center border-2 border-gray-300 rounded-full p-2 focus-within:border-green-500">
-            <BiRupee className="h-10 w-10 text-white p-1 mr-2 bg-green-500 rounded-full" />
-            <input
-              type="number"
-              placeholder={`Enter Amount (Min: ${paymentDetails?.min_amount ?? '...'})`}
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="flex-1 outline-none bg-transparent placeholder-gray-400"
-            />
+
+          {/* Divider */}
+          <div className="h-1 bg-gray-200 my-4" />
+
+          {/* Amount Input */}
+          <div className="relative">
+            <div className="flex items-center border-2 border-gray-300 rounded-full p-2 transition-all duration-200 focus-within:border-red-500">
+              <div className="flex-shrink-0">
+                <BiRupee className="h-10 w-10 text-white p-2 bg-red-500 rounded-full" />
+              </div>
+              <input
+                type="number"
+                placeholder={`Enter Amount (Min: ${paymentDetails?.min_amount ?? '...'}`}
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                className="flex-1 ml-2 outline-none bg-transparent placeholder-gray-400 text-gray-800"
+              />
+            </div>
           </div>
-          <div className="flex items-center space-x-2 text-center justify-center mt-4">
+
+          {/* Error Message */}
+          {error && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-600 text-center text-sm">{error}</p>
+            </div>
+          )}
+
+          {/* Success Message */}
+          {success && (
+            <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
+              <p className="text-green-600 text-center text-sm">{success}</p>
+            </div>
+          )}
+
+          {/* Payment Button */}
+          <div className="mt-6">
             <button
-              onClick={handleCreateOrder}
+              onClick={handleAddFund}
               disabled={loading}
-              className="bg-green-500 text-white font-medium py-2 px-4 rounded shadow-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
+              className="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-lg font-medium 
+                         transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed
+                         focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
             >
-              {loading ? 'Please Wait...' : 'Add Cash'}
-            </button>
-          </div>
-        </Card>
-      </div>
-      {paymentOptionsModalOpen && upiLinks && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white rounded shadow-lg w-full max-w-lg p-4">
-            <h2 className="font-semibold mb-4">Choose Your Payment Method:</h2>
-            <div className="flex flex-col space-y-2">
-              <button
-                onClick={() => handleOpenModal(modalUrl)}
-                className="bg-blue-500 text-white py-2 px-4 rounded shadow-md hover:bg-orange-600"
-              >
-                SHOW QR CODE
-              </button>
-              {upiLinks.bhim_link && (
-                <button
-                  onClick={() => handleUpiPayment(upiLinks.bhim_link || '')}
-                  className="bg-orange-500 text-white py-2 px-4 rounded shadow-md hover:bg-orange-600"
-                >
-                  Pay with UPI
-                </button>
+              {loading ? (
+                <div className="flex items-center justify-center gap-2">
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      fill="none"
+                    />
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    />
+                  </svg>
+                  <span>Please Wait...</span>
+                </div>
+              ) : (
+                'Pay with UPI'
               )}
-            </div>
-            <div className="flex justify-center items-center">
-              <button
-                onClick={() => handleCloseModal()}
-                className="mt-4 bg-black flex items-center gap-2 text-white py-2 px-4 rounded shadow-md hover:bg-gray-400 focus:outline-none"
-              >
-                <FaCheckCircle />
-                Payment Done ?
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {isModalOpen && (
-        <div className="fixed inset-0 flex items-center justify-center z-50 bg-white bg-opacity-50">
-          <div className="bg-whiteð rounded shadow-lg w-full max-w-lg flex flex-col justify-items-center">
-            <iframe
-              src={modalUrl}
-              style={{ width: '100%', height: '600px', border: 'none' }}
-              title="Payment"
-            />
-            <button
-              onClick={handleCloseModal}
-              className="mt-4 bg-orange-500 text-white text-center font-medium py-2 px-4 rounded shadow-md hover:bg-orange-600 focus:outline-none"
-            >
-              Close
             </button>
           </div>
         </div>
-      )}
-
-      {error && <div className="text-red-500">{error}</div>}
-    </>
+      </div>
+    </div>
   );
 };
 

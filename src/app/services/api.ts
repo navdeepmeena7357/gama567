@@ -174,3 +174,43 @@ export async function createOrder(
 
   return response.json();
 }
+
+interface DepositRequest {
+  user_id: number;
+  username: string;
+  amount: number;
+}
+
+interface DepositResponse {
+  success: boolean;
+  message: string;
+  data?: {
+    id: number;
+    status: string;
+    amount: number;
+  };
+}
+
+export const createDepositRequest = async (
+  data: DepositRequest
+): Promise<DepositResponse> => {
+  try {
+    const response = await fetch(`${BASE_URL}/auto-deposit-request`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to create deposit request');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Deposit request error:', error);
+    throw error;
+  }
+};
