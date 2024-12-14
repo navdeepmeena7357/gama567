@@ -289,7 +289,6 @@ const BidsPage = () => {
           <Select
             onChange={handleMarketIdChange}
             options={marketNameOptions}
-            styles={customSelectStyles}
             placeholder="Select market..."
           />
         </div>
@@ -302,7 +301,6 @@ const BidsPage = () => {
           <Select
             onChange={handleBidTypeChange}
             options={bidTypeOptions}
-            styles={customSelectStyles}
             placeholder="Select type..."
           />
         </div>
@@ -330,7 +328,6 @@ const BidsPage = () => {
           <Select
             onChange={handleSessionChange}
             options={sessionOptions}
-            styles={customSelectStyles}
             placeholder="Select session..."
           />
         </div>
