@@ -2,14 +2,13 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 import { Toaster } from 'react-hot-toast';
-import { HiOutlineMenuAlt1 } from 'react-icons/hi';
-import { MdWallet } from 'react-icons/md';
 import {
   Receipt,
   HomeIcon,
   Wallet,
   MessageCircle,
   BadgeIndianRupee,
+  Menu,
 } from 'lucide-react';
 import { BASE_URL } from './services/api';
 import { useWallet } from '@/context/WalletContext';
@@ -77,58 +76,72 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
   };
 
   return (
-    <nav className="bg-gradient-to-r from-red-500 to-red-600 fixed top-0 left-0 right-0 z-30">
-      <div className="px-3 py-2 shadow-lg">
+    <nav className="fixed top-0 left-0 right-0 z-30">
+      {/* Main Header */}
+      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-3 shadow-lg shadow-blue-500/20">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3">
+          {/* Left Section */}
+          <div className="flex items-center gap-4">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-1.5 hover:bg-red-400/50 rounded-lg transition-colors"
+              className="p-2 hover:bg-white/10 rounded-xl transition-all duration-200
+                active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/20"
             >
-              <HiOutlineMenuAlt1 className="h-6 w-6 text-white" />
+              <Menu className="h-5 w-5 text-white" />
             </button>
 
-            <h1 className="text-xl font-bold text-white">
-              KALYAN <span className="text-yellow-300">99</span>
-            </h1>
-          </div>
-          {user?.isVerified ? (
-            <div className="flex items-center gap-2 bg-red-600/40 py-1.5 px-3 rounded-full">
-              <MdWallet className="w-5 h-5 text-yellow-300" />
-              <span className="text-white font-semibold text-sm">
-                {wallet.balance}
+            <div className="flex items-baseline">
+              <h1 className="text-2xl font-bold text-white tracking-tight">
+                KALYAN
+              </h1>
+              <span className="ml-1 text-2xl font-black text-yellow-300 tracking-tight">
+                BAZAR
               </span>
             </div>
-          ) : (
-            <></>
+          </div>
+
+          {/* Wallet Section */}
+          {user?.isVerified && (
+            <div className="relative group">
+              <div
+                className="flex items-center gap-2 bg-white/10 hover:bg-white/15 
+                py-2 px-4 rounded-xl transition-all duration-200"
+              >
+                <Wallet className="w-4 h-4 text-yellow-300" />
+                <span className="text-white font-medium">
+                  ₹{wallet.balance}
+                </span>
+              </div>
+            </div>
           )}
         </div>
       </div>
 
-      <div className="bg-white shadow-sm">
-        {user?.isVerified ? (
-          <div className="px-3 py-1.5">
-            <Marquee
-              text={appData.contactDetails?.banner_message?.toString() ?? ''}
-            />
-          </div>
-        ) : (
-          <></>
+      {/* Sub Header */}
+      <div className="bg-white border-b border-slate-200">
+        {user?.isVerified && (
+          <>
+            {/* Marquee Section */}
+            <div className="px-4 py-2 border-b border-slate-100">
+              <Marquee
+                text={appData.contactDetails?.banner_message?.toString() ?? ''}
+              />
+            </div>
+
+            {/* Wallet Options */}
+            <div className="pl-3 pr-3 bg-slate-50/50">
+              <WalletOptions />
+            </div>
+          </>
         )}
 
-        {user?.isVerified ? (
-          <div className="space-y-2 p-2 bg-gray-50">
-            <WalletOptions />
-          </div>
-        ) : (
-          <></>
-        )}
-
-        <div className="p-2">
+        {/* Contact Refresh Section */}
+        <div className="pl-3 pr-3 pt-2 pb-">
           <ContactRefresh onRefresh={handleRefresh} />
         </div>
       </div>
 
+      {/* Modals & Drawers */}
       <LoadingModal isOpen={isLoading} />
       <Drawer isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </nav>

@@ -19,8 +19,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Kalyan 99',
-  description: 'Kalyan 99 - Online Matka Play',
+  title: 'Kalyan Bazar',
+  description: 'Kalyan Bazar - Online Matka Play',
 };
 
 export default function RootLayout({

@@ -16,7 +16,7 @@ export interface PostBidsResponse {
 }
 
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'https://kalyan99.com/api/';
+  process.env.NEXT_PUBLIC_API_URL || 'https://appkalyanbazar.com/api/';
 
 export interface Market {
   id: number;

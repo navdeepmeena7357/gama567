@@ -89,70 +89,77 @@ const AddFundPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       <LoadingModal isOpen={loading} />
       <TitleBar title="Add Fund" />
 
-      <div className="mt-[20px] px-4 max-w-md mx-auto">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          {/* User Card */}
-          <UserCard user={user!} balance={points.balance} />
-
-          {/* Divider */}
-          <div className="h-1 bg-gray-200 my-4" />
-
-          {/* Contact Section */}
-          <div className="flex flex-col items-center">
-            <h1 className="font-semibold text-gray-800 mb-2">
-              For Fund Queries Contact Us
-            </h1>
-            <ContactOptions />
+      <div className="mt-6 px-4 max-w-md mx-auto">
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+          {/* User Card Section */}
+          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
+            <UserCard user={user!} balance={points.balance} />
           </div>
 
-          {/* Divider */}
-          <div className="h-1 bg-gray-200 my-4" />
-
-          {/* Amount Input */}
-          <div className="relative">
-            <div className="flex items-center border-2 border-gray-300 rounded-full p-2 transition-all duration-200 focus-within:border-red-500">
-              <div className="flex-shrink-0">
-                <BiRupee className="h-10 w-10 text-white p-2 bg-red-500 rounded-full" />
+          {/* Main Content Section */}
+          <div className="p-6 space-y-6">
+            {/* Amount Input Section */}
+            <div className="space-y-4">
+              <h2 className="text-lg font-semibold text-gray-800">
+                Enter Amount
+              </h2>
+              <div className="relative group">
+                <div
+                  className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-xl 
+                  transition-all duration-300 group-focus-within:shadow-lg group-focus-within:shadow-red-500/25"
+                />
+                <div
+                  className="relative bg-white rounded-xl p-2 border-2 border-transparent
+                  transition-all duration-300 group-focus-within:border-red-500"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-gradient-to-br from-red-500 to-red-600 rounded-lg">
+                      <BiRupee className="h-6 w-6 text-white" />
+                    </div>
+                    <input
+                      type="number"
+                      placeholder={`Min amount: ${paymentDetails?.min_amount ?? '...'}`}
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      className="flex-1 outline-none text-gray-800 placeholder-gray-400 text-lg"
+                    />
+                  </div>
+                </div>
               </div>
-              <input
-                type="number"
-                placeholder={`Enter Amount (Min: ${paymentDetails?.min_amount ?? '...'}`}
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="flex-1 ml-2 outline-none bg-transparent placeholder-gray-400 text-gray-800"
-              />
             </div>
-          </div>
 
-          {/* Error Message */}
-          {error && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-red-600 text-center text-sm">{error}</p>
-            </div>
-          )}
+            {/* Messages */}
+            {error && (
+              <div className="p-4 bg-red-50 border border-red-100 rounded-xl animate-fade-in">
+                <p className="text-red-600 text-sm text-center">{error}</p>
+              </div>
+            )}
 
-          {/* Success Message */}
-          {success && (
-            <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg">
-              <p className="text-green-600 text-center text-sm">{success}</p>
-            </div>
-          )}
+            {success && (
+              <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl animate-fade-in">
+                <p className="text-emerald-600 text-sm text-center">
+                  {success}
+                </p>
+              </div>
+            )}
 
-          {/* Payment Button */}
-          <div className="mt-6">
+            {/* Payment Button */}
             <button
               onClick={handleAddFund}
               disabled={loading}
-              className="w-full bg-red-500 hover:bg-red-600 text-white py-3 px-4 rounded-lg font-medium 
-                         transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed
-                         focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50"
+              className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white 
+                rounded-xl py-4 px-6 font-semibold text-lg
+                transition-all duration-300 
+                hover:shadow-lg hover:shadow-red-500/25 hover:-translate-y-0.5
+                disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none
+                focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
             >
               {loading ? (
-                <div className="flex items-center justify-center gap-2">
+                <div className="flex items-center justify-center gap-3">
                   <svg
                     className="animate-spin h-5 w-5 text-white"
                     viewBox="0 0 24 24"
@@ -172,12 +179,19 @@ const AddFundPage = () => {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     />
                   </svg>
-                  <span>Please Wait...</span>
+                  <span>Processing...</span>
                 </div>
               ) : (
-                'Pay with UPI'
+                'Pay Now with UPI'
               )}
             </button>
+
+            {/* Contact Section */}
+            <div className="pt-4 border-t border-gray-100">
+              <div className="text-center space-y-4">
+                <ContactOptions />
+              </div>
+            </div>
           </div>
         </div>
       </div>

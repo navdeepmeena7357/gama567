@@ -46,55 +46,110 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
     href?: string;
     onClick?: () => void;
   }) => (
-    <li className="relative group">
+    <li className="group">
       <a
         href={href}
         onClick={onClick}
-        className="flex items-center space-x-4 px-6 py-3 text-gray-700 hover:bg-red-50 transition-all duration-200"
+        className="relative flex items-center space-x-4 px-6 py-4 
+          text-red-50 transition-all duration-300
+          hover:bg-gradient-to-r hover:from-red-900/50 hover:to-transparent
+          overflow-hidden"
       >
-        <Icon className="w-5 h-5 text-red-600" />
-        <span className="font-medium text-sm">{label}</span>
+        {/* Hover Glow Effect */}
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-red-500/20 to-transparent 
+          opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        />
+
+        {/* Icon Container */}
+        <div
+          className="relative z-10 p-2 rounded-lg 
+          bg-gradient-to-br from-red-800/50 to-red-900/50
+          group-hover:from-red-700 group-hover:to-red-800
+          transition-colors duration-300"
+        >
+          <Icon
+            className="w-5 h-5 text-red-200 
+            transform transition-all duration-300
+            group-hover:scale-110 group-hover:text-red-100"
+          />
+        </div>
+
+        {/* Label */}
+        <span
+          className="relative z-10 font-medium text-sm 
+          transform transition-all duration-300
+          group-hover:translate-x-1"
+        >
+          {label}
+        </span>
+
+        {/* Active Indicator */}
+        <div
+          className="absolute left-0 top-0 bottom-0 w-1 bg-red-400
+          transform scale-y-0 group-hover:scale-y-100
+          transition-transform duration-300 origin-top"
+        />
       </a>
-      <div className="absolute left-0 w-1 h-full bg-red-600 scale-y-0 group-hover:scale-y-100 transition-transform duration-200" />
     </li>
   );
 
   return (
     <div
-      className={`fixed inset-0 z-50 transition-opacity duration-300 backdrop-blur-sm ${
-        isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-      }`}
+      className={`fixed inset-0 z-50 transition-all duration-300 backdrop-blur-lg
+        ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}
       onClick={onClose}
     >
       <div
-        className={`bg-white w-[280px] h-full absolute left-0 shadow-2xl transition-transform duration-300 ease-in-out ${
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
+        className={`w-[300px] h-full absolute left-0 
+          bg-gradient-to-b from-red-950 to-red-900
+          shadow-[0_0_40px_rgba(220,38,38,0.2)]
+          transition-transform duration-500 ease-out
+          ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute right-4 top-4 p-2 rounded-full hover:bg-red-50 transition-colors"
+          className="absolute right-4 top-4 p-2 rounded-full 
+            bg-red-800/50 hover:bg-red-700/50
+            transition-all duration-300 hover:rotate-90
+            group"
         >
-          <X className="w-5 h-5 text-red-600" />
+          <X
+            className="w-5 h-5 text-red-200 
+            transition-transform duration-300
+            group-hover:scale-110"
+          />
         </button>
 
         {/* User Profile Section */}
-        <div className="pt-6 pb-8 px-6 bg-gradient-to-br from-red-500 to-red-600">
+        <div
+          className="pt-8 pb-10 px-6 
+          bg-gradient-to-br from-red-800 to-red-900
+          border-b border-red-800/50"
+        >
           <div className="flex items-center space-x-4">
-            <div className="p-3 bg-white/10 rounded-full">
-              <User className="w-8 h-8 text-white" />
+            <div
+              className="p-4 rounded-xl
+              bg-gradient-to-br from-red-700/50 to-red-800/50
+              shadow-lg shadow-red-900/50"
+            >
+              <User className="w-8 h-8 text-red-100" />
             </div>
-            <div className="text-white">
-              <h2 className="font-bold text-lg">{user?.name}</h2>
-              <p className="text-red-100 text-sm">{user?.username}</p>
+            <div>
+              <h2 className="font-bold text-lg text-red-50 mb-1">
+                {user?.name}
+              </h2>
+              <p className="text-red-300 text-sm font-medium">
+                {user?.username}
+              </p>
             </div>
           </div>
         </div>
 
         {/* Menu Items */}
-        <nav className="mt-2">
+        <nav className="mt-4">
           <ul className="space-y-1">
             {user?.isVerified && (
               <>
@@ -133,13 +188,25 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
         </nav>
 
         {/* Logout Section */}
-        <div className="absolute bottom-0 w-full border-t border-gray-100">
+        <div className="absolute bottom-0 w-full border-t border-red-800/30">
           <button
             onClick={handleLogout}
-            className="flex items-center space-x-4 px-6 py-4 w-full hover:bg-red-50 transition-colors"
+            className="flex items-center space-x-4 px-6 py-5 w-full
+              text-red-100 bg-gradient-to-r from-red-900 to-red-950
+              hover:from-red-800 hover:to-red-900
+              transition-all duration-300 group"
           >
-            <LogOut className="w-5 h-5 text-red-600" />
-            <span className="font-medium text-sm text-gray-700">Logout</span>
+            <div
+              className="p-2 rounded-lg bg-red-800/50 
+              group-hover:bg-red-700/50 transition-colors duration-300"
+            >
+              <LogOut
+                className="w-5 h-5 text-red-200
+                transform transition-transform duration-300
+                group-hover:scale-110 group-hover:-rotate-12"
+              />
+            </div>
+            <span className="font-medium text-sm">Logout</span>
           </button>
         </div>
       </div>

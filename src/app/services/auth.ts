@@ -40,7 +40,8 @@ interface User {
   status: number;
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://dpboss786.com/api';
+const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL || 'https://appkalyanbazar.com/api';
 
 export const login = async (
   username: string,

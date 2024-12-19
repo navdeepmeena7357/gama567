@@ -1,6 +1,6 @@
 import React from 'react';
-import { useAppData } from '@/context/AppDataContext';
 import { MessageCircle, RotateCw } from 'lucide-react';
+import { useAppData } from '@/context/AppDataContext';
 
 interface ContactOptionsProps {
   onRefresh: () => void;
@@ -20,48 +20,43 @@ const ContactRefresh: React.FC<ContactOptionsProps> = ({ onRefresh }) => {
     window.location.href = whatsappUrl;
   };
 
-  const buttonBaseClasses = `
-    flex-1 rounded-xl py-3 px-4
-    flex items-center justify-center gap-3
-    transition-all duration-200 
-    transform hover:scale-[1.02] active:scale-[0.98]
-    shadow-sm hover:shadow-md
-  `;
-
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="grid grid-cols-2 gap-2">
+      {/* WhatsApp Button */}
       <button
         onClick={handleWhatsAppClick}
-        className={`
-          ${buttonBaseClasses}
-          bg-gradient-to-r from-green-500 to-green-600
-          hover:from-green-600 hover:to-green-700
-          text-white
-        `}
+        className="flex items-center justify-center gap-2 px-3 py-2 
+          bg-gradient-to-r from-emerald-500 to-emerald-600 
+          hover:from-emerald-600 hover:to-emerald-700
+          text-white rounded-xl
+          transform transition-all duration-200
+          active:scale-[0.98] shadow-sm"
       >
-        <MessageCircle className="w-5 h-5" />
-        <span className="font-medium text-sm">Whatsapp</span>
+        <div className="bg-white/20 p-1.5 rounded-lg">
+          <MessageCircle className="w-4 h-4" />
+        </div>
+        <span className="text-sm font-medium">Chat Now</span>
       </button>
 
+      {/* Refresh Button */}
       <button
         onClick={onRefresh}
-        className={`
-          ${buttonBaseClasses}
-          bg-white hover:bg-gray-50 
-          border border-gray-200 
-          group
-        `}
+        className="flex items-center justify-center gap-2 px-3 py-2
+          bg-gradient-to-r from-violet-500 to-purple-500
+          hover:from-violet-600 hover:to-purple-600
+          text-white rounded-xl
+          transform transition-all duration-200
+          active:scale-[0.98] shadow-sm
+          group"
         aria-label="Refresh"
       >
-        <RotateCw
-          className="w-5 h-5 text-gray-600 
-            group-hover:text-gray-800
-            transition-transform duration-200 
-            group-hover:rotate-180"
-        />
-        <span className="font-medium text-sm text-gray-600 group-hover:text-gray-800">
-          Refresh
-        </span>
+        <div className="bg-white/20 p-1.5 rounded-lg">
+          <RotateCw
+            className="w-4 h-4 transition-transform duration-500 
+              group-hover:rotate-180"
+          />
+        </div>
+        <span className="text-sm font-medium">Refresh</span>
       </button>
     </div>
   );

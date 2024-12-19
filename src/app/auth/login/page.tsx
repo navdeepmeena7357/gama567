@@ -86,20 +86,13 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col p-4 sm:p-6">
+    <div className="min-h-screen bg-slate-50 flex flex-col p-4 sm:p-6">
+      {/* Loading and Toast Components */}
       <LoadingModal isOpen={isLoading} variant="pulse" />
       <Toaster position="bottom-center" reverseOrder={false} />
 
-      {/* Header */}
-      <div className="flex items-center space-x-3 mb-8">
-        <div className="w-1 h-14 bg-gradient-to-b from-red-500 to-red-600 rounded-full" />
-        <h1 className="text-xl font-bold text-gray-900 uppercase">
-          <span className="text-red-500">Login</span> to Your Account
-        </h1>
-      </div>
-
       {/* Image */}
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center mb-12">
         <div className="relative w-48 h-48">
           <Image
             src="/images/png/Logo.png"
@@ -112,33 +105,35 @@ function LoginPage() {
       </div>
 
       {/* Form */}
-      <div className="space-y-4 max-w-md mx-auto w-full">
-        <div className="relative">
+      <div className="space-y-6 max-w-md mx-auto w-full">
+        <div className="relative group">
           <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Phone className="w-5 h-5 text-red-500" />
+            <Phone className="w-5 h-5 text-blue-500 group-focus-within:text-yellow-500 transition-colors" />
           </div>
           <input
             type="number"
             value={mobileNumber}
             maxLength={10}
-            className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 
-              focus:border-red-500 focus:ring-1 focus:ring-red-500
-              placeholder:text-gray-400 text-gray-900"
+            className="w-full pl-12 pr-4 py-4 rounded-2xl border border-slate-200
+              focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20
+              placeholder:text-slate-400 text-slate-900 bg-white
+              transition-all duration-200"
             placeholder="Enter Mobile Number"
             onChange={(e) => setMobileNumber(e.target.value)}
           />
         </div>
 
-        <div className="relative">
+        <div className="relative group">
           <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Lock className="w-5 h-5 text-red-500" />
+            <Lock className="w-5 h-5 text-blue-500 group-focus-within:text-yellow-500 transition-colors" />
           </div>
           <input
             type="password"
             value={password}
-            className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 
-              focus:border-red-500 focus:ring-1 focus:ring-red-500
-              placeholder:text-gray-400 text-gray-900"
+            className="w-full pl-12 pr-4 py-4 rounded-2xl border border-slate-200
+              focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20
+              placeholder:text-slate-400 text-slate-900 bg-white
+              transition-all duration-200"
             placeholder="Enter Password"
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -147,12 +142,13 @@ function LoginPage() {
         <button
           onClick={handleLogin}
           disabled={isLoading}
-          className="w-full bg-gradient-to-r from-red-500 to-red-600 
-            hover:from-red-600 hover:to-red-700
-            text-white font-medium py-3.5 rounded-xl
+          className="w-full bg-gradient-to-r from-blue-500 to-blue-600
+            hover:from-blue-600 hover:to-blue-700
+            text-white font-medium py-4 rounded-2xl
             flex items-center justify-center gap-2
             transform transition-all duration-200
-            active:scale-[0.98] shadow-sm"
+            active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed
+            shadow-lg shadow-blue-500/20"
         >
           Login to Account
           <ArrowRight className="w-4 h-4" />
@@ -160,11 +156,12 @@ function LoginPage() {
 
         <button
           onClick={() => router.push('/auth/register')}
-          className="w-full bg-gray-900 hover:bg-gray-800 text-white 
-            font-medium py-3.5 rounded-xl
+          className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500
+            hover:from-yellow-500 hover:to-yellow-600
+            text-slate-900 font-medium py-4 rounded-2xl
             flex items-center justify-center gap-2
             transform transition-all duration-200
-            active:scale-[0.98] shadow-sm"
+            active:scale-[0.98] shadow-lg shadow-yellow-500/20"
         >
           <UserPlus className="w-4 h-4" />
           Create New Account
@@ -172,8 +169,8 @@ function LoginPage() {
       </div>
 
       {/* Support Section */}
-      <div className="mt-8 space-y-4">
-        <p className="text-center text-gray-600 font-medium">
+      <div className="mt-4 space-y-4">
+        <p className="text-center text-slate-600 font-medium">
           Need help or forgot password?
         </p>
         <ContactOptions />
