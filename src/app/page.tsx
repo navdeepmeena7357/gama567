@@ -91,35 +91,37 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
             </button>
 
             <div className="flex items-baseline">
-              <h1 className="text-2xl font-bold text-white tracking-tight">
+              <h1 className="text-xl font-bold text-white tracking-tight">
                 KALYAN
               </h1>
-              <span className="ml-1 text-2xl font-black text-yellow-300 tracking-tight">
+              <span className="ml-1 text-xl font-black text-yellow-300 tracking-tight">
                 BAZAR
               </span>
             </div>
           </div>
 
           {/* Wallet Section */}
-          {user?.isVerified && (
+          {user?.isVerified ? (
             <div className="relative group">
               <div
                 className="flex items-center gap-2 bg-white/10 hover:bg-white/15 
                 py-2 px-4 rounded-xl transition-all duration-200"
               >
-                <Wallet className="w-4 h-4 text-yellow-300" />
-                <span className="text-white font-medium">
+                <Wallet className="w-3 h-3 text-yellow-300" />
+                <span className="text-white text-sm font-medium">
                   ₹{wallet.balance}
                 </span>
               </div>
             </div>
+          ) : (
+            <div></div>
           )}
         </div>
       </div>
 
       {/* Sub Header */}
       <div className="bg-white border-b border-slate-200">
-        {user?.isVerified && (
+        {user?.isVerified ? (
           <>
             {/* Marquee Section */}
             <div className="px-4 py-2 border-b border-slate-100">
@@ -133,6 +135,8 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
               <WalletOptions />
             </div>
           </>
+        ) : (
+          <div></div>
         )}
 
         {/* Contact Refresh Section */}

@@ -115,15 +115,17 @@ const GameCard: React.FC<MarketProps> = ({ market }) => {
             <h2 className="text-sm font-bold text-white mb-0.5">
               {market.market_name}
             </h2>
-            {user?.isVerified && (
+            {user?.isVerified ? (
               <span
                 className={`text-[10px] font-bold tracking-wider ${statusColor}`}
               >
                 {statusMessage}
               </span>
+            ) : (
+              <div></div>
             )}
           </div>
-          {user?.isVerified && (
+          {user?.isVerified ? (
             <button
               className={`p-1.5 rounded-lg ${
                 isRunning
@@ -137,6 +139,8 @@ const GameCard: React.FC<MarketProps> = ({ market }) => {
                 <X className="w-3 h-3 text-white" />
               )}
             </button>
+          ) : (
+            <div></div>
           )}
         </div>
 

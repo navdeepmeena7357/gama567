@@ -151,7 +151,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
         {/* Menu Items */}
         <nav className="mt-4">
           <ul className="space-y-1">
-            {user?.isVerified && (
+            {user?.isVerified ? (
               <>
                 <MenuItem
                   icon={ClipboardList}
@@ -165,6 +165,8 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
                   href="/features/game_rate"
                 />
               </>
+            ) : (
+              <div></div>
             )}
             <MenuItem icon={BarChart3} label="Charts" href="/features/chart" />
             <MenuItem
@@ -172,12 +174,14 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
               label="Time Table"
               href="/features/time-table"
             />
-            {user?.isVerified && (
+            {user?.isVerified ? (
               <MenuItem
                 icon={Info}
                 label="Notice Board/Rules"
                 href="/features/rules"
               />
+            ) : (
+              <div></div>
             )}
             <MenuItem
               icon={Key}
