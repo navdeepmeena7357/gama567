@@ -35,13 +35,15 @@ const TitleBar: React.FC<TitleBarProps> = ({ title, onBack }) => {
           </h1>
         </div>
 
-        {user?.isVerified && (
+        {user?.isVerified ? (
           <div className="flex items-center gap-2 bg-red-600 py-1.5 px-3 rounded-full">
             <FaWallet className="text-white" />
             <span className="text-white font-medium">
               {wallet.balance ?? '...'}
             </span>
           </div>
+        ) : (
+          <div></div>
         )}
       </div>
     </nav>
