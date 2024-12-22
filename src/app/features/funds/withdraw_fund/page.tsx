@@ -166,6 +166,7 @@ const AddFundPage = () => {
 
       if (!isValidWithdrawal(withdrawAmount)) {
         setError('Minimum withdraw amount 1000');
+        return;
       }
 
       return true;
