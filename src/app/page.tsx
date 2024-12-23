@@ -104,7 +104,7 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
           </div>
 
           {/* Wallet Section */}
-          {user?.isVerified && (
+          {user?.isVerified ? (
             <div className="relative group">
               <div
                 className="flex items-center gap-2 bg-white/10 hover:bg-white/15 
@@ -117,6 +117,8 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
                 </span>
               </div>
             </div>
+          ) : (
+            <></>
           )}
         </div>
       </div>
@@ -126,7 +128,7 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
         className="bg-gradient-to-b from-red-700/90 to-red-800/90 backdrop-blur-sm 
           border-b border-white/10"
       >
-        {user?.isVerified && (
+        {user?.isVerified ? (
           <>
             {/* Marquee Section */}
             <div className="px-4 py-2 border-b border-white/10">
@@ -140,6 +142,8 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
               <WalletOptions />
             </div>
           </>
+        ) : (
+          <></>
         )}
 
         {/* Contact Refresh Section */}
