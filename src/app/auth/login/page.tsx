@@ -86,38 +86,41 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col p-4 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-b from-red-600 to-red-700 flex flex-col p-4 sm:p-6">
       {/* Loading and Toast Components */}
-      <LoadingModal isOpen={isLoading} variant="pulse" />
       <Toaster position="bottom-center" reverseOrder={false} />
-
-      {/* Image */}
-      <div className="flex justify-center mb-12">
+      <LoadingModal isOpen={isLoading} />
+      {/* Logo */}
+      <div className="flex justify-center mb-8">
         <div className="relative w-48 h-48">
           <Image
             src="/images/png/Logo.png"
-            alt="Login"
+            alt="Laxmi 777 Matka"
             fill
-            className="object-contain"
+            className="object-contain drop-shadow-xl"
             priority
           />
         </div>
       </div>
 
       {/* Form */}
-      <div className="space-y-6 max-w-md mx-auto w-full">
+      <div className="space-y-6 max-w-md mx-auto w-full bg-white/10 backdrop-blur-sm p-6 rounded-xl border-2 border-red-300/20">
+        <h1 className="text-3xl font-bold text-center text-white italic mb-8 drop-shadow-lg">
+          Login
+        </h1>
+
         <div className="relative group">
           <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Phone className="w-5 h-5 text-blue-500 group-focus-within:text-yellow-500 transition-colors" />
+            <Phone className="w-5 h-5 text-red-400 group-focus-within:text-white transition-colors" />
           </div>
           <input
             type="number"
             value={mobileNumber}
             maxLength={10}
-            className="w-full pl-12 pr-4 py-4 rounded-2xl border border-slate-200
-              focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20
-              placeholder:text-slate-400 text-slate-900 bg-white
-              transition-all duration-200"
+            className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-white
+              focus:border-white focus:ring-2 focus:ring-white
+              placeholder:text-white text-white bg-transparent
+              transition-all duration-200 italic font-medium"
             placeholder="Enter Mobile Number"
             onChange={(e) => setMobileNumber(e.target.value)}
           />
@@ -125,15 +128,15 @@ function LoginPage() {
 
         <div className="relative group">
           <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Lock className="w-5 h-5 text-blue-500 group-focus-within:text-yellow-500 transition-colors" />
+            <Lock className="w-5 h-5 text-red-400 group-focus-within:text-white transition-colors" />
           </div>
           <input
             type="password"
             value={password}
-            className="w-full pl-12 pr-4 py-4 rounded-2xl border border-slate-200
-              focus:border-yellow-400 focus:ring-2 focus:ring-yellow-400/20
-              placeholder:text-slate-400 text-slate-900 bg-white
-              transition-all duration-200"
+            className="w-full pl-12 pr-4 py-4 rounded-xl border-2 border-white
+              focus:border-white focus:ring-2 focus:ring-white/20
+              placeholder:text-white text-white bg-transparent
+              transition-all duration-200 italic font-medium"
             placeholder="Enter Password"
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -142,37 +145,33 @@ function LoginPage() {
         <button
           onClick={handleLogin}
           disabled={isLoading}
-          className="w-full bg-gradient-to-r from-blue-500 to-blue-600
-            hover:from-blue-600 hover:to-blue-700
-            text-white font-medium py-4 rounded-2xl
+          className="w-full bg-white text-red-600 font-bold py-4 rounded-xl
+            hover:bg-red-100 
             flex items-center justify-center gap-2
             transform transition-all duration-200
-            active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed
-            shadow-lg shadow-blue-500/20"
+            active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed
+            shadow-lg shadow-black/20 italic"
         >
-          Login to Account
+          Login Now
           <ArrowRight className="w-4 h-4" />
         </button>
 
         <button
           onClick={() => router.push('/auth/register')}
-          className="w-full bg-gradient-to-r from-yellow-400 to-yellow-500
-            hover:from-yellow-500 hover:to-yellow-600
-            text-slate-900 font-medium py-4 rounded-2xl
+          className="w-full bg-red-700 hover:bg-red-800 
+            text-white font-bold py-4 rounded-xl
             flex items-center justify-center gap-2
             transform transition-all duration-200
-            active:scale-[0.98] shadow-lg shadow-yellow-500/20"
+            active:scale-95 shadow-lg shadow-black/20 italic"
         >
           <UserPlus className="w-4 h-4" />
-          Create New Account
+          New Account
         </button>
       </div>
 
       {/* Support Section */}
-      <div className="mt-4 space-y-4">
-        <p className="text-center text-slate-600 font-medium">
-          Need help or forgot password?
-        </p>
+
+      <div className="flex justify-center gap-4 mt-2">
         <ContactOptions />
       </div>
     </div>

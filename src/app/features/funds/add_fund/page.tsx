@@ -1,7 +1,6 @@
 'use client';
 import ContactOptions from '@/components/ContactOptions';
 import TitleBar from '@/components/TitleBar';
-import UserCard from '@/components/UserWalletCard';
 import { useUser } from '@/context/UserContext';
 import { useWallet } from '@/context/WalletContext';
 import { useState } from 'react';
@@ -10,6 +9,7 @@ import { usePayment } from '@/context/PaymentContext';
 import { generateTxnId } from '@/utils/basic';
 import LoadingModal from '@/components/LoadingModal';
 import { createDepositRequest } from '@/app/services/api';
+import { ArrowDown } from 'lucide-react';
 
 const AddFundPage = () => {
   const { user } = useUser();
@@ -89,110 +89,122 @@ const AddFundPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen mt-14 bg-gradient-to-b from-red-600 to-red-800">
       <LoadingModal isOpen={loading} />
       <TitleBar title="Add Fund" />
 
-      <div className="mt-6 px-4 max-w-md mx-auto">
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
-          {/* User Card Section */}
-          <div className="p-6 bg-gradient-to-br from-slate-900 to-slate-800">
-            <UserCard user={user!} balance={points.balance} />
-          </div>
+      {/* Balance Display */}
+      <div className="text-center pt-4 pb-8">
+        <p className="text-white/70 text-xs italic mb-1">Current Balance</p>
+        <div className="flex items-center justify-center gap-1">
+          <span className="text-2xl font-bold text-white italic">
+            ₹{points.balance}
+          </span>
+        </div>
+        <div className="mt-2 flex justify-center">
+          <ArrowDown className="w-5 h-5 text-white/60 animate-bounce" />
+        </div>
+      </div>
 
-          {/* Main Content Section */}
-          <div className="p-6 space-y-6">
-            {/* Amount Input Section */}
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-gray-800">
-                Enter Amount
-              </h2>
-              <div className="relative group">
-                <div
-                  className="absolute inset-0 bg-gradient-to-r from-red-500 to-red-600 rounded-xl 
-                  transition-all duration-300 group-focus-within:shadow-lg group-focus-within:shadow-red-500/25"
-                />
-                <div
-                  className="relative bg-white rounded-xl p-2 border-2 border-transparent
-                  transition-all duration-300 group-focus-within:border-red-500"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-gradient-to-br from-red-500 to-red-600 rounded-lg">
-                      <BiRupee className="h-6 w-6 text-white" />
-                    </div>
-                    <input
-                      type="number"
-                      placeholder={`Min amount: ${paymentDetails?.min_amount ?? '...'}`}
-                      value={amount}
-                      onChange={(e) => setAmount(e.target.value)}
-                      className="flex-1 outline-none text-gray-800 placeholder-gray-400 text-lg"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Messages */}
-            {error && (
-              <div className="p-4 bg-red-50 border border-red-100 rounded-xl animate-fade-in">
-                <p className="text-red-600 text-sm text-center">{error}</p>
-              </div>
-            )}
-
-            {success && (
-              <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-xl animate-fade-in">
-                <p className="text-emerald-600 text-sm text-center">
-                  {success}
-                </p>
-              </div>
-            )}
-
-            {/* Payment Button */}
+      <div className="px-3 m-2">
+        {/* Quick Amount Selection */}
+        <div className="grid grid-cols-4 gap-2 mb-6">
+          {[300, 500, 1000, 2000].map((quickAmount) => (
             <button
-              onClick={handleAddFund}
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-red-500 to-red-600 text-white 
-                rounded-xl py-4 px-6 font-semibold text-lg
-                transition-all duration-300 
-                hover:shadow-lg hover:shadow-red-500/25 hover:-translate-y-0.5
-                disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:transform-none
-                focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+              key={quickAmount}
+              onClick={() => setAmount(String(quickAmount))}
+              className="bg-white/10 hover:bg-white/20 backdrop-blur-sm
+                border border-white/20 rounded-lg py-2 px-1
+                text-white text-xs font-bold italic
+                transition-all duration-200 active:scale-[0.98]
+                relative overflow-hidden group"
             >
-              {loading ? (
-                <div className="flex items-center justify-center gap-3">
-                  <svg
-                    className="animate-spin h-5 w-5 text-white"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                      fill="none"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                  <span>Processing...</span>
-                </div>
-              ) : (
-                'Pay Now with UPI'
-              )}
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
+                translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
+              />
+              <span className="relative">₹{quickAmount}</span>
             </button>
+          ))}
+        </div>
 
-            {/* Contact Section */}
-            <div className="pt-4 border-t border-gray-100">
-              <div className="text-center space-y-4">
-                <ContactOptions />
+        {/* Amount Input Section */}
+        <div className="space-y-3 bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+          <div className="relative group">
+            <div
+              className="relative bg-black/20 rounded-lg border-2 border-white/20
+              transition-all duration-300 group-focus-within:border-white/40
+              overflow-hidden"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+              <div className="relative flex items-center gap-2 p-2">
+                <div className="p-1.5 bg-gradient-to-br from-red-500 to-red-600 rounded-lg">
+                  <BiRupee className="h-5 w-5 text-white" />
+                </div>
+                <input
+                  type="number"
+                  placeholder={`Enter amount (min: ${paymentDetails?.min_amount ?? '100'})`}
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
+                  className="flex-1 outline-none text-white placeholder-red-200 text-base italic
+                    bg-transparent w-full"
+                />
               </div>
             </div>
           </div>
+        </div>
+
+        {/* Messages */}
+        {error && (
+          <div className="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg animate-fade-in backdrop-blur-sm">
+            <p className="text-white text-xs italic text-center">{error}</p>
+          </div>
+        )}
+
+        {success && (
+          <div className="mt-4 p-3 bg-emerald-500/20 border border-emerald-500/30 rounded-lg animate-fade-in backdrop-blur-sm">
+            <p className="text-white text-xs italic text-center">{success}</p>
+          </div>
+        )}
+
+        {/* Payment Button */}
+        <button
+          onClick={handleAddFund}
+          disabled={loading}
+          className="w-full bg-white text-red-600 
+            rounded-lg py-3 px-4 font-bold text-sm italic
+            transition-all duration-300 mt-6
+            hover:bg-red-50
+            active:scale-[0.98]
+            disabled:opacity-50 disabled:cursor-not-allowed
+            shadow-lg shadow-black/20
+            relative overflow-hidden group"
+        >
+          <div
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-red-100 to-transparent
+            translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
+          />
+          <span className="relative">
+            {loading ? (
+              <div className="flex items-center justify-center gap-2">
+                <div
+                  className="w-4 h-4 border-2 border-red-600/20 border-t-red-600 
+                  rounded-full animate-spin"
+                />
+                <span>Processing...</span>
+              </div>
+            ) : (
+              'Add Money Now'
+            )}
+          </span>
+        </button>
+
+        {/* Contact Section */}
+        <div className="mt-6 text-center space-y-3 pb-6">
+          <p className="text-white/80 text-xs italic">
+            Need help with payment?
+          </p>
+          <ContactOptions />
         </div>
       </div>
     </div>

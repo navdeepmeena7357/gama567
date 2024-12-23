@@ -1,9 +1,7 @@
 'use client';
-import Card from '@/components/Card';
 import ContactOptions from '@/components/ContactOptions';
 import SafeArea from '@/components/SafeArea';
 import TitleBar from '@/components/TitleBar';
-import UserCard from '@/components/UserWalletCard';
 import { useUser } from '@/context/UserContext';
 import { useWallet } from '@/context/WalletContext';
 import { useEffect, useState } from 'react';
@@ -16,7 +14,7 @@ import { getTokenFromLocalStorage, getUserIdFromToken } from '@/utils/basic';
 import { BASE_URL } from '@/app/services/api';
 import { IoCloseCircle } from 'react-icons/io5';
 import { showErrorToast, showSuccessToast } from '@/utils/toast';
-import { Toaster } from 'react-hot-toast';
+import { ArrowDown } from 'lucide-react';
 
 interface BankDetails {
   ac_holder_name: string;
@@ -40,7 +38,7 @@ const AddFundPage = () => {
   const points = useWallet();
   const appData = useAppData();
   const [amount, setAmount] = useState('');
-  const { paymentDetails, isLoading } = usePayment();
+  const { paymentDetails } = usePayment();
   const [modalVisible, setModalVisible] = useState(false);
   const [bankDetails, setBankDetails] = useState<BankDetails | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -245,91 +243,139 @@ const AddFundPage = () => {
   ].filter((method) => method.available);
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-red-600 to-red-800">
       <TitleBar title="Withdraw Fund" />
-      <LoadingModal isOpen={isLoading || loading!} />
-      <Toaster position="bottom-center" reverseOrder={false} />
+      <LoadingModal isOpen={loading!} />
+
       <SafeArea>
-        <Card>
-          <UserCard user={user.user!} balance={points.balance} />
-          <hr className=" h-1 mt-2 bg-black" />
-          <div className="flex flex-col items-center mt-2">
-            <h1 className="font-semibold">For Fund Query&apos;s Contact us</h1>
-            <ContactOptions />
+        {/* Balance Display */}
+        <div className="text-center pt-4 pb-6">
+          <p className="text-white/70 text-xs italic mb-1">Available Balance</p>
+          <div className="flex items-center justify-center gap-1">
+            <span className="text-2xl font-bold text-white italic">
+              ₹{points.balance}
+            </span>
           </div>
-          <hr className=" h-1 mt-2 bg-black" />
-          <div className="flex mt-2 items-center border-2 border-gray-300 rounded-full p-2 focus-within:border-green-500">
-            <BiRupee className="h-10 w-10 text-white p-1 mr-2 bg-green-500 rounded-full" />
-            <input
-              value={amount}
-              onChange={handleAmount}
-              type="number"
-              placeholder="Enter Amount"
-              className="flex-1 outline-none bg-transparent placeholder-gray-400"
-            />
+          <div className="mt-2 flex justify-center">
+            <ArrowDown className="w-5 h-5 text-white/60 animate-bounce" />
           </div>
-          {error && <p className="text-red-500 text-sm mt-1 ml-2">{error}</p>}
+        </div>
 
-          <div className="flex flex-col items-center mt-4">
-            <button
-              hidden={!bankDetails}
-              disabled={isDisabled || points.balance <= 0}
-              onClick={() => handleWithdraw()}
-              className="bg-green-500 text-white font-medium py-2 px-4 rounded shadow-md hover:bg-orange-600 disabled:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
-            >
-              Withdraw Cash
-            </button>
-          </div>
-          {modalVisible && bankDetails && (
-            <Modal onClose={() => setModalVisible(false)}>
-              <div className="bg-white rounded-lg shadow-lg p-6 max-w-md mx-auto">
-                <h2 className="text-xl font-semibold text-center text-orange-600 p-2">
-                  Select Withdrawal Mode
-                </h2>
-
-                <ul className="mt-4 space-y-2">
-                  {withdrawalMethods.map((method) => (
-                    <li key={method.value}>
-                      <label className="flex items-center p-2 bg-orange-100 rounded-md hover:bg-orange-200 transition">
-                        <input
-                          type="radio"
-                          name="withdrawalMethod"
-                          value={method.value}
-                          onChange={() => setSelectedMethod(method.value)}
-                          className="mr-2"
-                        />
-                        <span>{method.label}</span>
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-                <div className="modal-actions mt-4">
-                  <button
-                    onClick={() => sendWithdrawRequest()}
-                    className="w-full bg-orange-500 text-white font-medium py-2 rounded hover:bg-orange-600 transition focus:outline-none focus:ring-2 focus:ring-orange-400 focus:ring-opacity-50"
-                  >
-                    Confirm Withdrawal
-                  </button>
+        <div className="px-3 space-y-4">
+          {/* Input Section */}
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+            <div className="relative group">
+              <div
+                className="relative bg-black/20 rounded-lg border-2 border-white/20
+              transition-all duration-300 group-focus-within:border-white/40
+              overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+                <div className="relative flex items-center gap-2 p-2">
+                  <div className="p-1.5 bg-gradient-to-br from-red-500 to-red-600 rounded-lg">
+                    <BiRupee className="h-5 w-5 text-white" />
+                  </div>
+                  <input
+                    value={amount}
+                    onChange={handleAmount}
+                    type="number"
+                    placeholder="Enter withdrawal amount"
+                    className="flex-1 outline-none text-white placeholder-red-200 text-base italic
+                    bg-transparent w-full"
+                  />
                 </div>
               </div>
-            </Modal>
-          )}
-
-          <div className="flex justify-center items-center text-center mt-4">
-            {!bankDetails && (
-              <button
-                onClick={() => {
-                  router.replace('/features/funds/bank_details');
-                }}
-                className="border border-orange-600 text-orange-600 p-2 rounded-md hover:bg-orange-50 transition duration-300"
-              >
-                Add Bank Details
-              </button>
+            </div>
+            {error && (
+              <p className="text-red-200 text-xs italic mt-2 px-2">{error}</p>
             )}
           </div>
-        </Card>
+
+          {/* Withdraw Button */}
+          {bankDetails ? (
+            <button
+              disabled={isDisabled || points.balance <= 0}
+              onClick={handleWithdraw}
+              className="w-full bg-white text-red-600 
+              rounded-lg py-3 px-4 font-bold text-sm italic
+              transition-all duration-300
+              hover:bg-red-50 active:scale-[0.98]
+              disabled:opacity-50 disabled:cursor-not-allowed
+              shadow-lg shadow-black/20
+              relative overflow-hidden group"
+            >
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-red-100 to-transparent
+              translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
+              />
+              <span className="relative">Withdraw Now</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => router.replace('/features/funds/bank_details')}
+              className="w-full bg-white/10 backdrop-blur-sm text-white
+              rounded-lg py-3 px-4 font-bold text-sm italic
+              transition-all duration-300 border-2 border-white/20
+              hover:bg-white/20 active:scale-[0.98]
+              shadow-lg shadow-black/20"
+            >
+              Add Bank Details First
+            </button>
+          )}
+
+          {/* Contact Section */}
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20 space-y-3">
+            <p className="text-center text-white italic text-sm font-bold">
+              For Fund Querys Contact us
+            </p>
+            <ContactOptions />
+          </div>
+        </div>
+
+        {/* Withdrawal Method Modal */}
+        {modalVisible && bankDetails && (
+          <Modal onClose={() => setModalVisible(false)}>
+            <div className="bg-gradient-to-b from-red-600 to-red-700 rounded-xl shadow-lg p-6 max-w-md mx-auto border-2 border-white/20">
+              <h2 className="text-lg font-bold text-white italic text-center mb-4">
+                Select Withdrawal Mode
+              </h2>
+
+              <div className="space-y-2">
+                {withdrawalMethods.map((method) => (
+                  <label
+                    key={method.value}
+                    className="flex items-center p-3 bg-white/10 rounded-lg hover:bg-white/20
+                    transition-all duration-200 cursor-pointer border border-white/20"
+                  >
+                    <input
+                      type="radio"
+                      name="withdrawalMethod"
+                      value={method.value}
+                      onChange={() => setSelectedMethod(method.value)}
+                      className="mr-3"
+                    />
+                    <span className="text-white italic text-sm">
+                      {method.label}
+                    </span>
+                  </label>
+                ))}
+              </div>
+
+              <button
+                onClick={sendWithdrawRequest}
+                className="w-full mt-4 bg-white text-red-600 
+                rounded-lg py-3 px-4 font-bold text-sm italic
+                transition-all duration-300
+                hover:bg-red-50 active:scale-[0.98]
+                shadow-lg shadow-black/20"
+              >
+                Confirm Withdrawal
+              </button>
+            </div>
+          </Modal>
+        )}
       </SafeArea>
-    </>
+    </div>
   );
 };
 

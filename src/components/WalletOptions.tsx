@@ -6,46 +6,60 @@ const WalletOptions = () => {
   const router = useRouter();
 
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="grid grid-cols-2 gap-2 ml-2 mr-2">
       {/* Add Money Button */}
       <button
         onClick={() => router.push('/features/funds/add_fund')}
-        className="group relative overflow-hidden bg-gradient-to-r from-blue-500 to-blue-600
-          hover:from-blue-600 hover:to-blue-700 
-          py-2.5 px-2 rounded-xl
+        className="group relative overflow-hidden bg-gradient-to-r from-green-500 to-green-600
+          hover:from-red-600 hover:to-red-700 
+          py-2 px-2 rounded-lg
           transform transition-all duration-200 
-          active:scale-[0.98] shadow-md shadow-blue-500/10"
+          active:scale-[0.98] shadow-lg shadow-red-500/20
+          border border-white/10"
       >
+        {/* Shine Effect */}
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
+          translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
+        />
+
         {/* Content */}
         <div className="relative flex items-center justify-center gap-2">
           <div
-            className="bg-white/20 p-1.5 rounded-lg 
+            className="bg-white/20 p-1.5 rounded-md backdrop-blur-sm
             group-hover:scale-110 transition-transform duration-200"
           >
-            <PlusCircle className="w-4 h-4 text-white" />
+            <PlusCircle className="w-3.5 h-3.5 text-white" />
           </div>
-          <span className="text-sm text-white font-medium">Add Money</span>
+          <span className="text-xs text-white font-bold italic">Add Money</span>
         </div>
       </button>
 
       {/* Withdrawal Button */}
       <button
         onClick={() => router.push('/features/funds/withdraw_fund')}
-        className="group relative overflow-hidden bg-gradient-to-r from-yellow-400 to-yellow-500
-          hover:from-yellow-500 hover:to-yellow-600
-          py-2.5 px-2 rounded-xl
+        className="group relative overflow-hidden bg-yellow-500
+          hover:bg-white/20
+          py-2 px-2 rounded-lg
           transform transition-all duration-200
-          active:scale-[0.98] shadow-md shadow-yellow-500/10"
+          active:scale-[0.98] shadow-lg
+          backdrop-blur-sm border border-white/20"
       >
+        {/* Shine Effect */}
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
+          translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
+        />
+
         {/* Content */}
         <div className="relative flex items-center justify-center gap-2">
           <div
-            className="bg-white/20 p-1.5 rounded-lg
+            className="bg-white/20 p-1.5 rounded-md
             group-hover:scale-110 transition-transform duration-200"
           >
-            <Wallet2 className="w-4 h-4 text-slate-900" />
+            <Wallet2 className="w-3.5 h-3.5 text-white" />
           </div>
-          <span className="text-sm text-slate-900 font-medium">Withdraw</span>
+          <span className="text-xs text-white font-bold italic">Withdraw</span>
         </div>
       </button>
     </div>

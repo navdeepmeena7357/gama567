@@ -9,21 +9,20 @@ const RulesAndRegulations = () => {
       <TitleBar title="Rules and Regulations" />
       <SafeArea>
         <div className="px-4 py-6">
-          <h2 className="text-lg font-semibold mb-4 text-orange-500">
+          <h2 className="text-lg font-semibold mb-4 text-red-500">
             Withdraw Information
           </h2>
           <p className="mb-4">
             <span className="font-medium">
               Minimum withdraw amount is Rs. 1000.
             </span>
-            If Users Entered Wrong Bank Details KALYAN 777 is Not Responsible.
+            If Users Entered Wrong Bank Details LAXMI 777 is Not Responsible.
             Before Requesting Withdraw Re-check Your Bank Details.
           </p>
-          <div className="mb-4 text-center font-semibold">
-            Contact for any query or help
+          <div className="mb-4 text-center font-semibold bg-red-700 rounded-lg">
             <ContactOptions />
           </div>
-          <h2 className="text-lg font-semibold mb-4 text-orange-500">
+          <h2 className="text-lg font-semibold mb-4 text-red-500">
             Unfair Bets
           </h2>
           <p className="mb-4">
@@ -31,14 +30,14 @@ const RulesAndRegulations = () => {
             Fix Bets. Admin has All Rights To Take Necessary Actions To Block
             The User.
           </p>
-          <h2 className="text-lg font-semibold mb-4 text-orange-500">
+          <h2 className="text-lg font-semibold mb-4 text-red-500">
             Cheating Bets
           </h2>
           <p className="mb-4">
             If Admin Found Any Cheating, Hacking, Phishing. Admin has All Rights
             To Take Necessary Actions To Block The User.
           </p>
-          <h2 className="text-lg font-semibold mb-4 text-orange-500">
+          <h2 className="text-lg font-semibold mb-4 text-red-500">
             Application
           </h2>
           <p>

@@ -21,42 +21,42 @@ const ContactRefresh: React.FC<ContactOptionsProps> = ({ onRefresh }) => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-2">
+    <div className="grid grid-cols-2 gap-2 m-2">
       {/* WhatsApp Button */}
       <button
         onClick={handleWhatsAppClick}
         className="flex items-center justify-center gap-2 px-3 py-2 
-          bg-gradient-to-r from-emerald-500 to-emerald-600 
-          hover:from-emerald-600 hover:to-emerald-700
-          text-white rounded-xl
+          bg-gradient-to-r from-red-500 to-red-600
+          hover:from-red-600 hover:to-red-700
+          text-white rounded-lg
           transform transition-all duration-200
-          active:scale-[0.98] shadow-sm"
+          active:scale-[0.98] shadow-lg shadow-red-500/20
+          border border-white/10"
       >
-        <div className="bg-white/20 p-1.5 rounded-lg">
-          <MessageCircle className="w-4 h-4" />
+        <div className="bg-white/20 p-1.5 rounded-md backdrop-blur-sm">
+          <MessageCircle className="w-3.5 h-3.5" />
         </div>
-        <span className="text-sm font-medium">Chat Now</span>
+        <span className="text-xs font-bold italic">Chat Now</span>
       </button>
 
       {/* Refresh Button */}
       <button
         onClick={onRefresh}
-        className="flex items-center justify-center gap-2 px-3 py-2
-          bg-gradient-to-r from-violet-500 to-purple-500
-          hover:from-violet-600 hover:to-purple-600
-          text-white rounded-xl
+        className="flex items-center shadow-gray-300 justify-center gap-2 px-3 py-2
+          from-red-500 to-red-600 backdrop-blur-sm
+          text-black rounded-lg
           transform transition-all duration-200
           active:scale-[0.98] shadow-sm
-          group"
+          group border "
         aria-label="Refresh"
       >
-        <div className="bg-white/20 p-1.5 rounded-lg">
+        <div className="bg-white/20 p-1.5 rounded-md">
           <RotateCw
-            className="w-4 h-4 transition-transform duration-500 
+            className="w-3.5 h-3.5 transition-transform duration-500 
               group-hover:rotate-180"
           />
         </div>
-        <span className="text-sm font-medium">Refresh</span>
+        <span className="text-xs font-bold italic">Refresh</span>
       </button>
     </div>
   );

@@ -78,69 +78,72 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
   return (
     <nav className="fixed top-0 left-0 right-0 z-30">
       {/* Main Header */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-3 shadow-lg shadow-blue-500/20">
+      <div
+        className="bg-gradient-to-r from-red-600 to-red-700 px-4 py-2.5 
+          shadow-lg shadow-black/20 border-b border-white/10"
+      >
         <div className="flex justify-between items-center">
           {/* Left Section */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-2 hover:bg-white/10 rounded-xl transition-all duration-200
-                active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/20"
+              className="p-1.5 hover:bg-white/10 rounded-lg transition-all duration-200
+                  active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/20"
             >
               <Menu className="h-5 w-5 text-white" />
             </button>
 
             <div className="flex items-baseline">
-              <h1 className="text-xl font-bold text-white tracking-tight">
-                KALYAN
+              <h1 className="text-lg font-bold text-white tracking-tight italic">
+                LAXMI
               </h1>
-              <span className="ml-1 text-xl font-black text-yellow-300 tracking-tight">
-                BAZAR
+              <span className="ml-1 text-lg font-black text-black tracking-tight italic">
+                777
               </span>
             </div>
           </div>
 
           {/* Wallet Section */}
-          {user?.isVerified ? (
+          {user?.isVerified && (
             <div className="relative group">
               <div
                 className="flex items-center gap-2 bg-white/10 hover:bg-white/15 
-                py-2 px-4 rounded-xl transition-all duration-200"
+                  py-1.5 px-3 rounded-lg transition-all duration-200
+                  border border-white/10"
               >
-                <Wallet className="w-3 h-3 text-yellow-300" />
-                <span className="text-white text-sm font-medium">
+                <Wallet className="w-3.5 h-3.5 text-yellow-300" />
+                <span className="text-white text-xs font-bold italic">
                   ₹{wallet.balance}
                 </span>
               </div>
             </div>
-          ) : (
-            <div></div>
           )}
         </div>
       </div>
 
       {/* Sub Header */}
-      <div className="bg-white border-b border-slate-200">
-        {user?.isVerified ? (
+      <div
+        className="bg-gradient-to-b from-red-700/90 to-red-800/90 backdrop-blur-sm 
+          border-b border-white/10"
+      >
+        {user?.isVerified && (
           <>
             {/* Marquee Section */}
-            <div className="px-4 py-2 border-b border-slate-100">
+            <div className="px-4 py-2 border-b border-white/10">
               <Marquee
                 text={appData.contactDetails?.banner_message?.toString() ?? ''}
               />
             </div>
 
             {/* Wallet Options */}
-            <div className="pl-3 pr-3 bg-slate-50/50">
+            <div className="px-3 bg-black/10">
               <WalletOptions />
             </div>
           </>
-        ) : (
-          <div></div>
         )}
 
         {/* Contact Refresh Section */}
-        <div className="pl-3 pr-3 pt-2 pb-">
+        <div className="px-3 pt-2 pb-2">
           <ContactRefresh onRefresh={handleRefresh} />
         </div>
       </div>
@@ -148,6 +151,7 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
       {/* Modals & Drawers */}
       <LoadingModal isOpen={isLoading} />
       <Drawer isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <Toaster position="bottom-center" reverseOrder={false} />
     </nav>
   );
 };

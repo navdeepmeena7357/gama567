@@ -1,6 +1,4 @@
 'use client';
-
-import RoundedInput from '@/components/RoundedInput';
 import SafeArea from '@/components/SafeArea';
 import TitleBar from '@/components/TitleBar';
 import { FaUser } from 'react-icons/fa6';
@@ -224,90 +222,208 @@ const BankDetailsPage = () => {
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-red-600 to-red-800">
       <LoadingModal isOpen={isLoading} />
-
       <TitleBar title="Bank Details" />
       <ToastContainer />
-      <SafeArea className={'p-4'}>
-        <RoundedInput
-          name="ac_holder_name"
-          icon={<FaUser />}
-          placeholder="A/c Holder Name"
-          value={bankDetails.ac_holder_name}
-          onChange={handleBankInputChange}
-        />
 
-        <RoundedInput
-          name="bank_name"
-          icon={<RiBankFill />}
-          placeholder="Bank Name"
-          value={bankDetails.bank_name}
-          onChange={handleBankInputChange}
-        />
+      <SafeArea>
+        <div className="p-3 space-y-6">
+          {/* Bank Details Section */}
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+            <h2 className="text-white font-bold italic text-lg mb-4">
+              Bank Account Details
+            </h2>
 
-        <RoundedInput
-          icon={<FaHashtag />}
-          name="ac_number"
-          placeholder="Bank Account Number"
-          value={bankDetails.ac_number}
-          onChange={handleBankInputChange}
-          type="number"
-        />
+            <div className="space-y-3">
+              {/* Account Holder Name */}
+              <div className="relative group">
+                <div
+                  className="relative bg-black/20 rounded-lg border-2 border-white/20
+                transition-all duration-300 group-focus-within:border-white/40"
+                >
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    <FaUser className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                  </div>
+                  <input
+                    name="ac_holder_name"
+                    value={bankDetails.ac_holder_name}
+                    onChange={handleBankInputChange}
+                    placeholder="A/c Holder Name"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
+                    text-sm italic font-medium outline-none"
+                  />
+                </div>
+              </div>
 
-        <RoundedInput
-          name="ifsc_code"
-          icon={<IoInfinite />}
-          placeholder="IFSC Code"
-          value={bankDetails.ifsc_code}
-          onChange={handleBankInputChange}
-        />
+              {/* Bank Name */}
+              <div className="relative group">
+                <div
+                  className="relative bg-black/20 rounded-lg border-2 border-white/20
+                transition-all duration-300 group-focus-within:border-white/40"
+                >
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    <RiBankFill className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                  </div>
+                  <input
+                    name="bank_name"
+                    value={bankDetails.bank_name}
+                    onChange={handleBankInputChange}
+                    placeholder="Bank Name"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
+                    text-sm italic font-medium outline-none"
+                  />
+                </div>
+              </div>
 
-        <div className="flex mt-2 flex-col items-center">
-          <button
-            onClick={() => handleSaveBankDetails()}
-            className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
-          >
-            Save Details
-          </button>
-        </div>
+              {/* Account Number */}
+              <div className="relative group">
+                <div
+                  className="relative bg-black/20 rounded-lg border-2 border-white/20
+                transition-all duration-300 group-focus-within:border-white/40"
+                >
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    <FaHashtag className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                  </div>
+                  <input
+                    type="number"
+                    name="ac_number"
+                    value={bankDetails.ac_number}
+                    onChange={handleBankInputChange}
+                    placeholder="Bank Account Number"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
+                    text-sm italic font-medium outline-none"
+                  />
+                </div>
+              </div>
 
-        <hr className=" h-1 mt-2 bg-black" />
+              {/* IFSC Code */}
+              <div className="relative group">
+                <div
+                  className="relative bg-black/20 rounded-lg border-2 border-white/20
+                transition-all duration-300 group-focus-within:border-white/40"
+                >
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    <IoInfinite className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                  </div>
+                  <input
+                    name="ifsc_code"
+                    value={bankDetails.ifsc_code}
+                    onChange={handleBankInputChange}
+                    placeholder="IFSC Code"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
+                    text-sm italic font-medium outline-none"
+                  />
+                </div>
+              </div>
+            </div>
 
-        <RoundedInput
-          name="paytm_number"
-          icon={<SiPaytm />}
-          placeholder="Paytm Number"
-          value={paymentApps.paytm_number ?? ''}
-          onChange={handlePaymentInputChange}
-        />
+            {/* Save Bank Details Button */}
+            <button
+              onClick={handleSaveBankDetails}
+              className="w-full mt-4 bg-white text-red-600 
+              rounded-lg py-3 px-4 font-bold text-sm italic
+              transition-all duration-300
+              hover:bg-red-50 active:scale-[0.98]
+              shadow-lg shadow-black/20
+              relative overflow-hidden group"
+            >
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-red-100 to-transparent
+              translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
+              />
+              <span className="relative">Save Bank Details</span>
+            </button>
+          </div>
 
-        <RoundedInput
-          name="phonepe_number"
-          icon={<SiPhonepe />}
-          placeholder="PhonePe Number"
-          value={paymentApps.phonepe_number ?? ''}
-          onChange={handlePaymentInputChange}
-        />
+          {/* Payment Apps Section */}
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+            <h2 className="text-white font-bold italic text-lg mb-4">
+              Payment Apps
+            </h2>
 
-        <RoundedInput
-          name="gpay_number"
-          icon={<SiGooglepay />}
-          placeholder="GPay Number"
-          value={paymentApps.gpay_number ?? ''}
-          onChange={handlePaymentInputChange}
-        />
+            <div className="space-y-3">
+              {/* Paytm */}
+              <div className="relative group">
+                <div
+                  className="relative bg-black/20 rounded-lg border-2 border-white/20
+                transition-all duration-300 group-focus-within:border-white/40"
+                >
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    <SiPaytm className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                  </div>
+                  <input
+                    name="paytm_number"
+                    value={paymentApps.paytm_number ?? ''}
+                    onChange={handlePaymentInputChange}
+                    placeholder="Paytm Number"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
+                    text-sm italic font-medium outline-none"
+                  />
+                </div>
+              </div>
 
-        <div className="flex mt-2 flex-col items-center">
-          <button
-            onClick={() => handleSavePaymentApps()}
-            className="bg-green-500 text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300"
-          >
-            Save Details
-          </button>
+              {/* PhonePe */}
+              <div className="relative group">
+                <div
+                  className="relative bg-black/20 rounded-lg border-2 border-white/20
+                transition-all duration-300 group-focus-within:border-white/40"
+                >
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    <SiPhonepe className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                  </div>
+                  <input
+                    name="phonepe_number"
+                    value={paymentApps.phonepe_number ?? ''}
+                    onChange={handlePaymentInputChange}
+                    placeholder="PhonePe Number"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
+                    text-sm italic font-medium outline-none"
+                  />
+                </div>
+              </div>
+
+              {/* GPay */}
+              <div className="relative group">
+                <div
+                  className="relative bg-black/20 rounded-lg border-2 border-white/20
+                transition-all duration-300 group-focus-within:border-white/40"
+                >
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2">
+                    <SiGooglepay className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                  </div>
+                  <input
+                    name="gpay_number"
+                    value={paymentApps.gpay_number ?? ''}
+                    onChange={handlePaymentInputChange}
+                    placeholder="GPay Number"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
+                    text-sm italic font-medium outline-none"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Save Payment Apps Button */}
+            <button
+              onClick={handleSavePaymentApps}
+              className="w-full mt-4 bg-white text-red-600 
+              rounded-lg py-3 px-4 font-bold text-sm italic
+              transition-all duration-300
+              hover:bg-red-50 active:scale-[0.98]
+              shadow-lg shadow-black/20
+              relative overflow-hidden group"
+            >
+              <div
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-red-100 to-transparent
+              translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
+              />
+              <span className="relative">Save Payment Details</span>
+            </button>
+          </div>
         </div>
       </SafeArea>
-    </>
+    </div>
   );
 };
 
