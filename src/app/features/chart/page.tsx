@@ -5,161 +5,176 @@ import SafeArea from '@/components/SafeArea';
 import TitleBar from '@/components/TitleBar';
 import { getTokenFromLocalStorage } from '@/utils/basic';
 import { showErrorToast } from '@/utils/toast';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import LoadingModal from '@/components/LoadingModal';
 
-async function fetchGameMarkets() {
-  try {
-    const response = await fetch(`${BASE_URL}/marketsNames`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      if (data.status === 1) {
-        return data.games;
-      } else {
-        showErrorDialog('Unable to fetch markets');
-        return [];
-      }
-    } else {
-      showErrorDialog('Unable to fetch markets');
-      return [];
-    }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      showErrorDialog(error.message);
-    } else {
-      showErrorDialog('An unexpected error occurred');
-    }
-    return [];
-  }
+interface Market {
+  market_id: number;
+  market_name: string;
 }
 
-async function getGameChart(marketId: number): Promise<string> {
-  const body = {
-    id: marketId,
-  };
-
-  try {
-    const response = await fetch(`${BASE_URL}/game_chart`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${getTokenFromLocalStorage()}`,
-      },
-      body: JSON.stringify(body),
-    });
-
-    if (response.ok) {
-      const data = await response.json();
-      console.log(data);
-      if (data.success) {
-        return data.url;
-      } else {
-        showErrorDialog('Unable to get chart for the game');
-        return 'Cannot load market chart';
-      }
-    } else {
-      showErrorDialog('Unable to get chart for the game');
-      return 'Cannot load market chart';
-    }
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      showErrorToast(error.message);
-    } else {
-      showErrorToast('An unexpected error occurred');
-    }
-    return 'Cannot load market chart';
-  }
+interface ApiResponse<T> {
+  status?: number;
+  success?: boolean;
+  games?: T;
+  url?: string;
+  message?: string;
 }
 
 const GameChart = () => {
   const [chartUrl, setChartUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [marketId, setMarketId] = useState<number>(0);
-  const [markets, setMarkets] = useState<
-    { market_id: number; market_name: string }[]
-  >([]);
+  const [markets, setMarkets] = useState<Market[]>([]);
+  const [selectedMarket, setSelectedMarket] = useState<Market | null>(null);
 
-  const fetchChart = async (id: number) => {
-    setLoading(true);
-    const url = await getGameChart(id);
-    setChartUrl(url);
-    setLoading(false);
-  };
+  // Optimized API calls with error handling
+  const fetchGameMarkets = useCallback(async () => {
+    try {
+      const response = await fetch(`${BASE_URL}/marketsNames`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      });
 
-  useEffect(() => {
-    const loadMarkets = async () => {
-      const marketData = await fetchGameMarkets();
-      setMarkets(marketData);
-      if (marketData.length > 0) {
-        fetchChart(marketData[0].market_id);
-      }
-    };
-    loadMarkets();
+      const data: ApiResponse<Market[]> = await response.json();
+
+      if (!response.ok) throw new Error('Failed to fetch markets');
+      if (data.status !== 1)
+        throw new Error(data.message || 'Unable to fetch markets');
+
+      return data.games || [];
+    } catch (error) {
+      showErrorToast(
+        error instanceof Error ? error.message : 'An unexpected error occurred'
+      );
+      return [];
+    }
   }, []);
 
-  const handleMarketChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedMarketId = parseInt(event.target.value);
-    setMarketId(selectedMarketId);
-    fetchChart(selectedMarketId);
+  const getGameChart = useCallback(
+    async (marketId: number): Promise<string> => {
+      try {
+        const response = await fetch(`${BASE_URL}/game_chart`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${getTokenFromLocalStorage()}`,
+          },
+          body: JSON.stringify({ id: marketId }),
+        });
+
+        const data: ApiResponse<never> = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.message || 'Unable to get chart for the game');
+        }
+
+        return data.url || '';
+      } catch (error) {
+        showErrorToast(
+          error instanceof Error
+            ? error.message
+            : 'An unexpected error occurred'
+        );
+        return '';
+      }
+    },
+    []
+  );
+
+  // Load initial data
+  useEffect(() => {
+    const initializeData = async () => {
+      setLoading(true);
+      const marketData = await fetchGameMarkets();
+      setMarkets(marketData);
+
+      if (marketData.length > 0) {
+        setSelectedMarket(marketData[0]);
+        const url = await getGameChart(marketData[0].market_id);
+        setChartUrl(url);
+      }
+      setLoading(false);
+    };
+
+    initializeData();
+  }, [fetchGameMarkets, getGameChart]);
+
+  // Handle market selection
+  const handleMarketChange = async (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const selectedId = parseInt(event.target.value);
+    const selected = markets.find((m) => m.market_id === selectedId);
+    if (!selected) return;
+
+    setSelectedMarket(selected);
+    setLoading(true);
+    const url = await getGameChart(selectedId);
+    setChartUrl(url);
+    setLoading(false);
   };
 
   return (
     <>
       <TitleBar title="Game Charts" />
       <SafeArea>
-        <div className="">
-          <h2 className="pr-4 pl-4 text-2xl font-semibold text-orange-600">
-            Select Market
-          </h2>
-          <div className="p-4">
-            <label
-              htmlFor="marketSelect"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Choose a market to view its chart:
-            </label>
-            <select
-              id="marketSelect"
-              value={marketId}
-              onChange={handleMarketChange}
-              className="mt-2 block w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-orange-300"
-            >
-              {markets.map((market) => (
-                <option key={market.market_id} value={market.market_id}>
-                  {market.market_name}
-                </option>
-              ))}
-            </select>
+        <div className="px-4 py-6 max-w-5xl mx-auto">
+          {/* Market Selection Section */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-purple-200 shadow-sm mb-6">
+            <h2 className="text-xl font-semibold text-purple-700 mb-4">
+              Select Market
+            </h2>
+            <div className="space-y-2">
+              <label
+                htmlFor="marketSelect"
+                className="block text-sm font-medium text-gray-600"
+              >
+                Choose a market to view its chart:
+              </label>
+              <select
+                id="marketSelect"
+                value={selectedMarket?.market_id || ''}
+                onChange={handleMarketChange}
+                className="w-full p-3 rounded-xl border-2 border-purple-200
+                  focus:border-purple-400 focus:ring focus:ring-purple-200
+                  bg-white/50 backdrop-blur-sm transition-all duration-200
+                  text-gray-700 font-medium outline-none"
+              >
+                {markets.map((market) => (
+                  <option key={market.market_id} value={market.market_id}>
+                    {market.market_name}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
-          {loading ? (
-            <h1 className="text-center text-gray-500">Loading...</h1>
-          ) : (
-            <div className=" h-full">
-              {chartUrl ? (
-                <iframe
-                  src={chartUrl}
-                  title="Game Chart"
-                  className=" w-full h-[calc(100vh-8rem)] border-0"
-                ></iframe>
-              ) : (
-                <h1 className="text-center text-gray-500">
-                  No chart available
-                </h1>
-              )}
-            </div>
-          )}
+          {/* Chart Display Section */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-purple-200 shadow-sm overflow-hidden">
+            {loading ? (
+              <LoadingModal
+                isOpen={true}
+                variant="spinner"
+                message="Loading chart..."
+              />
+            ) : chartUrl ? (
+              <iframe
+                src={chartUrl}
+                title="Game Chart"
+                className="w-full h-[calc(100vh-18rem)] border-0"
+                loading="lazy"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-64 text-gray-500">
+                <p className="text-lg font-medium">No chart available</p>
+                <p className="text-sm">Please select a different market</p>
+              </div>
+            )}
+          </div>
         </div>
       </SafeArea>
     </>
   );
 };
+
 export default GameChart;
-function showErrorDialog(arg0: string) {
-  throw new Error('Function not implemented.' + arg0);
-}

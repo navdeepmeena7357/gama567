@@ -36,10 +36,10 @@ const Timetable = () => {
     <>
       <TitleBar title="Market Time Table" />
       <SafeArea>
-        <div className="">
+        <div className="rounded-sm">
           <table className="min-w-full bg-white rounded-lg shadow-md">
             <thead>
-              <tr className="bg-orange-500 text-white text-sm ">
+              <tr className="bg-pink-500 rounded-md text-white text-sm ">
                 <th className="py-2 px-2">Market Name</th>
                 <th className="py-2 px-2">Open Time</th>
                 <th className="py-2 px-2">Close Time</th>

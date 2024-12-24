@@ -21,45 +21,83 @@ const ContactRefresh: React.FC<ContactOptionsProps> = ({ onRefresh }) => {
   };
 
   return (
-    <div className="grid grid-cols-2 gap-2 m-2">
+    <div className="grid grid-cols-2 gap-4 p-2">
       {/* WhatsApp Button */}
       <button
         onClick={handleWhatsAppClick}
-        className="flex items-center justify-center gap-2 px-3 py-2 
-          bg-gradient-to-r from-red-500 to-red-600
-          hover:from-red-600 hover:to-red-700
-          text-white rounded-lg
-          transform transition-all duration-200
-          active:scale-[0.98] shadow-lg shadow-red-500/20
-          border border-white/10"
+        className="group relative flex items-center justify-center gap-3
+          bg-gradient-to-br from-pink-500 via-pink-600 to-purple-600
+          hover:from-pink-600 hover:via-purple-600 hover:to-purple-700
+          p-2 rounded-xl
+          transform transition-all duration-500 ease-out
+          hover:scale-[1.02] active:scale-[0.98]
+          shadow-lg hover:shadow-xl shadow-pink-500/20
+          overflow-hidden"
       >
-        <div className="bg-white/20 p-1.5 rounded-md backdrop-blur-sm">
-          <MessageCircle className="w-3.5 h-3.5" />
+        {/* Animated Background */}
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0
+          blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
+          animate-pulse"
+        />
+
+        {/* Icon Container */}
+        <div
+          className="relative flex items-center justify-center 
+          bg-white/10 backdrop-blur-md p-2 rounded-lg
+          ring-1 ring-white/20 
+          group-hover:ring-white/30 group-hover:scale-110 
+          transition-all duration-300"
+        >
+          <MessageCircle className="w-4 h-4 text-white" />
         </div>
-        <span className="text-xs font-bold italic">Chat Now</span>
+
+        {/* Text Container */}
+        <span className="relative text-sm text-white font-medium">
+          Chat Now
+        </span>
       </button>
 
       {/* Refresh Button */}
       <button
         onClick={onRefresh}
-        className="flex items-center shadow-gray-300 justify-center gap-2 px-3 py-2
-          from-red-500 to-red-600 backdrop-blur-sm
-          text-black rounded-lg
-          transform transition-all duration-200
-          active:scale-[0.98] shadow-sm
-          group border "
+        className="group relative flex items-center justify-center gap-3
+          bg-gradient-to-br from-purple-600 via-purple-700 to-purple-800
+          hover:from-purple-700 hover:via-purple-800 hover:to-purple-900
+          p-2 rounded-xl
+          transform transition-all duration-500 ease-out
+          hover:scale-[1.02] active:scale-[0.98]
+          shadow-sm hover:shadow-sm shadow-white
+          overflow-hidden"
         aria-label="Refresh"
       >
-        <div className="bg-white/20 p-1.5 rounded-md">
+        {/* Animated Background */}
+        <div
+          className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0
+          blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
+          animate-pulse"
+        />
+
+        {/* Icon Container */}
+        <div
+          className="relative flex items-center justify-center 
+          bg-white/10 backdrop-blur-md p-2 rounded-lg
+          ring-1 ring-white/20 
+          group-hover:ring-white/30 group-hover:scale-110 
+          transition-all duration-300"
+        >
           <RotateCw
-            className="w-3.5 h-3.5 transition-transform duration-500 
+            className="w-4 h-4 text-pink-300 transition-all duration-700 
               group-hover:rotate-180"
           />
         </div>
-        <span className="text-xs font-bold italic">Refresh</span>
+
+        {/* Text Container */}
+        <span className="relative text-sm text-pink-300 font-medium">
+          Refresh
+        </span>
       </button>
     </div>
   );
 };
-
 export default ContactRefresh;

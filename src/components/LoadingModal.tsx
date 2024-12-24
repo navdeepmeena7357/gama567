@@ -18,18 +18,26 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
       case 'spinner':
         return (
           <div className="relative w-16 h-16">
-            <div className="absolute w-16 h-16 rounded-full border-4 border-gray-200"></div>
-            <div className="absolute w-16 h-16 rounded-full border-4 border-red-500 border-t-transparent animate-spin"></div>
+            <div className="absolute w-16 h-16 rounded-full border-4 border-purple-100"></div>
+            <div className="absolute w-16 h-16 rounded-full border-4 border-purple-500/80 border-t-transparent animate-spin">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 opacity-20 blur-lg animate-pulse" />
+            </div>
           </div>
         );
 
       case 'pulse':
         return (
           <div className="flex space-x-2">
-            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
-            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse delay-75"></div>
-            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse delay-150"></div>
-            <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse delay-200"></div>
+            {[...Array(4)].map((_, i) => (
+              <div
+                key={i}
+                className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-pulse"
+                style={{
+                  animationDelay: `${i * 0.15}s`,
+                  filter: 'drop-shadow(0 0 6px rgba(168, 85, 247, 0.4))',
+                }}
+              />
+            ))}
           </div>
         );
 
@@ -39,17 +47,22 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
             {[...Array(3)].map((_, i) => (
               <div
                 key={i}
-                className="w-4 h-4 bg-red-500 rounded-full animate-bounce"
-                style={{ animationDelay: `${i * 0.1}s` }}
-              ></div>
+                className="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-bounce shadow-lg shadow-purple-500/30"
+                style={{
+                  animationDelay: `${i * 0.1}s`,
+                  filter: 'drop-shadow(0 0 4px rgba(168, 85, 247, 0.3))',
+                }}
+              />
             ))}
           </div>
         );
 
       case 'progress':
         return (
-          <div className="w-48 h-2 bg-gray-200 rounded-full overflow-hidden">
-            <div className="h-full bg-gradient-to-r from-red-500 to-red-600 animate-progress"></div>
+          <div className="w-48 h-2 bg-purple-100 rounded-full overflow-hidden shadow-inner">
+            <div className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-progress">
+              <div className="absolute inset-0 bg-white/20 animate-shimmer" />
+            </div>
           </div>
         );
     }
@@ -57,28 +70,49 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      {/* Backdrop */}
-      <div className="absolute inset-0 bg-black/25 backdrop-blur-sm" />
+      {/* Backdrop with glass effect */}
+      <div className="absolute inset-0 bg-white/40 backdrop-blur-md" />
 
       {/* Modal Content */}
-      <div className="relative bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center gap-4 min-w-[200px]">
+      <div
+        className="relative bg-white/80 backdrop-blur-sm rounded-2xl 
+        shadow-xl shadow-purple-500/10 p-8 
+        flex flex-col items-center gap-4 min-w-[200px]
+        border border-purple-100"
+      >
         {renderLoader()}
         {message && (
-          <p className="text-gray-600 text-sm font-medium">{message}</p>
+          <p
+            className="text-gray-700 text-sm font-medium bg-gradient-to-r from-purple-600 to-pink-600 
+            bg-clip-text text-transparent animate-pulse"
+          >
+            {message}
+          </p>
         )}
       </div>
 
       <style jsx global>{`
         @keyframes progress {
           0% {
-            transform: translateX(-100%);
+            transform: translateX(-200%);
           }
           100% {
-            transform: translateX(100%);
+            transform: translateX(200%);
+          }
+        }
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%) rotate(45deg);
+          }
+          100% {
+            transform: translateX(100%) rotate(45deg);
           }
         }
         .animate-progress {
-          animation: progress 1.5s linear infinite;
+          animation: progress 2s linear infinite;
+        }
+        .animate-shimmer {
+          animation: shimmer 2s linear infinite;
         }
         .delay-75 {
           animation-delay: 0.075s;
@@ -90,37 +124,6 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
           animation-delay: 0.2s;
         }
       `}</style>
-    </div>
-  );
-};
-
-// Demo Component
-export const LoadingModalDemo = () => {
-  return (
-    <div className="space-y-4 p-4">
-      <div className="space-y-2">
-        <h3 className="font-medium">Spinner Variant</h3>
-        <LoadingModal
-          isOpen={true}
-          variant="spinner"
-          message="Loading data..."
-        />
-      </div>
-
-      <div className="space-y-2">
-        <h3 className="font-medium">Pulse Variant</h3>
-        <LoadingModal isOpen={true} variant="pulse" message="Please wait..." />
-      </div>
-
-      <div className="space-y-2">
-        <h3 className="font-medium">Dots Variant</h3>
-        <LoadingModal isOpen={true} variant="dots" message="Processing..." />
-      </div>
-
-      <div className="space-y-2">
-        <h3 className="font-medium">Progress Variant</h3>
-        <LoadingModal isOpen={true} variant="progress" message="Uploading..." />
-      </div>
     </div>
   );
 };

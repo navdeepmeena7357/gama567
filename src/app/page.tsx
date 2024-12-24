@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, Suspense } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Toaster } from 'react-hot-toast';
 import {
   Receipt,
@@ -9,6 +9,7 @@ import {
   MessageCircle,
   BadgeIndianRupee,
   Menu,
+  LucideIcon,
 } from 'lucide-react';
 import { BASE_URL } from './services/api';
 import { useWallet } from '@/context/WalletContext';
@@ -22,6 +23,7 @@ import Drawer from '@/components/Drawer';
 import WalletOptions from '@/components/WalletOptions';
 import Marquee from '@/components/Marquee';
 import ContactRefresh from '@/components/ContactRefresh';
+import Image from 'next/image';
 
 export interface MarketData {
   id: number;
@@ -79,27 +81,27 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
     <nav className="fixed top-0 left-0 right-0 z-30">
       {/* Main Header */}
       <div
-        className="bg-gradient-to-r from-red-600 to-red-700 px-4 py-2.5 
-          shadow-lg shadow-black/20 border-b border-white/10"
+        className="bg-gradient-to-r from-purple-700 to-purple-800 px-4 py-2.5 
+        shadow-lg shadow-purple-900/30 border-b border-pink-300/10"
       >
         <div className="flex justify-between items-center">
           {/* Left Section */}
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-1.5 hover:bg-white/10 rounded-lg transition-all duration-200
-                  active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/20"
+              className="p-1.5 hover:bg-pink-400/10 rounded-lg transition-all duration-300
+                active:scale-95 focus:outline-none focus:ring-2 focus:ring-pink-400/20"
             >
-              <Menu className="h-5 w-5 text-white" />
+              <Menu className="h-5 w-5 text-pink-300" />
             </button>
 
-            <div className="flex items-baseline">
-              <h1 className="text-lg font-bold text-white tracking-tight italic">
-                LAXMI
-              </h1>
-              <span className="ml-1 text-lg font-black text-black tracking-tight italic">
-                777
-              </span>
+            <div className="items-center">
+              <Image
+                src={'/images/png/name.png'}
+                alt="Matkafun"
+                height={120}
+                width={120}
+              />
             </div>
           </div>
 
@@ -107,12 +109,12 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
           {user?.isVerified ? (
             <div className="relative group">
               <div
-                className="flex items-center gap-2 bg-white/10 hover:bg-white/15 
-                  py-1.5 px-3 rounded-lg transition-all duration-200
-                  border border-white/10"
+                className="flex items-center gap-2 bg-pink-400/10 hover:bg-pink-400/15 
+                py-1.5 px-3 rounded-lg transition-all duration-300
+                border border-pink-300/20"
               >
-                <Wallet className="w-3.5 h-3.5 text-yellow-300" />
-                <span className="text-white text-xs font-bold italic">
+                <Wallet className="w-3.5 h-3.5 text-pink-300" />
+                <span className="text-white text-xs font-bold">
                   ₹{wallet.balance}
                 </span>
               </div>
@@ -125,20 +127,20 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
 
       {/* Sub Header */}
       <div
-        className="bg-gradient-to-b from-red-700/90 to-red-800/90 backdrop-blur-sm 
-          border-b border-white/10"
+        className="bg-gradient-to-b from-purple-800/90 to-purple-900/90 backdrop-blur-md 
+        border-b border-pink-300/10"
       >
         {user?.isVerified ? (
           <>
             {/* Marquee Section */}
-            <div className="px-4 py-2 border-b border-white/10">
+            <div className="px-4 py-2 border-b border-pink-300/10">
               <Marquee
                 text={appData.contactDetails?.banner_message?.toString() ?? ''}
               />
             </div>
 
             {/* Wallet Options */}
-            <div className="px-3 bg-black/10">
+            <div className="px-2 bg-black/5">
               <WalletOptions />
             </div>
           </>
@@ -147,7 +149,7 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
         )}
 
         {/* Contact Refresh Section */}
-        <div className="px-3 pt-2 pb-2">
+        <div className="px-2">
           <ContactRefresh onRefresh={handleRefresh} />
         </div>
       </div>
@@ -161,17 +163,18 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
 };
 
 interface NavItem {
-  icon: React.ElementType;
+  icon: LucideIcon;
   label: string;
   route?: string;
   action?: () => void;
 }
 
 interface NavButtonProps {
-  icon: React.ElementType;
+  icon: LucideIcon;
   label?: string;
   onClick: () => void;
   isHome?: boolean;
+  isActive?: boolean;
 }
 
 const BottomNavBar = () => {
@@ -218,16 +221,28 @@ const BottomNavBar = () => {
     label,
     onClick,
     isHome = false,
+    isActive = false,
   }) => {
     if (isHome) {
       return (
         <button
           onClick={onClick}
-          className="relative -mt-8 p-4 rounded-full bg-gradient-to-r from-red-500 to-red-600 
-            shadow-lg transform transition-transform active:scale-95 active:shadow-md"
+          className="relative p-3 rounded-2xl 
+            bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500
+            shadow-lg transform transition-all duration-300
+            hover:shadow-xl hover:-translate-y-1
+            active:scale-95 active:shadow-md"
         >
-          <Icon className="h-6 w-6 text-white" strokeWidth={2.5} />
-          <div className="absolute inset-0 rounded-full bg-white opacity-0 hover:opacity-10 transition-opacity" />
+          <div className="relative z-10">
+            <Icon
+              className="h-6 w-6 text-white drop-shadow-md"
+              strokeWidth={2.5}
+            />
+          </div>
+          <div
+            className="absolute inset-0 rounded-2xl bg-black/10 opacity-0 
+            hover:opacity-100 transition-opacity"
+          />
         </button>
       );
     }
@@ -235,13 +250,31 @@ const BottomNavBar = () => {
     return (
       <button
         onClick={onClick}
-        className="flex flex-col items-center justify-center gap-1 p-1.5 min-w-[4.5rem] group"
+        className={`flex flex-col items-center justify-center gap-1.5 
+          py-2 px-3 rounded-xl transition-all duration-300 group
+          ${
+            isActive
+              ? 'bg-gradient-to-tr from-indigo-500/10 via-purple-500/10 to-pink-500/10'
+              : 'hover:bg-gray-100'
+          }`}
       >
         <Icon
-          className="h-5 w-5 text-gray-600 group-hover:text-red-500 transition-colors duration-200"
-          strokeWidth={2}
+          className={`h-5 w-5 transition-all duration-300
+            ${
+              isActive
+                ? 'text-purple-600 scale-110'
+                : 'text-gray-500 group-hover:text-gray-700'
+            }`}
+          strokeWidth={isActive ? 2.5 : 2}
         />
-        <span className="text-[0.7rem] font-medium text-gray-600 group-hover:text-red-500 transition-colors duration-200">
+        <span
+          className={`text-xs font-medium transition-all duration-300
+          ${
+            isActive
+              ? 'text-purple-600'
+              : 'text-gray-500 group-hover:text-gray-700'
+          }`}
+        >
           {label}
         </span>
       </button>
@@ -249,8 +282,12 @@ const BottomNavBar = () => {
   };
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-100 shadow-lg z-20">
-      <div className="flex justify-around items-center px-3 py-2 max-w-xl mx-auto">
+    <nav
+      className="fixed bottom-4 left-4 right-4 
+      bg-white/90 backdrop-blur-lg border border-gray-200
+      rounded-2xl shadow-xl shadow-gray-200/50 z-20"
+    >
+      <div className="flex justify-around items-center px-2 py-1 mx-auto">
         {navItems.slice(0, 2).map((item, index) => (
           <NavButton
             key={index}
@@ -258,7 +295,7 @@ const BottomNavBar = () => {
             label={item.label}
             onClick={() =>
               item.route
-                ? router.push(`features/${item.route}`)
+                ? router.push(`/features/${item.route}`)
                 : item.action?.()
             }
           />
@@ -277,7 +314,7 @@ const BottomNavBar = () => {
             label={item.label}
             onClick={() =>
               item.route
-                ? router.push(`features/${item.route}`)
+                ? router.push(`/features/${item.route}`)
                 : item.action?.()
             }
           />
@@ -295,7 +332,7 @@ const GameList: React.FC<{ marketData: MarketData[]; isLoading: boolean }> = ({
 
   return (
     <div
-      className={`${user?.isVerified ? 'mt-[225px]' : 'mt-[110px]'} mb-20 px-2 py-1 bg-gray-50`}
+      className={`${user?.isVerified ? 'mt-[230px]' : 'mt-[110px]'} mb-20 px-2 py-1 bg-gray-50`}
     >
       <LoadingModal isOpen={isLoading} />
       <div className="space-y-2">
@@ -310,6 +347,7 @@ const GameList: React.FC<{ marketData: MarketData[]; isLoading: boolean }> = ({
 const Home = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { refreshBalance } = useWallet();
+  const { user } = useUser();
   const [marketData, setMarketData] = useState<MarketData[]>([]);
   const fetchMarketData = async () => {
     setIsLoading(true);
@@ -335,7 +373,7 @@ const Home = () => {
         <Toaster position="bottom-center" reverseOrder={false} />
         <Navbar refreshMarketData={fetchMarketData} />
         <GameList marketData={marketData} isLoading={isLoading} />
-        <BottomNavBar />
+        {user?.isVerified ? <BottomNavBar /> : <></>}
       </ProtectedRoute>
     </Suspense>
   );

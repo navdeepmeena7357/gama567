@@ -1,12 +1,12 @@
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ArrowRight, LucideIcon } from 'lucide-react';
 
 interface InfoCardProps {
   title: string;
   marqueeText: string;
-  Icon: React.ComponentType<{ className?: string; size?: number }>;
-  onClick: () => void;
-  variant?: 'default' | 'success' | 'warning' | 'error';
+  Icon: LucideIcon;
+  onClick: (event: React.MouseEvent<HTMLDivElement>) => void;
+  className?: string;
 }
 
 const InfoCard: React.FC<InfoCardProps> = ({
@@ -14,128 +14,80 @@ const InfoCard: React.FC<InfoCardProps> = ({
   marqueeText,
   Icon,
   onClick,
-  variant = 'default',
+  className = '',
 }) => {
-  const getVariantStyles = () => {
-    switch (variant) {
-      case 'success':
-        return 'border-l-green-500 hover:border-l-green-600';
-      case 'warning':
-        return 'border-l-orange-500 hover:border-l-orange-600';
-      case 'error':
-        return 'border-l-red-500 hover:border-l-red-600';
-      default:
-        return 'border-l-red-500 hover:border-l-red-600';
-    }
-  };
-
-  const getIconStyles = () => {
-    switch (variant) {
-      case 'success':
-        return 'text-green-500 bg-green-50 group-hover:bg-green-100';
-      case 'warning':
-        return 'text-orange-500 bg-orange-50 group-hover:bg-orange-100';
-      case 'error':
-        return 'text-red-500 bg-red-50 group-hover:bg-red-100';
-      default:
-        return 'text-red-500 bg-red-50 group-hover:bg-red-100';
-    }
-  };
-
   return (
     <div
       onClick={onClick}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onClick(e as unknown as React.MouseEvent<HTMLDivElement>);
+        }
+      }}
       className={`
-        group relative bg-white rounded-lg shadow-sm 
-        transition-all duration-200 ease-in-out
-        hover:shadow-md active:shadow-sm active:scale-[0.995]
-        border-l-4 ${getVariantStyles()}
-        cursor-pointer overflow-hidden
+        group relative overflow-hidden
+         w-full mx-auto
+        bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50
+        rounded-2xl shadow-sm hover:shadow-lg
+        transition-all duration-500 ease-out
+        border border-purple-100
+        cursor-pointer
+        ${className}
       `}
     >
-      <div className="p-4 flex items-center justify-between gap-4">
-        {/* Icon Section */}
-        <div
-          className={`
-          rounded-full p-3
-          transition-colors duration-200
-          ${getIconStyles()}
-        `}
-        >
-          <Icon className="w-6 h-6" />
-        </div>
-
-        {/* Content Section */}
-        <div className="flex-1 min-w-0">
-          <h2 className="font-semibold text-gray-900 mb-1">{title}</h2>
-          <div className="text-sm text-gray-600 truncate">{marqueeText}</div>
-        </div>
-
-        {/* Arrow Section */}
-        <div
-          className={`
-          rounded-full p-2
-          transition-colors duration-200
-          ${getIconStyles()}
-        `}
-        >
-          <ChevronRight className="w-5 h-5" />
-        </div>
+      {/* Glassmorphism background effects */}
+      <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-200/20 to-pink-200/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+        <div className="absolute -inset-1/2 bg-gradient-to-r from-purple-200/10 via-pink-200/10 to-purple-200/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
 
-      {/* Hover overlay */}
-      <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-[0.02] transition-opacity duration-200" />
-    </div>
-  );
-};
+      {/* Main content container */}
+      <div className="relative p-5 sm:p-6">
+        <div className="flex items-center gap-4">
+          {/* Icon container with animated background */}
+          <div className="relative">
+            <div className="absolute inset-0 bg-purple-200/30 blur-xl rounded-full group-hover:bg-pink-200/30 transition-colors duration-500" />
+            <div className="relative bg-white/80 backdrop-blur-sm rounded-xl p-3 shadow-sm group-hover:shadow-md transition-all duration-500">
+              <Icon className="w-6 h-6 text-purple-500 group-hover:text-pink-500 transition-colors duration-500" />
+            </div>
+          </div>
 
-// Usage Example
-export const InfoCardDemo = () => {
-  const DemoIcon = ({ className }: { className?: string }) => (
-    <svg
-      className={className}
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    </svg>
-  );
+          {/* Text content */}
+          <div className="flex-1 min-w-0">
+            <h2 className="font-medium text-base sm:text-lg text-gray-800 mb-1 group-hover:text-purple-700 transition-colors duration-500">
+              {title}
+            </h2>
+            <p className="text-sm text-gray-500 truncate group-hover:text-gray-600 transition-colors duration-500">
+              {marqueeText}
+            </p>
+          </div>
 
-  return (
-    <div className="space-y-4 p-4">
-      <InfoCard
-        title="Default Card"
-        marqueeText="This is a default info card"
-        Icon={DemoIcon}
-        onClick={() => console.log('clicked')}
-      />
-      <InfoCard
-        title="Success Card"
-        marqueeText="This is a success info card"
-        Icon={DemoIcon}
-        onClick={() => console.log('clicked')}
-        variant="success"
-      />
-      <InfoCard
-        title="Warning Card"
-        marqueeText="This is a warning info card"
-        Icon={DemoIcon}
-        onClick={() => console.log('clicked')}
-        variant="warning"
-      />
-      <InfoCard
-        title="Error Card"
-        marqueeText="This is an error info card"
-        Icon={DemoIcon}
-        onClick={() => console.log('clicked')}
-        variant="error"
-      />
+          {/* Arrow indicator with animation */}
+          <div className="relative">
+            <div
+              className="
+              w-8 h-8 rounded-full flex items-center justify-center
+              bg-purple-100 group-hover:bg-pink-100
+              transition-all duration-500 ease-out
+            "
+            >
+              <ArrowRight
+                className="
+                w-4 h-4 text-purple-500 group-hover:text-pink-500
+                transform group-hover:translate-x-1
+                transition-all duration-500 ease-out
+              "
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom decoration line */}
+        <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-200 via-pink-200 to-purple-200 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+      </div>
     </div>
   );
 };

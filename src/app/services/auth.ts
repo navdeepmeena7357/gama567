@@ -41,7 +41,7 @@ interface User {
 }
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'https://laxmi777-app.in/api';
+  process.env.NEXT_PUBLIC_API_URL || 'https://matkafunapp.com/api';
 
 export const login = async (
   username: string,

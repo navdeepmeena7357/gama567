@@ -89,38 +89,41 @@ const AddFundPage = () => {
   };
 
   return (
-    <div className="min-h-screen mt-14 bg-gradient-to-b from-red-600 to-red-800">
+    <div className="min-h-screen mt-14 bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100">
       <LoadingModal isOpen={loading} />
       <TitleBar title="Add Fund" />
 
       {/* Balance Display */}
-      <div className="text-center pt-4 pb-8">
-        <p className="text-white/70 text-xs italic mb-1">Current Balance</p>
+      <div className="text-center pt-6 pb-8">
+        <p className="text-gray-600 text-xs font-medium mb-1">
+          Current Balance
+        </p>
         <div className="flex items-center justify-center gap-1">
-          <span className="text-2xl font-bold text-white italic">
+          <span className="text-2xl font-bold text-purple-700">
             ₹{points.balance}
           </span>
         </div>
         <div className="mt-2 flex justify-center">
-          <ArrowDown className="w-5 h-5 text-white/60 animate-bounce" />
+          <ArrowDown className="w-5 h-5 text-purple-400 animate-bounce" />
         </div>
       </div>
 
-      <div className="px-3 m-2">
+      <div className="px-4 max-w-md mx-auto">
         {/* Quick Amount Selection */}
-        <div className="grid grid-cols-4 gap-2 mb-6">
+        <div className="grid grid-cols-4 gap-3 mb-6">
           {[300, 500, 1000, 2000].map((quickAmount) => (
             <button
               key={quickAmount}
               onClick={() => setAmount(String(quickAmount))}
-              className="bg-white/10 hover:bg-white/20 backdrop-blur-sm
-                border border-white/20 rounded-lg py-2 px-1
-                text-white text-xs font-bold italic
-                transition-all duration-200 active:scale-[0.98]
-                relative overflow-hidden group"
+              className="relative overflow-hidden group
+                bg-white/80 hover:bg-white backdrop-blur-sm
+                border border-purple-200 rounded-xl py-2.5 px-1
+                text-purple-700 text-sm font-medium
+                transition-all duration-300 active:scale-[0.98]
+                shadow-sm hover:shadow-md"
             >
               <div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
+                className="absolute inset-0 bg-gradient-to-r from-purple-50/50 via-pink-50/50 to-purple-50/50
                 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
               />
               <span className="relative">₹{quickAmount}</span>
@@ -129,16 +132,16 @@ const AddFundPage = () => {
         </div>
 
         {/* Amount Input Section */}
-        <div className="space-y-3 bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
+        <div className="space-y-3 bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-purple-200 shadow-sm">
           <div className="relative group">
             <div
-              className="relative bg-black/20 rounded-lg border-2 border-white/20
-              transition-all duration-300 group-focus-within:border-white/40
-              overflow-hidden"
+              className="relative bg-white rounded-xl border-2 border-purple-200
+              transition-all duration-300 group-focus-within:border-purple-400
+              group-focus-within:shadow-md overflow-hidden"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
-              <div className="relative flex items-center gap-2 p-2">
-                <div className="p-1.5 bg-gradient-to-br from-red-500 to-red-600 rounded-lg">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-50/30 via-pink-50/30 to-purple-50/30" />
+              <div className="relative flex items-center gap-3 p-3">
+                <div className="p-2 bg-gradient-to-br from-purple-400 to-pink-400 rounded-lg">
                   <BiRupee className="h-5 w-5 text-white" />
                 </div>
                 <input
@@ -146,8 +149,8 @@ const AddFundPage = () => {
                   placeholder={`Enter amount (min: ${paymentDetails?.min_amount ?? '100'})`}
                   value={amount}
                   onChange={(e) => setAmount(e.target.value)}
-                  className="flex-1 outline-none text-white placeholder-red-200 text-base italic
-                    bg-transparent w-full"
+                  className="flex-1 outline-none text-purple-700 placeholder-purple-300 text-base
+                    bg-transparent w-full font-medium"
                 />
               </div>
             </div>
@@ -156,14 +159,18 @@ const AddFundPage = () => {
 
         {/* Messages */}
         {error && (
-          <div className="mt-4 p-3 bg-red-500/20 border border-red-500/30 rounded-lg animate-fade-in backdrop-blur-sm">
-            <p className="text-white text-xs italic text-center">{error}</p>
+          <div className="mt-4 p-4 bg-red-50/80 border border-red-200 rounded-xl animate-fade-in backdrop-blur-sm">
+            <p className="text-red-600 text-sm text-center font-medium">
+              {error}
+            </p>
           </div>
         )}
 
         {success && (
-          <div className="mt-4 p-3 bg-emerald-500/20 border border-emerald-500/30 rounded-lg animate-fade-in backdrop-blur-sm">
-            <p className="text-white text-xs italic text-center">{success}</p>
+          <div className="mt-4 p-4 bg-emerald-50/80 border border-emerald-200 rounded-xl animate-fade-in backdrop-blur-sm">
+            <p className="text-emerald-600 text-sm text-center font-medium">
+              {success}
+            </p>
           </div>
         )}
 
@@ -171,24 +178,24 @@ const AddFundPage = () => {
         <button
           onClick={handleAddFund}
           disabled={loading}
-          className="w-full bg-white text-red-600 
-            rounded-lg py-3 px-4 font-bold text-sm italic
+          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white
+            rounded-xl py-3.5 px-4 font-bold text-sm
             transition-all duration-300 mt-6
-            hover:bg-red-50
+            hover:from-purple-600 hover:to-pink-600
             active:scale-[0.98]
             disabled:opacity-50 disabled:cursor-not-allowed
-            shadow-lg shadow-black/20
+            shadow-lg shadow-purple-500/10
             relative overflow-hidden group"
         >
           <div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-red-100 to-transparent
+            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
             translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
           />
           <span className="relative">
             {loading ? (
               <div className="flex items-center justify-center gap-2">
                 <div
-                  className="w-4 h-4 border-2 border-red-600/20 border-t-red-600 
+                  className="w-4 h-4 border-2 border-white/20 border-t-white
                   rounded-full animate-spin"
                 />
                 <span>Processing...</span>
@@ -200,8 +207,8 @@ const AddFundPage = () => {
         </button>
 
         {/* Contact Section */}
-        <div className="mt-6 text-center space-y-3 pb-6">
-          <p className="text-white/80 text-xs italic">
+        <div className="mt-8 text-center space-y-3 pb-8">
+          <p className="text-purple-600/80 text-sm font-medium">
             Need help with payment?
           </p>
           <ContactOptions />

@@ -16,7 +16,30 @@ import {
   Building,
   Award,
   Timer,
+  ChevronRight,
 } from 'lucide-react';
+
+const customSelectStyles = {
+  control: (base: any) => ({
+    ...base,
+    borderColor: '#e9d5ff',
+    '&:hover': { borderColor: '#d8b4fe' },
+    boxShadow: 'none',
+    '&:focus-within': {
+      borderColor: '#c084fc',
+      boxShadow: '0 0 0 1px #c084fc',
+    },
+  }),
+  option: (base: any, state: { isSelected: boolean; isFocused: boolean }) => ({
+    ...base,
+    backgroundColor: state.isSelected
+      ? '#c084fc'
+      : state.isFocused
+        ? '#f3e8ff'
+        : undefined,
+    ':active': { backgroundColor: '#c084fc' },
+  }),
+};
 
 const BidsPage = () => {
   const sessionOptions = [
@@ -210,97 +233,127 @@ const BidsPage = () => {
 
   // eslint-disable-next-line react/display-name
   const BidCard = React.memo(({ bid }: { bid: BidsData }) => {
-    const getStatusColor = () => {
-      if (bid.is_win === null) return 'bg-yellow-50 text-yellow-600';
+    const getStatusStyles = () => {
+      if (bid.is_win === null)
+        return {
+          bg: 'bg-purple-50',
+          text: 'text-purple-600',
+          border: 'border-purple-100',
+        };
       return bid.is_win === 1
-        ? 'bg-green-50 text-green-600'
-        : 'bg-red-50 text-red-600';
+        ? {
+            bg: 'bg-emerald-50',
+            text: 'text-emerald-600',
+            border: 'border-emerald-100',
+          }
+        : {
+            bg: 'bg-pink-50',
+            text: 'text-pink-600',
+            border: 'border-pink-100',
+          };
     };
 
-    const getStatusText = () => {
-      if (bid.is_win === null) return 'Pending';
-      return bid.is_win === 1 ? 'Win' : 'Lost';
-    };
+    const styles = getStatusStyles();
 
     return (
-      <div className="bg-white rounded-lg shadow-sm p-4 space-y-4">
+      <div
+        className="bg-white rounded-2xl shadow-sm border border-purple-100 p-4 space-y-4
+        hover:shadow-md transition-shadow duration-300"
+      >
         {/* Header */}
         <div className="flex justify-between items-start">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2 text-gray-600">
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-purple-600">
               <Calendar className="w-4 h-4" />
-              <span className="text-sm">{bid.bet_date}</span>
+              <span className="text-sm font-medium">{bid.bet_date}</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Building className="w-4 h-4 text-gray-600" />
-              <h3 className="font-medium">{bid.market_name}</h3>
+            <div className="flex items-center gap-2 text-purple-900">
+              <Building className="w-4 h-4" />
+              <h3 className="font-semibold">{bid.market_name}</h3>
             </div>
           </div>
           <div
-            className={`px-3 py-1 rounded-full ${getStatusColor()} text-sm font-medium`}
+            className={`px-3 py-1 rounded-full ${styles.bg} ${styles.text} 
+            text-sm font-medium border ${styles.border}`}
           >
-            {getStatusText()}
+            {bid.is_win === null
+              ? 'Pending'
+              : bid.is_win === 1
+                ? 'Win'
+                : 'Lost'}
           </div>
         </div>
 
         {/* Details */}
-        <div className="bg-orange-50 rounded-lg p-3 space-y-2">
+        <div
+          className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 space-y-3
+          border border-purple-100"
+        >
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <Tag className="w-4 h-4 text-orange-600" />
-              <span className="text-sm font-medium">
+              <Tag className="w-4 h-4 text-purple-600" />
+              <span className="text-sm font-medium text-purple-900">
                 {bid.bet_type.toUpperCase().replace('_', ' ')}
               </span>
             </div>
-            <span className="text-sm font-medium">{bid.bet_digit}</span>
+            <span className="text-sm font-semibold text-purple-900">
+              {bid.bet_digit}
+            </span>
           </div>
 
-          <div className="flex items-center justify-between border-t border-orange-100 pt-2">
+          <div className="flex items-center justify-between border-t border-purple-200 pt-3">
             <div className="flex items-center gap-2">
-              <Award className="w-4 h-4 text-orange-600" />
-              <span className="text-sm">Amount</span>
+              <Award className="w-4 h-4 text-purple-600" />
+              <span className="text-sm text-purple-900">Amount</span>
             </div>
-            <span className="font-medium">₹{bid.bet_amount}</span>
+            <span className="font-semibold text-purple-900">
+              ₹{bid.bet_amount}
+            </span>
           </div>
         </div>
 
         {/* Session */}
-        <div className="flex items-center justify-between text-sm text-gray-600">
-          <div className="flex items-center gap-2">
+        <div className="flex items-center justify-between text-sm">
+          <div className="flex items-center gap-2 text-purple-600">
             <Clock className="w-4 h-4" />
             <span>Session</span>
           </div>
-          <span className="font-medium">
-            {bid.market_session.toUpperCase()}
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="font-medium text-purple-900">
+              {bid.market_session.toUpperCase()}
+            </span>
+            <ChevronRight className="w-4 h-4 text-purple-400" />
+          </div>
         </div>
       </div>
     );
   });
 
   const FilterSection = () => (
-    <div className="bg-white rounded-lg shadow-sm p-4 space-y-4">
+    <div className="bg-white rounded-2xl shadow-sm border border-purple-100 p-4 space-y-4">
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            <Building className="w-4 h-4" />
+          <label className="text-sm font-medium text-purple-900 flex items-center gap-2">
+            <Building className="w-4 h-4 text-purple-600" />
             Market
           </label>
           <Select
             onChange={handleMarketIdChange}
             options={marketNameOptions}
+            styles={customSelectStyles}
             placeholder="Select market..."
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            <Tag className="w-4 h-4" />
+          <label className="text-sm font-medium text-purple-900 flex items-center gap-2">
+            <Tag className="w-4 h-4 text-purple-600" />
             Bid Type
           </label>
           <Select
             onChange={handleBidTypeChange}
             options={bidTypeOptions}
+            styles={customSelectStyles}
             placeholder="Select type..."
           />
         </div>
@@ -308,26 +361,28 @@ const BidsPage = () => {
 
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            <Calendar className="w-4 h-4" />
+          <label className="text-sm font-medium text-purple-900 flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-purple-600" />
             Date
           </label>
           <input
             type="date"
             value={formatToYYYYMMDD(date)}
             onChange={handleDateChange}
-            className="w-full rounded-lg border-gray-200 focus:border-orange-500 focus:ring-0 text-sm p-2.5"
+            className="w-full rounded-lg border-purple-200 focus:border-purple-400 
+              focus:ring-purple-400 text-sm p-2.5"
           />
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-            <Timer className="w-4 h-4" />
+          <label className="text-sm font-medium text-purple-900 flex items-center gap-2">
+            <Timer className="w-4 h-4 text-purple-600" />
             Session
           </label>
           <Select
             onChange={handleSessionChange}
             options={sessionOptions}
+            styles={customSelectStyles}
             placeholder="Select session..."
           />
         </div>
@@ -335,7 +390,12 @@ const BidsPage = () => {
 
       <button
         onClick={handleSearchBids}
-        className="w-full bg-orange-500 hover:bg-orange-600 text-white rounded-lg py-2.5 px-4 flex items-center justify-center gap-2 transition-colors duration-200"
+        className="w-full bg-gradient-to-r from-purple-500 to-pink-500 
+          hover:from-purple-600 hover:to-pink-600
+          text-white rounded-xl py-3 px-4 
+          flex items-center justify-center gap-2 
+          transition-all duration-300 shadow-sm
+          hover:shadow-md active:scale-[0.98]"
       >
         <Search className="w-4 h-4" />
         Search Bids
@@ -354,7 +414,7 @@ const BidsPage = () => {
           <FilterSection />
 
           {bids.length > 0 ? (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {bids.map((bid) => (
                 <BidCard key={bid.id} bid={bid} />
               ))}

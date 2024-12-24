@@ -6,60 +6,76 @@ const WalletOptions = () => {
   const router = useRouter();
 
   return (
-    <div className="grid grid-cols-2 gap-2 ml-2 mr-2">
+    <div className="grid grid-cols-2 gap-4 p-2">
       {/* Add Money Button */}
       <button
         onClick={() => router.push('/features/funds/add_fund')}
-        className="group relative overflow-hidden bg-gradient-to-r from-green-500 to-green-600
-          hover:from-red-600 hover:to-red-700 
-          py-2 px-2 rounded-lg
-          transform transition-all duration-200 
-          active:scale-[0.98] shadow-lg shadow-red-500/20
-          border border-white/10"
+        className="relative group flex items-center justify-center gap-3 
+          bg-gradient-to-br from-pink-500 via-pink-600 to-purple-600
+          hover:from-pink-600 hover:via-purple-600 hover:to-purple-700
+          p-2 rounded-xl
+          transform transition-all duration-500 ease-out
+          hover:scale-[1.02] active:scale-[0.98]
+          shadow-lg hover:shadow-xl shadow-pink-500/20
+          overflow-hidden"
       >
-        {/* Shine Effect */}
+        {/* Animated Background Effect */}
         <div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
-          translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
+          className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0
+          blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
+          animate-pulse"
         />
 
-        {/* Content */}
-        <div className="relative flex items-center justify-center gap-2">
-          <div
-            className="bg-white/20 p-1.5 rounded-md backdrop-blur-sm
-            group-hover:scale-110 transition-transform duration-200"
-          >
-            <PlusCircle className="w-3.5 h-3.5 text-white" />
-          </div>
-          <span className="text-xs text-white font-bold italic">Add Money</span>
+        {/* Icon Container */}
+        <div
+          className="relative flex items-center justify-center 
+          bg-white/10 backdrop-blur-md p- rounded-xl
+          ring-1 ring-white/20 
+          group-hover:ring-white/30 group-hover:scale-110 
+          transition-all duration-300"
+        >
+          <PlusCircle className="w-5 h-5 text-white" />
+        </div>
+
+        {/* Text Container */}
+        <div className="relative flex flex-col items-start">
+          <span className="text-sm text-white font-semibold">Add Money</span>
         </div>
       </button>
 
-      {/* Withdrawal Button */}
+      {/* Withdraw Button */}
       <button
         onClick={() => router.push('/features/funds/withdraw_fund')}
-        className="group relative overflow-hidden bg-yellow-500
-          hover:bg-white/20
-          py-2 px-2 rounded-lg
-          transform transition-all duration-200
-          active:scale-[0.98] shadow-lg
-          backdrop-blur-sm border border-white/20"
+        className="relative group flex items-center justify-center gap-3
+          bg-gradient-to-br from-purple-600 via-purple-700 to-purple-800
+          hover:from-purple-700 hover:via-purple-800 hover:to-purple-900
+          p-2 rounded-xl
+          transform transition-all duration-500 ease-out
+          hover:scale-[1.02] active:scale-[0.98]
+          shadow-sm hover:shadow-sm shadow-white
+          overflow-hidden"
       >
-        {/* Shine Effect */}
+        {/* Animated Background Effect */}
         <div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent
-          translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
+          className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0
+          blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
+          animate-pulse"
         />
 
-        {/* Content */}
-        <div className="relative flex items-center justify-center gap-2">
-          <div
-            className="bg-white/20 p-1.5 rounded-md
-            group-hover:scale-110 transition-transform duration-200"
-          >
-            <Wallet2 className="w-3.5 h-3.5 text-white" />
-          </div>
-          <span className="text-xs text-white font-bold italic">Withdraw</span>
+        {/* Icon Container */}
+        <div
+          className="relative flex items-center justify-center 
+          bg-white/10 backdrop-blur-md p-1.5 rounded-md
+          ring-1 ring-white/20 
+          group-hover:ring-white/30 group-hover:scale-110 
+          transition-all duration-300"
+        >
+          <Wallet2 className="w-5 h-5 text-pink-300" />
+        </div>
+
+        {/* Text Container */}
+        <div className="relative flex flex-col items-start">
+          <span className="text-sm text-white font-semibold">Withdraw</span>
         </div>
       </button>
     </div>

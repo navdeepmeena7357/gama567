@@ -87,7 +87,7 @@ const BankDetailsPage = () => {
     }));
   };
 
-  const validateRequiredFields = (): boolean => {
+  const validateRequipinkFields = (): boolean => {
     const { ac_holder_name, bank_name, ac_number, ifsc_code } = bankDetails;
     return (
       ac_holder_name !== '' &&
@@ -155,7 +155,7 @@ const BankDetailsPage = () => {
   }, [token, userId]);
 
   const handleSaveBankDetails = async () => {
-    if (!validateRequiredFields()) {
+    if (!validateRequipinkFields()) {
       toast.error(REQUIRED_FIELDS_ERROR);
       return;
     }
@@ -222,7 +222,7 @@ const BankDetailsPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-red-600 to-red-800">
+    <div className="min-h-screen bg-gradient-to-b from-pink-600 to-pink-800">
       <LoadingModal isOpen={isLoading} />
       <TitleBar title="Bank Details" />
       <ToastContainer />
@@ -231,7 +231,7 @@ const BankDetailsPage = () => {
         <div className="p-3 space-y-6">
           {/* Bank Details Section */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-            <h2 className="text-white font-bold italic text-lg mb-4">
+            <h2 className="text-white font-bold  text-lg mb-4">
               Bank Account Details
             </h2>
 
@@ -243,15 +243,15 @@ const BankDetailsPage = () => {
                 transition-all duration-300 group-focus-within:border-white/40"
                 >
                   <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <FaUser className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                    <FaUser className="w-4 h-4 text-pink-300 group-focus-within:text-white transition-colors" />
                   </div>
                   <input
                     name="ac_holder_name"
                     value={bankDetails.ac_holder_name}
                     onChange={handleBankInputChange}
                     placeholder="A/c Holder Name"
-                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
-                    text-sm italic font-medium outline-none"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-pink-200
+                    text-sm  font-medium outline-none"
                   />
                 </div>
               </div>
@@ -263,15 +263,15 @@ const BankDetailsPage = () => {
                 transition-all duration-300 group-focus-within:border-white/40"
                 >
                   <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <RiBankFill className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                    <RiBankFill className="w-4 h-4 text-pink-300 group-focus-within:text-white transition-colors" />
                   </div>
                   <input
                     name="bank_name"
                     value={bankDetails.bank_name}
                     onChange={handleBankInputChange}
                     placeholder="Bank Name"
-                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
-                    text-sm italic font-medium outline-none"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-pink-200
+                    text-sm  font-medium outline-none"
                   />
                 </div>
               </div>
@@ -283,7 +283,7 @@ const BankDetailsPage = () => {
                 transition-all duration-300 group-focus-within:border-white/40"
                 >
                   <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <FaHashtag className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                    <FaHashtag className="w-4 h-4 text-pink-300 group-focus-within:text-white transition-colors" />
                   </div>
                   <input
                     type="number"
@@ -291,8 +291,8 @@ const BankDetailsPage = () => {
                     value={bankDetails.ac_number}
                     onChange={handleBankInputChange}
                     placeholder="Bank Account Number"
-                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
-                    text-sm italic font-medium outline-none"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-pink-200
+                    text-sm  font-medium outline-none"
                   />
                 </div>
               </div>
@@ -304,15 +304,15 @@ const BankDetailsPage = () => {
                 transition-all duration-300 group-focus-within:border-white/40"
                 >
                   <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <IoInfinite className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                    <IoInfinite className="w-4 h-4 text-pink-300 group-focus-within:text-white transition-colors" />
                   </div>
                   <input
                     name="ifsc_code"
                     value={bankDetails.ifsc_code}
                     onChange={handleBankInputChange}
                     placeholder="IFSC Code"
-                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
-                    text-sm italic font-medium outline-none"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-pink-200
+                    text-sm  font-medium outline-none"
                   />
                 </div>
               </div>
@@ -321,15 +321,15 @@ const BankDetailsPage = () => {
             {/* Save Bank Details Button */}
             <button
               onClick={handleSaveBankDetails}
-              className="w-full mt-4 bg-white text-red-600 
-              rounded-lg py-3 px-4 font-bold text-sm italic
+              className="w-full mt-4 bg-white text-pink-600 
+              rounded-lg py-3 px-4 font-bold text-sm 
               transition-all duration-300
-              hover:bg-red-50 active:scale-[0.98]
+              hover:bg-pink-50 active:scale-[0.98]
               shadow-lg shadow-black/20
               relative overflow-hidden group"
             >
               <div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-red-100 to-transparent
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-100 to-transparent
               translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
               />
               <span className="relative">Save Bank Details</span>
@@ -338,9 +338,7 @@ const BankDetailsPage = () => {
 
           {/* Payment Apps Section */}
           <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 border border-white/20">
-            <h2 className="text-white font-bold italic text-lg mb-4">
-              Payment Apps
-            </h2>
+            <h2 className="text-white font-bold  text-lg mb-4">Payment Apps</h2>
 
             <div className="space-y-3">
               {/* Paytm */}
@@ -350,15 +348,15 @@ const BankDetailsPage = () => {
                 transition-all duration-300 group-focus-within:border-white/40"
                 >
                   <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <SiPaytm className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                    <SiPaytm className="w-4 h-4 text-pink-300 group-focus-within:text-white transition-colors" />
                   </div>
                   <input
                     name="paytm_number"
                     value={paymentApps.paytm_number ?? ''}
                     onChange={handlePaymentInputChange}
                     placeholder="Paytm Number"
-                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
-                    text-sm italic font-medium outline-none"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-pink-200
+                    text-sm  font-medium outline-none"
                   />
                 </div>
               </div>
@@ -370,15 +368,15 @@ const BankDetailsPage = () => {
                 transition-all duration-300 group-focus-within:border-white/40"
                 >
                   <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <SiPhonepe className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                    <SiPhonepe className="w-4 h-4 text-pink-300 group-focus-within:text-white transition-colors" />
                   </div>
                   <input
                     name="phonepe_number"
                     value={paymentApps.phonepe_number ?? ''}
                     onChange={handlePaymentInputChange}
                     placeholder="PhonePe Number"
-                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
-                    text-sm italic font-medium outline-none"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-pink-200
+                    text-sm  font-medium outline-none"
                   />
                 </div>
               </div>
@@ -390,15 +388,15 @@ const BankDetailsPage = () => {
                 transition-all duration-300 group-focus-within:border-white/40"
                 >
                   <div className="absolute left-3 top-1/2 -translate-y-1/2">
-                    <SiGooglepay className="w-4 h-4 text-red-300 group-focus-within:text-white transition-colors" />
+                    <SiGooglepay className="w-4 h-4 text-pink-300 group-focus-within:text-white transition-colors" />
                   </div>
                   <input
                     name="gpay_number"
                     value={paymentApps.gpay_number ?? ''}
                     onChange={handlePaymentInputChange}
                     placeholder="GPay Number"
-                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-red-200
-                    text-sm italic font-medium outline-none"
+                    className="w-full pl-10 pr-4 py-3 bg-transparent text-white placeholder-pink-200
+                    text-sm  font-medium outline-none"
                   />
                 </div>
               </div>
@@ -407,15 +405,15 @@ const BankDetailsPage = () => {
             {/* Save Payment Apps Button */}
             <button
               onClick={handleSavePaymentApps}
-              className="w-full mt-4 bg-white text-red-600 
-              rounded-lg py-3 px-4 font-bold text-sm italic
+              className="w-full mt-4 bg-white text-pink-600 
+              rounded-lg py-3 px-4 font-bold text-sm
               transition-all duration-300
-              hover:bg-red-50 active:scale-[0.98]
+              hover:bg-pink-50 active:scale-[0.98]
               shadow-lg shadow-black/20
               relative overflow-hidden group"
             >
               <div
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-red-100 to-transparent
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-pink-100 to-transparent
               translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"
               />
               <span className="relative">Save Payment Details</span>

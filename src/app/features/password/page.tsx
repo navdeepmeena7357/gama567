@@ -118,12 +118,12 @@ const ChangePassword = () => {
                 className={`w-full px-4 py-2 border rounded-md focus:outline-none ${
                   errors.oldPassword
                     ? 'border-red-500'
-                    : 'border-gray-300 focus:border-orange-500'
+                    : 'border-gray-300 focus:border-pink-500'
                 }`}
                 placeholder="Enter old password"
               />
               {errors.oldPassword && (
-                <p className="text-red-500 text-sm">{errors.oldPassword}</p>
+                <p className="text-pink-500 text-sm">{errors.oldPassword}</p>
               )}
             </div>
 
@@ -138,12 +138,12 @@ const ChangePassword = () => {
                 className={`w-full px-4 py-2 border rounded-md focus:outline-none ${
                   errors.newPassword
                     ? 'border-red-500'
-                    : 'border-gray-300 focus:border-orange-500'
+                    : 'border-gray-300 focus:border-pink-500'
                 }`}
                 placeholder="Enter new password"
               />
               {errors.newPassword && (
-                <p className="text-red-500 text-sm">{errors.newPassword}</p>
+                <p className="text-pink-500 text-sm">{errors.newPassword}</p>
               )}
             </div>
 
@@ -158,18 +158,20 @@ const ChangePassword = () => {
                 className={`w-full px-4 py-2 border rounded-md focus:outline-none ${
                   errors.confirmPassword
                     ? 'border-red-500'
-                    : 'border-gray-300 focus:border-orange-500'
+                    : 'border-gray-300 focus:border-pink-500'
                 }`}
                 placeholder="Confirm new password"
               />
               {errors.confirmPassword && (
-                <p className="text-red-500 text-sm">{errors.confirmPassword}</p>
+                <p className="text-pink-500 text-sm">
+                  {errors.confirmPassword}
+                </p>
               )}
             </div>
 
             <button
               type="submit"
-              className="w-full py-2 mt-4 text-white bg-orange-500 hover:bg-orange-600 rounded-md transition duration-300"
+              className="w-full py-2 mt-4 text-white bg-pink-500 hover:bg-pink-600 rounded-md transition duration-300"
             >
               Update Password
             </button>
