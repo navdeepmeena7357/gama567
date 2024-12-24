@@ -3,17 +3,16 @@ import React, { useState, useEffect } from 'react';
 import ContactOptions from '@/components/ContactOptions';
 import { useRouter } from 'next/navigation';
 import { login } from '@/app/services/auth';
-import { Toaster } from '@/components/ui/toaster';
 import { useAuth } from '@/context/AuthContext';
 
 import { useUser } from '@/context/UserContext';
 import { Phone, Lock, ArrowRight, UserPlus } from 'lucide-react';
 import Image from 'next/image';
-import { useToast } from '@/hooks/use-toast';
 import LoadingModal from '@/components/LoadingModal';
+import { Toaster } from 'react-hot-toast';
+import { showErrorToast } from '@/utils/toast';
 
 function LoginPage() {
-  const { toast } = useToast();
   const { setUser } = useUser();
   const router = useRouter();
   const [mobileNumber, setMobileNumber] = useState('');
@@ -30,35 +29,22 @@ function LoginPage() {
 
   const validateInputs = (): boolean => {
     if (!mobileNumber) {
-      toast({
-        title: 'Info',
-        description: 'Mobile number is required',
-        variant: 'destructive',
-      });
+      showErrorToast('Mobile number is required');
+
       return false;
     }
     if (mobileNumber.length !== 10 || !/^\d{10}$/.test(mobileNumber)) {
-      toast({
-        title: 'Info',
-        description: 'Mobile number must be 10 digits.',
-        variant: 'destructive',
-      });
+      showErrorToast('Mobile number must be 10 digits.');
       return false;
     }
     if (!password) {
-      toast({
-        title: 'Info',
-        description: 'Password is required.',
-        variant: 'destructive',
-      });
+      showErrorToast('Password is required..');
+
       return false;
     }
     if (password.length < 6) {
-      toast({
-        title: 'Info',
-        description: 'Password must be at least 6 characters long.',
-        variant: 'destructive',
-      });
+      showErrorToast('Password must be at least 6 characters long.');
+
       return false;
     }
     return true;
@@ -75,16 +61,13 @@ function LoginPage() {
       );
 
       if (isError) {
-        toast({ title: 'Error', description: message, variant: 'destructive' });
+        showErrorToast(message);
         return;
       }
 
       if (user.status === 1) {
-        toast({
-          title: 'Error',
-          description: 'Account Blocked. Please contact Admin!',
-          variant: 'destructive',
-        });
+        showErrorToast('Account Blocked. Please contact Admin!');
+
         return;
       }
 
@@ -101,7 +84,7 @@ function LoginPage() {
       authenticate(token);
       router.push('/');
     } catch (err) {
-      toast({ title: 'Error', description: (err as Error).message });
+      showErrorToast((err as Error).message);
     } finally {
       setIsLoading(false);
     }
