@@ -165,12 +165,14 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose }) => {
               label="Time Table"
               href="/features/time-table"
             />
-            {user?.isVerified && (
+            {user?.isVerified ? (
               <MenuItem
                 icon={Info}
                 label="Notice Board/Rules"
                 href="/features/rules"
               />
+            ) : (
+              <></>
             )}
             <MenuItem
               icon={Key}
