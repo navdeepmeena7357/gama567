@@ -7,22 +7,22 @@ interface MarqueeProps {
 const Marquee: React.FC<MarqueeProps> = ({ text }) => {
   return (
     <div
-      className="relative bg-gradient-to-r from-purple-700 via-purple-800 to-purple-900
-      border-y border-pink-300/20 py-2 overflow-hidden"
+      className="relative bg-gradient-to-r from-red-700 via-red-800 to-red-900
+      border-y border-red-300/20 py-2 overflow-hidden"
     >
       {/* Fade Edges */}
       <div
         className="absolute left-0 top-0 bottom-0 w-12 
-        bg-gradient-to-r from-purple-700 to-transparent z-10"
+        bg-gradient-to-r from-red-700 to-transparent z-10"
       />
       <div
         className="absolute right-0 top-0 bottom-0 w-12 
-        bg-gradient-to-l from-purple-900 to-transparent z-10"
+        bg-gradient-to-l from-red-900 to-transparent z-10"
       />
 
       {/* Glowing Line Effect */}
       <div
-        className="absolute inset-0 bg-gradient-to-r from-pink-500/0 via-pink-500/10 to-pink-500/0
+        className="absolute inset-0 bg-gradient-to-r from-pink-500/0 via-red-500/10 to-pink-500/0
         animate-pulse"
       />
 

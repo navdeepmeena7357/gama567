@@ -19,8 +19,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Jodi 99',
-  description: 'Jodi 99 - Online Matka Play',
+  title: 'Gama 567',
+  description: 'Gama 567 - Online Matka Play',
 };
 
 export default function RootLayout({

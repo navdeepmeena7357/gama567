@@ -4,7 +4,6 @@ import ContactOptions from '@/components/ContactOptions';
 import { useRouter } from 'next/navigation';
 import { login } from '@/app/services/auth';
 import { useAuth } from '@/context/AuthContext';
-
 import { useUser } from '@/context/UserContext';
 import { Phone, Lock, ArrowRight, UserPlus } from 'lucide-react';
 import Image from 'next/image';
@@ -27,10 +26,10 @@ function LoginPage() {
     }
   }, [router]);
 
+  // Keeping your existing validation and login logic
   const validateInputs = (): boolean => {
     if (!mobileNumber) {
       showErrorToast('Mobile number is required');
-
       return false;
     }
     if (mobileNumber.length !== 10 || !/^\d{10}$/.test(mobileNumber)) {
@@ -39,12 +38,10 @@ function LoginPage() {
     }
     if (!password) {
       showErrorToast('Password is required..');
-
       return false;
     }
     if (password.length < 6) {
       showErrorToast('Password must be at least 6 characters long.');
-
       return false;
     }
     return true;
@@ -52,25 +49,20 @@ function LoginPage() {
 
   const handleLogin = async () => {
     if (!validateInputs()) return;
-
     setIsLoading(true);
     try {
       const { token, user, isError, message } = await login(
         mobileNumber,
         password
       );
-
       if (isError) {
         showErrorToast(message);
         return;
       }
-
       if (user.status === 1) {
         showErrorToast('Account Blocked. Please contact Admin!');
-
         return;
       }
-
       setUser({
         id: user.id,
         name: user.name,
@@ -80,7 +72,6 @@ function LoginPage() {
         isWithdrawAllowed: user.is_withdraw_allowed,
         status: user.status,
       });
-
       authenticate(token);
       router.push('/');
     } catch (err) {
@@ -91,97 +82,90 @@ function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-700 to-purple-900 flex flex-col p-4 sm:p-6">
-      {/* Loading and Toast Components */}
-      <Toaster />
-      <LoadingModal isOpen={isLoading} />
+    <div className="min-h-screen bg-gradient-to-b from-red-50 to-pink-50">
+      <div className="px-4 py-8 max-w-sm mx-auto">
+        <LoadingModal isOpen={isLoading} />
+        <Toaster position="top-center" />
 
-      {/* Logo */}
-      <div className="flex justify-center mb-12">
-        <div className="relative w-32 h-32 sm:w-40 sm:h-40">
+        {/* Logo Section */}
+        <div className="flex justify-center mb-6">
           <Image
-            src={'/images/png/Logo.png'}
+            src="/images/png/Logo.png"
             height={120}
             width={120}
             alt="Brand Logo"
-            className="object-contain drop-shadow-2xl"
+            className="object-contain"
           />
         </div>
-      </div>
 
-      {/* Form Container */}
-      <div className="space-y-5 max-w-md mx-auto w-full bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-pink-300/20 shadow-xl">
-        <h1 className="text-2xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-white/90 to-pink-500/90 mb-8">
-          Welcome Back
-        </h1>
+        {/* Main Form */}
+        <div className="bg-white rounded-2xl p-6 shadow-lg">
+          <h1 className="text-xl font-semibold text-red-800 text-center mb-6">
+            Welcome Back
+          </h1>
 
-        {/* Mobile Input */}
-        <div className="relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Phone className="w-5 h-5 text-pink-400 group-focus-within:text-pink-300 transition-colors" />
+          {/* Mobile Input */}
+          <div className="space-y-4">
+            <div className="relative">
+              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-red-400" />
+              <input
+                type="number"
+                value={mobileNumber}
+                maxLength={10}
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-red-50 border border-red-100 
+                          text-red-900 placeholder:text-red-300 focus:outline-none focus:border-red-400
+                          focus:ring-1 focus:ring-red-400 text-sm"
+                placeholder="Mobile Number"
+                onChange={(e) => setMobileNumber(e.target.value)}
+              />
+            </div>
+
+            {/* Password Input */}
+            <div className="relative">
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-red-400" />
+              <input
+                type="password"
+                value={password}
+                className="w-full pl-10 pr-4 py-3 rounded-lg bg-red-50 border border-red-100 
+                          text-red-900 placeholder:text-red-300 focus:outline-none focus:border-red-400
+                          focus:ring-1 focus:ring-red-400 text-sm"
+                placeholder="Password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+
+            {/* Login Button */}
+            <button
+              onClick={handleLogin}
+              disabled={isLoading}
+              className="w-full bg-gradient-to-r from-red-600 to-red-500 text-white py-3 rounded-lg
+                        flex items-center justify-center gap-2 text-sm font-medium
+                        hover:from-red-700 hover:to-red-600 transition-colors"
+            >
+              Sign In
+              <ArrowRight className="w-4 h-4" />
+            </button>
+
+            {/* Register Button */}
+            <button
+              onClick={() => router.push('/auth/register')}
+              className="w-full bg-brown-100 text-red-800 py-3 rounded-lg
+                        flex items-center justify-center gap-2 text-sm font-medium
+                        border border-red-200 hover:bg-red-50 transition-colors"
+            >
+              <UserPlus className="w-4 h-4" />
+              Create Account
+            </button>
           </div>
-          <input
-            type="number"
-            value={mobileNumber}
-            maxLength={10}
-            className="w-full pl-12 pr-4 py-4 rounded-xl border border-pink-400/90
-              focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20
-              placeholder:text-white/80 text-white bg-white/5
-              transition-all duration-300 font-medium text-md"
-            placeholder="Mobile Number"
-            onChange={(e) => setMobileNumber(e.target.value)}
-          />
         </div>
 
-        {/* Password Input */}
-        <div className="relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Lock className="w-5 h-5 text-pink-400 group-focus-within:text-pink-300 transition-colors" />
-          </div>
-          <input
-            type="password"
-            value={password}
-            className="w-full pl-12 pr-4 py-4 rounded-xl border border-pink-400/90
-              focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20
-            placeholder:text-white/80 text-white bg-white/5
-              transition-all duration-300 font-medium text-dm"
-            placeholder="Password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
+        {/* Contact Options */}
+        <div className="mt-6">
+          <p className="text-center text-red-800 text-xs mb-3">
+            Need help? Contact us
+          </p>
+          <ContactOptions />
         </div>
-
-        {/* Login Button */}
-        <button
-          onClick={handleLogin}
-          disabled={isLoading}
-          className="w-full bg-gradient-to-r from-pink-500 to-pink-600 text-white font-bold py-4 rounded-xl
-            hover:from-pink-600 hover:to-pink-700
-            flex items-center justify-center gap-2
-            transform transition-all duration-300
-            active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed
-            shadow-lg shadow-pink-500/20 text-md"
-        >
-          Sign In
-          <ArrowRight className="w-5 h-5" />
-        </button>
-
-        {/* Register Button */}
-        <button
-          onClick={() => router.push('/auth/register')}
-          className="w-full bg-purple-800 hover:bg-purple-900
-            text-white/80 font-bold py-4 rounded-xl
-            flex items-center justify-center gap-2
-            transform transition-all duration-300
-            active:scale-95 shadow-lg shadow-purple-900/30 text-md"
-        >
-          <UserPlus className="w-5 h-5" />
-          Create Account
-        </button>
-      </div>
-
-      {/* Support Section */}
-      <div className="flex justify-center gap-4 mt-8">
-        <ContactOptions />
       </div>
     </div>
   );

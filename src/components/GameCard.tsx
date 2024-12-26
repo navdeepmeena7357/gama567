@@ -28,6 +28,7 @@ const GameCard: React.FC<MarketProps> = ({ market }) => {
   const [isModalOpen, setModalOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState('');
 
+  // Keeping your existing click handlers and validation logic
   const handleMarketClick = () => {
     const queryParams = new URLSearchParams({
       id: market.id.toString(),
@@ -49,38 +50,37 @@ const GameCard: React.FC<MarketProps> = ({ market }) => {
   const isMarketOpen = market.open_market_status === 1;
   const isMarketClose = market.close_market_status === 1;
 
-  // Dynamic styles based on status
   const getStatusStyles = () => {
     if (!isMarketOpen && !isMarketClose) {
       return {
-        bg: 'bg-gradient-to-br from-purple-50 to-pink-50',
-        border: 'border-purple-100',
-        indicator: 'bg-red-400',
-        text: 'text-red-500',
+        bg: 'bg-red-50',
+        border: 'border-pink-200',
+        indicator: 'bg-red-500',
+        text: 'text-red-600',
         label: 'Closed',
       };
     } else if (isMarketOpen && isMarketClose) {
       return {
-        bg: 'bg-gradient-to-br from-purple-100 to-pink-100',
-        border: 'border-purple-200',
-        indicator: 'bg-emerald-400',
-        text: 'text-emerald-600',
+        bg: 'bg-pink-50',
+        border: 'border-pink-200',
+        indicator: 'bg-green-500',
+        text: 'text-green-600',
         label: 'Running',
       };
     } else if (!isMarketOpen && isMarketClose) {
       return {
-        bg: 'bg-gradient-to-br from-pink-50 to-purple-50',
-        border: 'border-pink-100',
-        indicator: 'bg-amber-400',
+        bg: 'bg-red-50',
+        border: 'border-pink-200',
+        indicator: 'bg-amber-500',
         text: 'text-amber-600',
         label: 'Close Run',
       };
     }
     return {
-      bg: 'bg-gradient-to-br from-purple-50 to-pink-50',
-      border: 'border-purple-100',
-      indicator: 'bg-red-400',
-      text: 'text-red-500',
+      bg: 'bg-red-50',
+      border: 'border-pink-200',
+      indicator: 'bg-red-500',
+      text: 'text-red-600',
       label: 'Closed',
     };
   };
@@ -111,14 +111,13 @@ const GameCard: React.FC<MarketProps> = ({ market }) => {
                   handleOpenModal('Market is closed for today. Try Tomorrow')
             : undefined
         }
-        className={`relative ${styles.bg} border ${styles.border} rounded-xl p-1
-          transition-all duration-500 cursor-pointer
-          hover:shadow-xl hover:shadow-purple-100
-          active:scale-[0.98] overflow-hidden`}
+        className={`${styles.bg} border ${styles.border} rounded-xl p-3
+          transition-all duration-200 cursor-pointer shadow-sm
+          hover:shadow-md hover:border-pink-300 active:scale-[0.99]`}
       >
-        {/* Status Indicator */}
-        <div className="flex  items-center justify-between mb-2 pl-2">
-          <div className="flex items-center gap-2">
+        {/* Header with Status */}
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-1.5">
             <div
               className={`h-2 w-2 rounded-full ${styles.indicator} animate-pulse`}
             />
@@ -126,69 +125,67 @@ const GameCard: React.FC<MarketProps> = ({ market }) => {
               {styles.label}
             </span>
           </div>
-          {market.is_active && user?.isVerified ? (
-            <div className="flex flex-col items-center gap-1.5">
-              <PlayCircle className="w-4 h-4 text-purple-400" />
-              <span className="text-xs font-medium text-purple-400">Play</span>
+          {market.is_active && user?.isVerified && (
+            <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-2 py-1 rounded text-xs font-medium flex items-center gap-1">
+              <PlayCircle className="w-3 h-3" />
+              Play
             </div>
-          ) : (
-            <></>
           )}
         </div>
 
-        {!user?.isVerified ? (
+        {/* Chart Button for Non-Verified Users */}
+        {!user?.isVerified && (
           <a
             href="/features/chart"
-            className="flex bg-purple-500 flex-col items-center gap-1.5 p-2 rounded-sm"
+            className="flex bg-gradient-to-r from-red-500 to-pink-500 items-center justify-center gap-1 py-1 rounded text-white mb-2"
           >
-            <ChartAreaIcon className="w-4 h-4 text-white" />
-            <span className="text-xs font-medium text-white">View CHART</span>
+            <ChartAreaIcon className="w-3 h-3" />
+            <span className="text-xs font-medium">View CHART</span>
           </a>
-        ) : (
-          <></>
         )}
 
         {/* Market Name */}
-        <h2 className="text-lg font-semibold pl-2 text-purple-900 mb-2">
+        <h2 className="text-sm font-semibold text-red-900 mb-2">
           {market.market_name}
         </h2>
 
         {/* Results Display */}
-        <div
-          className="bg-white/60 backdrop-blur-sm rounded-2xl p-1 mb-2
-          border border-purple-100 shadow-sm"
-        >
-          <div className="grid grid-cols-3 place-items-center text-purple-900">
+        <div className="bg-white rounded-lg p-2 mb-2 border border-pink-100">
+          <div className="grid grid-cols-3 place-items-center gap-1">
             <div className="text-center">
-              <p className="text-sm font-medium mb-1">{market.open_pana}</p>
+              <p className="text-xs font-medium text-red-800">
+                {market.open_pana}
+              </p>
             </div>
-            <div className="text-center px-2 border-x border-purple-100">
-              <p className="text-base font-semibold mb-1">
+            <div className="text-center px-2 border-x border-pink-100">
+              <p className="text-sm font-bold text-red-900">
                 {getLastDigitOfSum(market.open_pana)}-
                 {getLastDigitOfSum(market.close_pana)}
               </p>
             </div>
             <div className="text-center">
-              <p className="text-sm font-medium mb-1">{market.close_pana}</p>
+              <p className="text-xs font-medium text-red-800">
+                {market.close_pana}
+              </p>
             </div>
           </div>
         </div>
 
         {/* Time Slots */}
-        <div className="space-y-2 p-2 flex justify-between items-center">
-          <div className="flex items-center gap-3 text-purple-900">
-            <Clock className="w-4 h-4 text-purple-400" />
-            <span className="text-xs text-purple-500">Opens</span>
-            <p className="text-sm font-medium">
+        <div className="grid grid-cols-2 gap-2 text-xs bg-white rounded-lg p-2 border border-pink-100">
+          <div className="flex items-center gap-1 text-red-800">
+            <Clock className="w-3 h-3 text-red-400" />
+            <span className="text-pink-500">Opens:</span>
+            <span className="font-medium">
               {convertTo12HourFormat(market.market_open_time)}
-            </p>
+            </span>
           </div>
-          <div className="flex items-center gap-3 text-purple-900">
-            <Timer className="w-4 h-4 text-purple-400" />
-            <span className="text-xs text-purple-500">Closes</span>
-            <p className="text-sm font-medium">
+          <div className="flex items-center gap-1 text-red-800">
+            <Timer className="w-3 h-3 text-red-400" />
+            <span className="text-pink-500">Closes:</span>
+            <span className="font-medium">
               {convertTo12HourFormat(market.market_close_time)}
-            </p>
+            </span>
           </div>
         </div>
       </div>

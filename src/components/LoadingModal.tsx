@@ -18,9 +18,9 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
       case 'spinner':
         return (
           <div className="relative w-16 h-16">
-            <div className="absolute w-16 h-16 rounded-full border-4 border-purple-100"></div>
-            <div className="absolute w-16 h-16 rounded-full border-4 border-purple-500/80 border-t-transparent animate-spin">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 opacity-20 blur-lg animate-pulse" />
+            <div className="absolute w-16 h-16 rounded-full border-4 border-red-100"></div>
+            <div className="absolute w-16 h-16 rounded-full border-4 border-red-500/80 border-t-transparent animate-spin">
+              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-red-500 to-brown-500 opacity-20 blur-lg animate-pulse" />
             </div>
           </div>
         );
@@ -31,7 +31,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="w-3 h-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-pulse"
+                className="w-3 h-3 rounded-full bg-gradient-to-r from-red-500 to-brown-500 animate-pulse"
                 style={{
                   animationDelay: `${i * 0.15}s`,
                   filter: 'drop-shadow(0 0 6px rgba(168, 85, 247, 0.4))',
@@ -47,7 +47,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
             {[...Array(3)].map((_, i) => (
               <div
                 key={i}
-                className="w-4 h-4 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 animate-bounce shadow-lg shadow-purple-500/30"
+                className="w-4 h-4 rounded-full bg-gradient-to-r from-red-500 to-brown-500 animate-bounce shadow-lg shadow-purple-500/30"
                 style={{
                   animationDelay: `${i * 0.1}s`,
                   filter: 'drop-shadow(0 0 4px rgba(168, 85, 247, 0.3))',
@@ -59,8 +59,8 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
 
       case 'progress':
         return (
-          <div className="w-48 h-2 bg-purple-100 rounded-full overflow-hidden shadow-inner">
-            <div className="h-full bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 animate-progress">
+          <div className="w-48 h-2 bg-red-100 rounded-full overflow-hidden shadow-inner">
+            <div className="h-full bg-gradient-to-r from-red-500 via-brown-500 to-red-500 animate-progress">
               <div className="absolute inset-0 bg-white/20 animate-shimmer" />
             </div>
           </div>
@@ -76,14 +76,14 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
       {/* Modal Content */}
       <div
         className="relative bg-white/80 backdrop-blur-sm rounded-2xl 
-        shadow-xl shadow-purple-500/10 p-8 
+        shadow-xl shadow-red-500/10 p-8 
         flex flex-col items-center gap-4 min-w-[200px]
-        border border-purple-100"
+        border border-red-100"
       >
         {renderLoader()}
         {message && (
           <p
-            className="text-gray-700 text-sm font-medium bg-gradient-to-r from-purple-600 to-pink-600 
+            className="text-gray-700 text-sm font-medium bg-gradient-to-r from-red-600 to-brown-600 
             bg-clip-text text-transparent animate-pulse"
           >
             {message}

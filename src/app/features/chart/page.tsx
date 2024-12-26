@@ -120,8 +120,8 @@ const GameChart = () => {
       <SafeArea>
         <div className="px-4 py-6 max-w-5xl mx-auto">
           {/* Market Selection Section */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-purple-200 shadow-sm mb-6">
-            <h2 className="text-xl font-semibold text-purple-700 mb-4">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-red-200 shadow-sm mb-6">
+            <h2 className="text-xl font-semibold text-red-700 mb-4">
               Select Market
             </h2>
             <div className="space-y-2">
@@ -135,8 +135,8 @@ const GameChart = () => {
                 id="marketSelect"
                 value={selectedMarket?.market_id || ''}
                 onChange={handleMarketChange}
-                className="w-full p-3 rounded-xl border-2 border-purple-200
-                  focus:border-purple-400 focus:ring focus:ring-purple-200
+                className="w-full p-3 rounded-xl border-2 border-red-200
+                  focus:border-red-400 focus:ring focus:ring-red-200
                   bg-white/50 backdrop-blur-sm transition-all duration-200
                   text-gray-700 font-medium outline-none"
               >

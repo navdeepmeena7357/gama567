@@ -1,84 +1,89 @@
 import React from 'react';
-import { MessageCircle } from 'lucide-react';
+import { MessageCircle, ArrowUpRight } from 'lucide-react';
 import { useAppData } from '@/context/AppDataContext';
 
 const ContactOptions = () => {
   const { contactDetails } = useAppData();
 
+  const formatPhoneNumber = (number: string | undefined) => {
+    if (!number) return '';
+    const cleaned = number.replace(/\D/g, '');
+    return cleaned.startsWith('91') ? cleaned : `91${cleaned}`;
+  };
+
   const handleWhatsAppClick = () => {
-    const rawPhoneNumber = contactDetails?.whatsapp_numebr;
-    const phoneNumber = rawPhoneNumber ? rawPhoneNumber.replace(/\D/g, '') : '';
+    const phoneNumber = formatPhoneNumber(contactDetails?.whatsapp_numebr);
+
     if (!phoneNumber) {
-      alert('Phone number is not available.');
+      alert('WhatsApp number is not available.');
       return;
     }
-    const whatsappUrl = `whatsapp://send?phone=${phoneNumber}`;
-    window.location.href = whatsappUrl;
+
+    try {
+      window.location.href = `whatsapp://send?phone=${phoneNumber}`;
+    } catch {
+      window.location.href = `https://wa.me/${phoneNumber}`;
+    }
   };
 
   return (
-    <div className="space-y-3 max-w-md mx-auto w-full">
-      {/* WhatsApp Button */}
+    <div className="max-w-md mx-auto w-full p-3">
       <button
         onClick={handleWhatsAppClick}
-        className="group relative overflow-hidden bg-white/80 
-          w-full p-4 rounded-xl transition-all duration-300
-          border border-purple-200 hover:border-purple-300
-          hover:shadow-md shadow-sm backdrop-blur-sm flex items-center
-          active:scale-[0.99]"
+        className="group relative w-full bg-gradient-to-br from-red-50 to-pink-50 
+          rounded-xl border border-red-100
+          overflow-hidden transition-all duration-300
+          hover:border-red-200 hover:shadow-lg
+          active:scale-[0.98]"
       >
-        {/* Background Decoration */}
-        <div
-          className="absolute -right-6 -top-6 w-12 h-12 
-            bg-gradient-to-br from-purple-100 to-pink-100
-            rounded-full group-hover:scale-150 transition-transform duration-500"
-        />
-
-        {/* Icon Container */}
-        <div className="relative mr-4">
+        {/* Main Content Container */}
+        <div className="relative flex items-center p-4 gap-4">
+          {/* Icon Container */}
           <div
-            className="bg-gradient-to-br from-purple-500 to-pink-500 p-2.5 rounded-xl 
-              shadow-lg shadow-purple-500/10 
-              group-hover:scale-110 transition-transform duration-300"
+            className="bg-gradient-to-r from-red-500 to-pink-500 
+            p-2.5 rounded-xl shadow-sm
+            group-hover:shadow-md group-hover:scale-105 
+            transition-all duration-300"
           >
             <MessageCircle className="w-5 h-5 text-white" />
           </div>
-        </div>
 
-        {/* Label Container */}
-        <div className="relative flex-1">
-          <p className="text-sm font-medium text-purple-600">
-            WhatsApp Support
-          </p>
-          <p className="text-lg font-bold text-purple-700">
-            {contactDetails?.whatsapp_numebr?.replace('+91', '') ||
-              '1234567890'}
-          </p>
-        </div>
-
-        {/* Arrow Indicator */}
-        <div className="relative ml-2">
-          <div
-            className="w-8 h-8 rounded-full 
-            bg-gradient-to-r from-purple-50 to-pink-50 
-            flex items-center justify-center 
-            group-hover:from-purple-100 group-hover:to-pink-100 
-            transition-all duration-300
-            border border-purple-200"
-          >
-            <span
-              className="text-purple-600 text-lg font-medium 
-              transform group-hover:translate-x-0.5 transition-transform"
+          {/* Text Content */}
+          <div className="flex-1 text-left">
+            <p className="text-sm font-medium text-red-600 mb-0.5">
+              WhatsApp Support
+            </p>
+            <p
+              className="text-base font-bold bg-gradient-to-r from-red-600 to-pink-600 
+              bg-clip-text text-transparent"
             >
-              →
-            </span>
+              {contactDetails?.whatsapp_numebr?.replace('+91', '') ||
+                'Contact Support'}
+            </p>
+          </div>
+
+          {/* Arrow Icon */}
+          <div className="relative">
+            <ArrowUpRight
+              className="w-5 h-5 text-red-500 transform 
+                group-hover:translate-x-0.5 group-hover:-translate-y-0.5 
+                transition-transform duration-300"
+            />
           </div>
         </div>
 
-        {/* Hover overlay */}
+        {/* Decorative Elements */}
         <div
-          className="absolute inset-0 bg-gradient-to-r from-purple-50/50 via-pink-50/50 to-purple-50/50
-          opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          className="absolute -right-8 -top-8 w-16 h-16 
+          bg-gradient-to-br from-red-500/10 to-pink-500/10 
+          rounded-full transform group-hover:scale-150 
+          transition-transform duration-500"
+        />
+        <div
+          className="absolute -left-8 -bottom-8 w-16 h-16 
+          bg-gradient-to-tl from-pink-500/10 to-red-500/10 
+          rounded-full transform group-hover:scale-150 
+          transition-transform duration-500"
         />
       </button>
     </div>

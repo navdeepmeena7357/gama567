@@ -16,7 +16,7 @@ export interface PostBidsResponse {
 }
 
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || 'https://matkafunapp.com/api/';
+  process.env.NEXT_PUBLIC_API_URL || 'https://gama567-matka.in/api/';
 
 export interface Market {
   id: number;

@@ -243,7 +243,7 @@ const AddFundPage = () => {
   ].filter((method) => method.available);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-purple-100">
+    <div className="min-h-screen bg-gradient-to-br from-red-50 via-brown-50 to-red-100">
       <TitleBar title="Withdraw Fund" />
       <LoadingModal isOpen={loading!} />
 
@@ -254,27 +254,27 @@ const AddFundPage = () => {
             Available Balance
           </p>
           <div className="flex items-center justify-center gap-1">
-            <span className="text-2xl font-bold text-purple-700">
+            <span className="text-2xl font-bold text-red-700">
               ₹{points.balance}
             </span>
           </div>
           <div className="mt-2 flex justify-center">
-            <ArrowDown className="w-5 h-5 text-purple-400 animate-bounce" />
+            <ArrowDown className="w-5 h-5 text-red-400 animate-bounce" />
           </div>
         </div>
 
         <div className="px-4 max-w-md mx-auto space-y-4">
           {/* Input Section */}
-          <div className="space-y-3 bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-purple-200 shadow-sm">
+          <div className="space-y-3 bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-red-200 shadow-sm">
             <div className="relative group">
               <div
-                className="relative bg-white rounded-xl border-2 border-purple-200
-                transition-all duration-300 group-focus-within:border-purple-400
+                className="relative bg-white rounded-xl border-2 border-red-200
+                transition-all duration-300 group-focus-within:border-red-400
                 group-focus-within:shadow-md overflow-hidden"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-50/30 via-pink-50/30 to-purple-50/30" />
+                <div className="absolute inset-0 bg-gradient-to-r from-red-50/30 via-brown-50/30 to-red-50/30" />
                 <div className="relative flex items-center gap-3 p-3">
-                  <div className="p-2 bg-gradient-to-br from-purple-400 to-pink-400 rounded-lg">
+                  <div className="p-2 bg-gradient-to-br from-red-400 to-brown-400 rounded-lg">
                     <BiRupee className="h-5 w-5 text-white" />
                   </div>
                   <input
@@ -282,7 +282,7 @@ const AddFundPage = () => {
                     onChange={handleAmount}
                     type="number"
                     placeholder="Enter withdrawal amount"
-                    className="flex-1 outline-none text-purple-700 placeholder-purple-300 text-base
+                    className="flex-1 outline-none text-red-700 placeholder-red-300 text-base
                       bg-transparent w-full font-medium"
                   />
                 </div>
@@ -298,13 +298,13 @@ const AddFundPage = () => {
             <button
               disabled={isDisabled || points.balance <= 0}
               onClick={handleWithdraw}
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white
+              className="w-full bg-gradient-to-r from-red-500 to-brown-500 text-white
                 rounded-xl py-3.5 px-4 font-bold text-sm
                 transition-all duration-300
-                hover:from-purple-600 hover:to-pink-600
+                hover:from-red-600 hover:to-brown-600
                 active:scale-[0.98]
                 disabled:opacity-50 disabled:cursor-not-allowed
-                shadow-lg shadow-purple-500/10
+                shadow-lg shadow-red-500/10
                 relative overflow-hidden group"
             >
               <div
@@ -316,7 +316,7 @@ const AddFundPage = () => {
           ) : (
             <button
               onClick={() => router.replace('/features/funds/bank_details')}
-              className="w-full bg-white/80 backdrop-blur-sm text-purple-600
+              className="w-full bg-white/80 backdrop-blur-sm text-red-600
                 rounded-xl py-3.5 px-4 font-bold text-sm
                 transition-all duration-300 border border-purple-200
                 hover:bg-white hover:shadow-md active:scale-[0.98]
@@ -327,8 +327,8 @@ const AddFundPage = () => {
           )}
 
           {/* Contact Section */}
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-purple-200 shadow-sm space-y-4">
-            <p className="text-center text-purple-700 font-medium">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 border border-red-200 shadow-sm space-y-4">
+            <p className="text-center text-red-700 font-medium">
               For Fund Queries Contact us
             </p>
             <ContactOptions />
@@ -338,8 +338,8 @@ const AddFundPage = () => {
         {/* Withdrawal Method Modal */}
         {modalVisible && bankDetails && (
           <Modal onClose={() => setModalVisible(false)}>
-            <div className="bg-white rounded-2xl shadow-xl p-6 max-w-md mx-auto border border-purple-200">
-              <h2 className="text-lg font-bold text-purple-700 text-center mb-4">
+            <div className="bg-white rounded-2xl shadow-xl p-6 max-w-md mx-auto border border-red-200">
+              <h2 className="text-lg font-bold text-red-700 text-center mb-4">
                 Select Withdrawal Mode
               </h2>
 
@@ -367,10 +367,10 @@ const AddFundPage = () => {
 
               <button
                 onClick={sendWithdrawRequest}
-                className="w-full mt-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white
+                className="w-full mt-6 bg-gradient-to-r from-red-500 to-brown-500 text-white
                   rounded-xl py-3.5 px-4 font-bold text-sm
                   transition-all duration-300
-                  hover:from-purple-600 hover:to-pink-600
+                  hover:from-red-600 hover:to-brown-600
                   active:scale-[0.98] shadow-md"
               >
                 Confirm Withdrawal

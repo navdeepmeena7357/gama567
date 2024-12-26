@@ -81,7 +81,7 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
     <nav className="fixed top-0 left-0 right-0 z-30">
       {/* Main Header */}
       <div
-        className="bg-gradient-to-r from-purple-700 to-purple-800 px-4 py-2.5 
+        className="bg-gradient-to-r from-red-700 to-red-800 px-4 py-2.5 
         shadow-lg shadow-purple-900/30 border-b border-pink-300/10"
       >
         <div className="flex justify-between items-center">
@@ -89,8 +89,8 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="p-1.5 hover:bg-pink-400/10 rounded-lg transition-all duration-300
-                active:scale-95 focus:outline-none focus:ring-2 focus:ring-pink-400/20"
+              className="p-1.5 hover:bg-red-400/10 rounded-lg transition-all duration-300
+                active:scale-95 focus:outline-none focus:ring-2 focus:ring-red-400/20"
             >
               <Menu className="h-5 w-5 text-pink-300" />
             </button>
@@ -109,11 +109,11 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
           {user?.isVerified ? (
             <div className="relative group">
               <div
-                className="flex items-center gap-2 bg-pink-400/10 hover:bg-pink-400/15 
+                className="flex items-center gap-2 bg-red-400/10 hover:bg-red-400/15 
                 py-1.5 px-3 rounded-lg transition-all duration-300
                 border border-pink-300/20"
               >
-                <Wallet className="w-3.5 h-3.5 text-pink-300" />
+                <Wallet className="w-3.5 h-3.5 text-red-300" />
                 <span className="text-white text-xs font-bold">
                   ₹{wallet.balance}
                 </span>
@@ -127,7 +127,7 @@ const Navbar: React.FC<{ refreshMarketData: () => void }> = ({
 
       {/* Sub Header */}
       <div
-        className="bg-gradient-to-b from-purple-800/90 to-purple-900/90 backdrop-blur-md 
+        className="bg-gradient-to-b from-red-800/90 to-red-900/90 backdrop-blur-md 
         border-b border-pink-300/10"
       >
         {user?.isVerified ? (
@@ -228,7 +228,7 @@ const BottomNavBar = () => {
         <button
           onClick={onClick}
           className="relative p-3 rounded-2xl 
-            bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500
+            bg-gradient-to-tr from-pink-500 via-red-500 to-brown-500
             shadow-lg transform transition-all duration-300
             hover:shadow-xl hover:-translate-y-1
             active:scale-95 active:shadow-md"
@@ -332,7 +332,7 @@ const GameList: React.FC<{ marketData: MarketData[]; isLoading: boolean }> = ({
 
   return (
     <div
-      className={`${user?.isVerified ? 'mt-[230px]' : 'mt-[110px]'} mb-20 px-2 py-1 bg-gray-50`}
+      className={`${user?.isVerified ? 'mt-[240px]' : 'mt-[110px]'} mb-20 px-2 py-1 bg-gray-50`}
     >
       <LoadingModal isOpen={isLoading} />
       <div className="space-y-2">

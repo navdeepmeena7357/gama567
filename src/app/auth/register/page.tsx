@@ -9,7 +9,7 @@ import { BASE_URL } from '@/app/services/api';
 import { showErrorToast } from '@/utils/toast';
 import { Toaster } from 'react-hot-toast';
 import LoadingModal from '@/components/LoadingModal';
-import { User, UserCircle, Phone, Lock, ArrowRight, LogIn } from 'lucide-react';
+import { UserCircle, Phone, Lock, ArrowRight, LogIn } from 'lucide-react';
 
 export interface User {
   id: number;
@@ -45,6 +45,7 @@ function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  // Keeping your existing validation and submission logic
   const validateForm = () => {
     if (!name || name.length < 4 || name.length > 50) {
       return 'Enter valid name';
@@ -122,133 +123,106 @@ function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-700 to-purple-900 flex flex-col p-4 sm:p-6">
-      {/* Loading and Toast Components */}
-      <Toaster position="bottom-center" reverseOrder={false} />
-      <LoadingModal isOpen={loading} />
+    <div className="min-h-screen bg-gradient-to-b from-red-50 to-pink-50">
+      <div className="px-6 py-12 max-w-md mx-auto">
+        <LoadingModal isOpen={loading} />
+        <Toaster position="top-center" />
 
-      {/* Logo */}
-      <div className="flex justify-center mb-12">
-        <div className="relative w-32 h-32 sm:w-40 sm:h-40">
+        {/* Logo Section */}
+        <div className="flex justify-center mb-8">
           <Image
             src="/images/png/Logo.png"
+            height={100}
+            width={100}
             alt="Brand Logo"
-            fill
-            className="object-contain drop-shadow-2xl"
-            priority
-          />
-        </div>
-      </div>
-
-      {/* Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-6 max-w-md mx-auto w-full bg-white/5 backdrop-blur-md p-8 rounded-2xl border border-pink-300/20 shadow-xl"
-      >
-        <h1 className="text-2xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-pink-300 to-pink-500 mb-8">
-          Create Account
-        </h1>
-
-        {/* Name Input */}
-        <div className="relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <UserCircle className="w-5 h-5 text-pink-400 group-focus-within:text-pink-300 transition-colors" />
-          </div>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-xl border border-white/80
-              focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20
-              placeholder:text-white/90 text-white bg-white/5
-              transition-all duration-300 font-medium text-md"
-            placeholder="Your Name"
+            className="object-contain"
           />
         </div>
 
-        {/* Mobile Input */}
-        <div className="relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Phone className="w-5 h-5 text-pink-400 group-focus-within:text-pink-300 transition-colors" />
-          </div>
-          <input
-            type="tel"
-            value={mobileNumber}
-            maxLength={10}
-            onChange={(e) => setMobileNumber(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-xl border border-white/90
-              focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20
-              placeholder:text-white/90 text-white bg-white/5
-              transition-all duration-300 font-medium text-md"
-            placeholder="Mobile Number"
-          />
-        </div>
+        {/* Main Form */}
+        <div className="bg-white rounded-3xl p-8 shadow-lg">
+          <h1 className="text-2xl font-bold text-red-800 text-center mb-8">
+            Create Account
+          </h1>
 
-        {/* Password Input */}
-        <div className="relative group">
-          <div className="absolute left-4 top-1/2 -translate-y-1/2">
-            <Lock className="w-5 h-5 text-pink-400 group-focus-within:text-pink-300 transition-colors" />
-          </div>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full pl-12 pr-4 py-3 rounded-xl border border-white/90
-              focus:border-pink-400 focus:ring-2 focus:ring-pink-400/20
-              placeholder:text-white/90 text-white bg-white/5
-              transition-all duration-300 font-medium text-md"
-            placeholder="Create Password"
-          />
-        </div>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Name Input */}
+            <div className="relative">
+              <UserCircle className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-red-400" />
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full pl-12 pr-4 py-4 rounded-xl bg-red-50 border border-red-100 
+                          text-red-900 placeholder:text-red-300 focus:outline-none focus:border-red-400
+                          focus:ring-2 focus:ring-red-400/20 text-base"
+                placeholder="Your Name"
+              />
+            </div>
 
-        {/* Error Message */}
-        {error && (
-          <div
-            className="bg-pink-500/10 backdrop-blur-sm border border-pink-500/30 
-            text-pink-200 p-4 rounded-xl text-sm font-medium"
-          >
-            {error}
-          </div>
-        )}
+            {/* Mobile Input */}
+            <div className="relative">
+              <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-red-400" />
+              <input
+                type="number"
+                value={mobileNumber}
+                maxLength={10}
+                onChange={(e) => setMobileNumber(e.target.value)}
+                className="w-full pl-12 pr-4 py-4 rounded-xl bg-red-50 border border-red-100 
+                          text-red-900 placeholder:text-red-300 focus:outline-none focus:border-red-400
+                          focus:ring-2 focus:ring-red-400/20 text-base"
+                placeholder="Mobile Number"
+              />
+            </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-gradient-to-r from-pink-500 to-pink-600 text-white font-medium py-3 rounded-xl
-            hover:from-pink-600 hover:to-pink-700
-            flex items-center justify-center gap-2
-            transform transition-all duration-300
-            active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed
-            shadow-lg shadow-pink-500/20 text-md"
-        >
-          {loading ? (
-            <div
-              className="w-5 h-5 border-2 border-white/20 border-t-white 
-              rounded-full animate-spin"
-            />
-          ) : (
-            <>
+            {/* Password Input */}
+            <div className="relative">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-red-400" />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full pl-12 pr-4 py-4 rounded-xl bg-red-50 border border-red-100 
+                          text-red-900 placeholder:text-red-300 focus:outline-none focus:border-red-400
+                          focus:ring-2 focus:ring-red-400/20 text-base"
+                placeholder="Create Password"
+              />
+            </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-800 p-4 rounded-xl text-sm">
+                {error}
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-red-600 to-red-500 text-white py-4 rounded-xl
+                        flex items-center justify-center gap-3 text-base font-semibold
+                        hover:from-red-700 hover:to-red-600 transition-colors
+                        shadow-lg shadow-red-500/20"
+            >
               Create Account
               <ArrowRight className="w-5 h-5" />
-            </>
-          )}
-        </button>
+            </button>
 
-        {/* Login Link Button */}
-        <button
-          type="button"
-          onClick={() => router.replace('/auth/login')}
-          className="w-full bg-purple-800 hover:bg-purple-900
-            text-white/90 font-medium py-3 rounded-xl
-            flex items-center justify-center gap-2
-            transform transition-all duration-300
-            active:scale-95 shadow-sm shadow-white/30 text-md"
-        >
-          <LogIn className="w-5 h-5" />
-          Already Have Account? Sign In
-        </button>
-      </form>
+            {/* Login Link */}
+            <button
+              type="button"
+              onClick={() => router.replace('/auth/login')}
+              className="w-full bg-red-50 text-red-800 py-4 rounded-xl
+                        flex items-center justify-center gap-3 text-base font-semibold
+                        border-2 border-red-100 hover:bg-red-100 transition-colors"
+            >
+              <LogIn className="w-5 h-5" />
+              Already Have Account? Sign In
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 }
