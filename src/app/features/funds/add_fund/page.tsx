@@ -76,7 +76,7 @@ const AddFundPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-2 bg-gradient-to-r from-purple-500 to-pink-500">
+    <div className="flex flex-col items-center justify-center min-h-screen p-2 ">
       <TitleBar title={t.title} />
       <div className="bg-white shadow-lg rounded-xl p-6 w-full max-w-md text-center mt-12">
         <p className="text-gray-700 mb-4 text-sm">{t.instruction}</p>
